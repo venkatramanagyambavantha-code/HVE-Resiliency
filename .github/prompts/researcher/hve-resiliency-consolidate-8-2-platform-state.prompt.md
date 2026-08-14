@@ -39,6 +39,8 @@ Platform-state residual discovery hints (evidence-only):
 * Region observations from Prompt 2 that Section 3 (Region Assumptions) does not primary-claim and that map to no other section.
 * State and data characteristics observations from Prompt 3 that Section 4 (State and Data Characteristics) does not primary-claim and that map to no other section.
 * Prompt 4 observations that Section 5 (Failure and Degraded-Mode Behavior) does not primary-claim and that map to no other section, restricted to platform-context evidence rather than direct failure-mode evidence.
+* Sanitized observations from this group's artifacts that describe a hard-coded value which is not a secret and which Section 7 does not primary-claim, restricted to observable production behavior with a validated file-line citation and a canonical dependency or category.
+* Configuration-lifecycle observations from this group's artifacts that carry no secret metadata and that map to no other section.
 
 Never emit a candidate solely because an artifact mentions a topic; require positive evidence with a validated file-line citation and confirm that no other section's primary or scoped rule already claims the canonical tuple.
 

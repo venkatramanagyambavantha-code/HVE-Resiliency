@@ -1,12 +1,12 @@
 ---
-description: Verify the five group sub-fragments of the split Consolidate 8 pipeline against the Section 8 sub-manifest and routed source artifacts, report-only
+description: Verify the four group sub-fragments of the split Consolidate 8 pipeline against the Section 8 sub-manifest and routed source artifacts, report-only
 agent: "Task Researcher"
 argument-hint: "[subManifestPath=...]"
 ---
 
 # HVE Resiliency Consolidate 8 - Verify
 
-Follow the [Consolidate 8 Split Contract](../../instructions/hve-resiliency-consolidate-8-split.instructions.md) and the outer [Consolidation Shared Contract](../../instructions/hve-resiliency-consolidation-shared.instructions.md). This prompt audits the five group sub-fragments only. It reports findings; it does not renumber, add, reorder, or render new provisional findings, does not edit sub-fragments, does not modify the sub-skeleton, and does not write `sections/section-8.md`.
+Follow the [Consolidate 8 Split Contract](../../instructions/hve-resiliency-consolidate-8-split.instructions.md) and the outer [Consolidation Shared Contract](../../instructions/hve-resiliency-consolidation-shared.instructions.md). This prompt audits the four group sub-fragments only. It reports findings; it does not renumber, add, reorder, or render new provisional findings, does not edit sub-fragments, does not modify the sub-skeleton, and does not write `sections/section-8.md`.
 
 ## Inputs
 
@@ -17,11 +17,11 @@ Follow the [Consolidate 8 Split Contract](../../instructions/hve-resiliency-cons
 * Run only the verify stage. Do not run any group fill or the finalize behavior.
 * Require the sub-manifest produced by the scaffold step to exist, be readable, and be well-formed per the Frozen Sub-Manifest Sidecar Contract. If it is missing, unreadable, or structurally invalid, a prior step failed or ran out of order: stop `Blocked` per Status and Failure Semantics and do not write an audit report.
 * Require the outer manifest at the sub-manifest's `outerManifestPath` to still be readable and its sanitized SHA-256 digest to match `outerManifestSha256`. On mismatch, stop `Blocked` with `outer manifest drift`.
-* Require all five sub-fragment files (`core-context.md`, `platform-state.md`, `failure-crossrepo.md`, `secrets-adjacent.md`, `services.md`) to exist under the sub-manifest's `subFragmentDir`. Missing sub-fragments are reported as `fragment-missing`; verification continues on the present sub-fragments.
+* Require all four sub-fragment files (`core-context.md`, `platform-state.md`, `failure-crossrepo.md`, `services.md`) to exist under the sub-manifest's `subFragmentDir`. Missing sub-fragments are reported as `fragment-missing`; verification continues on the present sub-fragments.
 
 ## Read Scope
 
-Read the frozen sub-manifest, the outer consolidation manifest, the five sub-fragment files, and only the accepted source artifacts routed to each group per the sub-manifest's `groupRouting`. Do not re-run outer discovery, do not re-derive the group routing table, and do not read source artifacts outside the audited groups.
+Read the frozen sub-manifest, the outer consolidation manifest, the four sub-fragment files, and only the accepted source artifacts routed to each group per the sub-manifest's `groupRouting`. Do not re-run outer discovery, do not re-derive the group routing table, and do not read source artifacts outside the audited groups.
 
 ## Verification Protocol
 
@@ -33,7 +33,7 @@ For each sub-fragment, confirm in this exact order and record one terminal dispo
 4. **Residual discipline.** No provisional finding's canonical tuple is claimed by any of Sections 1-7 under the outer Section-to-Source Mapping, the Section 2.1 service-finding scope, or the Section 7 secret sweep scope. Record `section-precedence-conflict` when a canonical tuple must be dropped by outer finalize; leave the record in place for outer finalize to resolve.
 5. **Citation validity.** Every citation in an Evidence field resolves verbatim to the routed accepted source artifact and its recorded evidence lines. Never estimate or recalculate line numbers. Record `citation-drift` when a cited path or line range differs from the routed source artifact, `path-unresolved` when the path does not resolve, or `line-out-of-range` when the cited lines fall outside the source artifact.
 6. **Prohibited content.** No provisional finding contains recommendations, remediation, alternatives, examples, or implementation guidance. Record `prohibited-content` when detected.
-7. **Sanitization.** No provisional finding reproduces a raw secret value or a raw PII value. This check is strict for the `secrets-adjacent` sub-fragment. Record `unsafe` when detected and stop verification for that sub-fragment.
+7. **Sanitization.** No provisional finding reproduces a raw secret value or a raw PII value. Record `unsafe` when detected and stop verification for that sub-fragment.
 8. **Services applicability discipline.** When the sub-manifest's `servicesApplicability` is `not-applicable`, the `services` sub-fragment must carry the single acknowledgement line described in the services fill contract and zero provisional findings. Record `services-applicability-violation` otherwise. When `servicesApplicability` is `applicable`, no acknowledgement line is permitted in place of provisional findings.
 
 ## Cross-Fragment Checks

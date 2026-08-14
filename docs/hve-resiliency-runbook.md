@@ -125,7 +125,7 @@ Get-ChildItem .github\skills, .github\prompts, .github\instructions -Recurse -Fi
 You should see a non-zero count, and the following should exist:
 
 * `.github/skills/hve-resiliency-research/SKILL.md`
-* `.github/prompts/researcher/` (at minimum prompts 0 through 7-logging)
+* `.github/prompts/researcher/` (at minimum prompts 0 through 6)
 * `.github/instructions/hve-resiliency-platform-context.instructions.md`
 
 ### 0.3 Reload VS Code and confirm slash commands
@@ -148,9 +148,9 @@ git add .github/skills .github/prompts .github/instructions
 git commit -m "chore: install HVE Resiliency framework"
 ```
 
-## Phase 1: Core research (Prompts 0-7)
+## Phase 1: Core research (Prompts 0-6)
 
-Phase 1 establishes the repository context and dependency inventory that all later phases depend on. It runs prompts `0` through `7-logging` strictly in order.
+Phase 1 establishes the repository context and dependency inventory that all later phases depend on. It runs prompts `0` through `6` strictly in order.
 
 ### 1.1 Select the agent
 
@@ -177,7 +177,7 @@ See [Operator decision matrix](#operator-decision-matrix-mode-a-vs-mode-b) if yo
 
 ### 1.4 Mode A operator loop
 
-Repeat this loop for prompts 0, 1a, 1b, 2, 3, 4, 5, 6, 7-logging (in that order):
+Repeat this loop for prompts 0, 1a, 1b, 2, 3, 4, 5, 6 (in that order):
 
 1. Wait for the prompt artifact to be written under `.copilot-tracking/research/`.
 2. Open the artifact and skim it. Confirm it cites file and line references for substantive claims.

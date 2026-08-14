@@ -26,7 +26,6 @@ Read the outer manifest once. Compute the Section 8 group routing table by mappi
 * `core-context`: accepted artifacts with `promptId` `0`, `1a`, or `1b`.
 * `platform-state`: accepted artifacts with `promptId` `2`, `3`, or `4`.
 * `failure-crossrepo`: accepted artifacts with `promptId` `5` or `6`.
-* `secrets-adjacent`: the accepted artifact with `promptId` `7`.
 * `services`: every accepted artifact whose `promptId` is one of `8` through `19`.
 
 Copy each artifact's `promptId`, normalized `path`, `completionStatus`, and `contentSha256` verbatim from the outer manifest. Do not re-derive them and do not recompute the digest.
@@ -39,7 +38,7 @@ Set `servicesApplicability` to `applicable` when the `services` group's routing 
 
 Emit the frozen sub-manifest sidecar per the Frozen Sub-Manifest Sidecar Contract in the shared instructions. Write it to `<consolidatedDocDir>/sections/section-8-fragments/section-8.manifest.md`, where `<consolidatedDocDir>` is the directory of the consolidated document.
 
-Record `outerManifestSha256` as the lowercase SHA-256 hexadecimal digest of the sanitized outer manifest bytes read at this stage. Include the five fixed `groupRouting` records mapping each group key to its fill prompt ID (`hve-resiliency-consolidate-8-1-core-context`, `hve-resiliency-consolidate-8-2-platform-state`, `hve-resiliency-consolidate-8-3-failure-crossrepo`, `hve-resiliency-consolidate-8-4-secrets-adjacent`, `hve-resiliency-consolidate-8-5-services`), its sub-fragment file name (`core-context.md`, `platform-state.md`, `failure-crossrepo.md`, `secrets-adjacent.md`, `services.md`), and the enumerated accepted-artifact records that group owns.
+Record `outerManifestSha256` as the lowercase SHA-256 hexadecimal digest of the sanitized outer manifest bytes read at this stage. Include the four fixed `groupRouting` records mapping each group key to its fill prompt ID (`hve-resiliency-consolidate-8-1-core-context`, `hve-resiliency-consolidate-8-2-platform-state`, `hve-resiliency-consolidate-8-3-failure-crossrepo`, `hve-resiliency-consolidate-8-4-services`), its sub-fragment file name (`core-context.md`, `platform-state.md`, `failure-crossrepo.md`, `services.md`), and the enumerated accepted-artifact records that group owns.
 
 ## Sub-Skeleton Emission
 
@@ -63,8 +62,6 @@ ms.date: YYYY-MM-DD
 <!-- group platform-state placeholder: assembled by hve-resiliency-consolidate-8-finalize -->
 
 <!-- group failure-crossrepo placeholder: assembled by hve-resiliency-consolidate-8-finalize -->
-
-<!-- group secrets-adjacent placeholder: assembled by hve-resiliency-consolidate-8-finalize -->
 
 <!-- group services placeholder: assembled by hve-resiliency-consolidate-8-finalize -->
 

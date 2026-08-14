@@ -135,4 +135,4 @@ Use the priority framework from the platform context without restating its defin
 
 End the response with the inherited next step:
 
-> **Next step:** Run `/hve-resiliency-researcher-7-logging`
+> **Next step:** Run the first applicable service-specific prompt from Phase 2, or `/hve-resiliency-consolidate-0-scaffold` if none apply

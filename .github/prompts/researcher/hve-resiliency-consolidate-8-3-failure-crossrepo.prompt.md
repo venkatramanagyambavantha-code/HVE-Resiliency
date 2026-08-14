@@ -38,6 +38,8 @@ Failure and cross-repository residual discovery hints (evidence-only):
 
 * Prompt 5 observations that Section 5 (Failure and Degraded-Mode Behavior) does not primary-claim and that map to no other section, restricted to observable behavior with a validated file-line citation.
 * Prompt 6 observations that Section 6 (Shared and Cross-Repository Dependencies) does not primary-claim and that map to no other section, restricted to shared library, centralized configuration, or platform-utility evidence that carries no regional coupling claim already rendered in Section 6.
+* Sanitized observations from this group's artifacts that describe a hard-coded value which is not a secret and which Section 7 does not primary-claim, restricted to observable production behavior with a validated file-line citation and a canonical dependency or category.
+* Configuration-lifecycle observations from this group's artifacts that carry no secret metadata and that map to no other section.
 
 Never emit a candidate solely because an artifact mentions a topic; require positive evidence with a validated file-line citation and confirm that no other section's primary or scoped rule already claims the canonical tuple.
 
@@ -76,4 +78,4 @@ Do not modify the sub-skeleton artifact. Do not touch any other sub-fragment. Do
 
 Report the accepted-artifact `promptId` values read, the provisional finding count, the retained source-record totals, the sub-fragment path, and the terminal sub-fragment status.
 
-> **Next step:** Run `/hve-resiliency-consolidate-8-4-secrets-adjacent`
+> **Next step:** Run `/hve-resiliency-consolidate-8-4-services`
