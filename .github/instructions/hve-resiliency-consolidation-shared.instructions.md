@@ -52,7 +52,7 @@ The manifest also records the section-routing map and a frozen coverage snapshot
 
 * Primary section: each accepted artifact declares exactly one primary output section (1-8) from the section-to-source mapping below.
 * Cross-artifact read scopes (grant read access without duplicating rendering):
-  * Section 2.1 service-finding scope: service artifacts (8-19) contribute dependency findings to Section 2.1 in addition to their category section.
+  * Section 2.1 service-finding scope: service artifacts (9-18) contribute dependency findings to Section 2.1 in addition to their category section.
   * Section 7 secret sweep scope: sanitized hard-coded secret or value findings from any accepted artifact route to Section 7.
   * Section 8 residual scope: retained evidence from any artifact that maps to no other section routes to Section 8.
 * Coverage snapshot: required prompt IDs present or absent, and the applicable optional service IDs (applicability determined solely by accepted Prompt 1a and 1b Section 1 evidence).
@@ -77,11 +77,11 @@ When a prompt's manifest path input is omitted, auto-locate the frozen outer con
 | 8 Other Findings | Residual scope over any artifact |
 | 9 Research Findings Index | Aggregated finding IDs from Sections 2.1 and 3-8 |
 
-Service findings (prompt IDs 8-19) render into Sections 2.1 and 3-8 by category, per the read scopes above.
+Service findings (prompt IDs 9-18) render into Sections 2.1 and 3-8 by category, per the read scopes above.
 
 ## Required and Optional Prompt IDs
 
-Required prompt IDs are `0`, `1a`, `1b`, `2`, `3`, `4`, `5`, and `6`. Service prompt IDs `8` through `19` are optional and applicable only when their dependency category or service appears in Section 1 of an accepted Prompt 1a or Prompt 1b artifact. An absent service artifact is not a conflict when that service is inapplicable.
+Required prompt IDs are `0`, `1a`, `1b`, `2`, `3`, `4`, `5`, and `6`. Service prompt IDs `9` through `18` are optional and applicable only when their dependency category or service appears in Section 1 of an accepted Prompt 1a or Prompt 1b artifact. An absent service artifact is not a conflict when that service is inapplicable.
 
 ## Sanitization
 

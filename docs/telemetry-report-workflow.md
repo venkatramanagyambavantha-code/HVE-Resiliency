@@ -62,7 +62,7 @@ flowchart TD
     subgraph RESEARCH [Task Researcher agent]
         direction TB
         P1["Phase 1: Core Research<br/>researcher-0 to 6"]
-        P2["Phase 2: Service Research<br/>researcher 8-19 (applicable services)"]
+        P2["Phase 2: Service Research<br/>researcher 9-18 (applicable services)"]
         P3["Phase 3: Consolidation<br/>researcher-consolidate-0 to -2"]
         P1 --> P2 --> P3
     end

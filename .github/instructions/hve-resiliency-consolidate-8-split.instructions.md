@@ -42,7 +42,7 @@ The sub-manifest records:
 * `subFragmentDir`: normalized workspace-relative directory holding the four group sub-fragments. Fixed to `<consolidatedDocDir>/sections/section-8-fragments/`.
 * `groupRouting`: the four fixed routing keys `core-context`, `platform-state`, `failure-crossrepo`, `services`, each mapped to its fill prompt ID, its sub-fragment file name, and the enumerated accepted source artifact records that the group owns.
 * `sources`: the accepted source artifact records copied verbatim from the outer manifest, each carrying `promptId`, normalized `path`, `completionStatus`, and `contentSha256`.
-* `servicesApplicability`: `applicable` when the outer manifest records at least one accepted optional service artifact (Prompt IDs `8`-`19`), otherwise `not-applicable`. This value is frozen; downstream stages do not re-derive it.
+* `servicesApplicability`: `applicable` when the outer manifest records at least one accepted optional service artifact (Prompt IDs `9`-`18`), otherwise `not-applicable`. This value is frozen; downstream stages do not re-derive it.
 
 ## Sub-Manifest Auto-Location
 
@@ -57,7 +57,7 @@ The four artifact groups are the only routing axes for this pipeline. Each group
 * `core-context`: Prompts `0`, `1a`, `1b`. Residuals from repository context and dependency inventory scaffolding that map to no other section.
 * `platform-state`: Prompts `2`, `3`, `4`. Residuals from region, state and data, and adjacent platform-context artifacts that map to no other section.
 * `failure-crossrepo`: Prompts `5`, `6`. Residuals from failure and degraded-mode behavior and shared cross-repository dependency artifacts that map to no other section.
-* `services`: applicable optional Prompt IDs `8` through `19`. Membership is exactly the accepted service artifact records recorded in the sub-manifest's `groupRouting.services` entry. When `servicesApplicability` is `not-applicable`, the services group emits zero provisional findings and its sub-fragment records the negative-check scope.
+* `services`: applicable optional Prompt IDs `9` through `18`. Membership is exactly the accepted service artifact records recorded in the sub-manifest's `groupRouting.services` entry. When `servicesApplicability` is `not-applicable`, the services group emits zero provisional findings and its sub-fragment records the negative-check scope.
 
 Hard-coded values that are not secrets, and configuration-lifecycle residuals, are emitted by whichever group owns the source artifact they were observed in; Section 7 primary-claims every hard-coded secret or value finding.
 
