@@ -15,7 +15,7 @@ Follow the [Consolidation Shared Contract](../../instructions/hve-resiliency-con
 
 ## Scope
 
-Read the frozen manifest, then read only the artifacts whose primary section is Section 2: the accepted Prompt 1a and Prompt 1b artifacts (Sections 1-3). Also apply the Section 2.1 service-finding read scope: service artifacts (9-18) contribute confirmed dependency findings to Section 2.1. Do not read artifacts outside these scopes and do not re-run discovery.
+Read the frozen manifest, then read only the artifacts whose primary section is Section 2: the accepted Prompt 1a and Prompt 1b artifacts (Sections 1-3). Also apply the Section 2.1 service-finding read scope: service artifacts (9-17) contribute confirmed dependency findings to Section 2.1. Do not read artifacts outside these scopes and do not re-run discovery.
 
 ## Fill Protocol
 

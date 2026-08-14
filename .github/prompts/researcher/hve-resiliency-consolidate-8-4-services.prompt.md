@@ -1,5 +1,5 @@
 ---
-description: Fill the services sub-fragment of the split Consolidate 8 pipeline - emit provisional Section 8 residual candidates only for artifact group services (applicable optional Prompts 9-18)
+description: Fill the services sub-fragment of the split Consolidate 8 pipeline - emit provisional Section 8 residual candidates only for artifact group services (applicable optional Prompts 9-17)
 agent: "Task Researcher"
 argument-hint: "[subManifestPath=...]"
 ---
@@ -26,7 +26,7 @@ Read only:
 
 * The Section 8 sub-manifest.
 * The outer consolidation manifest.
-* The accepted service source artifacts routed to `services` (applicable optional Prompt IDs `9` through `18`).
+* The accepted service source artifacts routed to `services` (applicable optional Prompt IDs `9` through `17`).
 
 Do not read source artifacts routed to other groups. Do not re-run outer discovery and do not re-derive the group routing table.
 

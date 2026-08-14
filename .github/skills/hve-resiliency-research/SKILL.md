@@ -15,7 +15,7 @@ Auto-load this skill for requests related to resiliency, Azure regional failover
 
 ## Activation Behavior
 
-When this skill is activated (via `/hve-resiliency-research` or by matching the activation guidance), the agent MUST immediately begin executing the Required Workflow starting at Phase 1, Prompt 0. Do not prompt the user for which prompt to run. Do not skip to service-specific prompts (9-18) without completing Prompts 0-6 first.
+When this skill is activated (via `/hve-resiliency-research` or by matching the activation guidance), the agent MUST immediately begin executing the Required Workflow starting at Phase 1, Prompt 0. Do not prompt the user for which prompt to run. Do not skip to service-specific prompts (9-17) without completing Prompts 0-6 first.
 
 ## Automated Orchestration (Recommended)
 
@@ -56,7 +56,7 @@ Phase 1 is mandatory and sequential. Always begin with Prompt 0.
     * `/hve-resiliency-researcher-5` is retained as a deprecated redirect to the scaffold entry point.
 9. Run `/hve-resiliency-researcher-6` when shared dependency risk analysis is needed.
 
-### Phase 2: Service-Specific Research (Prompts 9-18, Circumstantial)
+### Phase 2: Service-Specific Research (Prompts 9-17, Circumstantial)
 
 Phase 2 runs only after Phase 1 is complete. Run only the prompts matching dependencies confirmed in Section 1 of Prompt 1a or Prompt 1b. Skip services found only in Sections 2-3 or not found. Recommend applicable prompts from the combined Prompt 1a and Prompt 1b results.
 
@@ -71,15 +71,14 @@ Phase 2 runs only after Phase 1 is complete. Run only the prompts matching depen
     * Cosmos DB confirmed, Azure SQL not confirmed -> Run `/hve-resiliency-researcher-16-kafka-active-active`
     * Azure SQL confirmed, with or without Cosmos DB -> Run `/hve-resiliency-researcher-16-kafka-active-standby-confluent`
     * Neither confirmed -> Do not auto-select; ask the user which Kafka topology the application uses before proceeding
-18. Run `/hve-resiliency-researcher-17-networking` (Networking)
-19. Run `/hve-resiliency-researcher-18-entraid` (Entra ID)
+18. Run `/hve-resiliency-researcher-17-entraid` (Entra ID)
 
 ### Phase 3: Consolidation
 
 Consolidation has been split into a bounded pipeline. Run these in order:
 
-20. Run `/hve-resiliency-consolidate-0-scaffold` (enumerates accepted researcher artifacts, emits the consolidated skeleton and the frozen manifest sidecar).
-21. Run each section-fill prompt against the manifest emitted in step 20. Fills write to independent fragment files under `<consolidatedDocDir>/sections/` and may run in parallel chats:
+19. Run `/hve-resiliency-consolidate-0-scaffold` (enumerates accepted researcher artifacts, emits the consolidated skeleton and the frozen manifest sidecar).
+20. Run each section-fill prompt against the manifest emitted in step 19. Fills write to independent fragment files under `<consolidatedDocDir>/sections/` and may run in parallel chats:
     * `/hve-resiliency-consolidate-1-repository-context`
     * `/hve-resiliency-consolidate-2-dependency-inventory`
     * `/hve-resiliency-consolidate-3-region-zone`
@@ -88,38 +87,38 @@ Consolidation has been split into a bounded pipeline. Run these in order:
     * `/hve-resiliency-consolidate-6-shared-cross-repo`
     * `/hve-resiliency-consolidate-7-secrets`
     * `/hve-resiliency-consolidate-8-other`
-22. Run `/hve-resiliency-consolidate-verify-1-4` to audit Sections 1-4 fragments against routed source artifacts (report-only).
-23. Run `/hve-resiliency-consolidate-verify-5-8` to audit Sections 5-8 fragments against routed source artifacts (report-only).
-24. Run `/hve-resiliency-consolidate-9-finalize` to assemble the fragments, run index-level dedup and section precedence, reconcile finding IDs into the authoritative `F-00X` scheme, and build the Section 9 index.
-25. Review the consolidated report at `.copilot-tracking/research/`.
+21. Run `/hve-resiliency-consolidate-verify-1-4` to audit Sections 1-4 fragments against routed source artifacts (report-only).
+22. Run `/hve-resiliency-consolidate-verify-5-8` to audit Sections 5-8 fragments against routed source artifacts (report-only).
+23. Run `/hve-resiliency-consolidate-9-finalize` to assemble the fragments, run index-level dedup and section precedence, reconcile finding IDs into the authoritative `F-00X` scheme, and build the Section 9 index.
+24. Review the consolidated report at `.copilot-tracking/research/`.
 
 ### Phase 4: Planning
 
-26. Run `/hve-resiliency-planner-0` to lock in evidence constraints from the consolidated research.
-27. Run `/hve-resiliency-planner-1` to create the Executive / Master Resiliency Report.
-28. Run `/hve-resiliency-planner-0` again to re-establish evidence lock-in.
-29. Run `/hve-resiliency-planner-2` to create the Developer Guide with code-level remediation.
+25. Run `/hve-resiliency-planner-0` to lock in evidence constraints from the consolidated research.
+26. Run `/hve-resiliency-planner-1` to create the Executive / Master Resiliency Report.
+27. Run `/hve-resiliency-planner-0` again to re-establish evidence lock-in.
+28. Run `/hve-resiliency-planner-2` to create the Developer Guide with code-level remediation.
 
 ### Phase 5: Code-Level Resiliency Assessment Report
 
-30. Run `/hve-resiliency-planner-3a` to create the report header, Table of Contents, and Assessment Overview (Section 1).
-31. Run `/hve-resiliency-planner-3b` to append P0 and P1 Resilient Focused Recommendations (Section 2, partial).
-32. Run `/hve-resiliency-planner-3c` to append P2/P3 resiliency findings and Non-Resilient Focused Recommendations (Sections 2 completion + Section 3).
-33. Run `/hve-resiliency-planner-3d` to append IaC Gap Analysis, Full Finding Matrix, and Microsoft Standards Alignment (Sections 4-6) with final validation.
-34. Review the completed report at `Microsoft Assessment/{serviceName}-Code-Level-Resiliency-Assessment.md`.
+29. Run `/hve-resiliency-planner-3a` to create the report header, Table of Contents, and Assessment Overview (Section 1).
+30. Run `/hve-resiliency-planner-3b` to append P0 and P1 Resilient Focused Recommendations (Section 2, partial).
+31. Run `/hve-resiliency-planner-3c` to append P2/P3 resiliency findings and Non-Resilient Focused Recommendations (Sections 2 completion + Section 3).
+32. Run `/hve-resiliency-planner-3d` to append IaC Gap Analysis, Full Finding Matrix, and Microsoft Standards Alignment (Sections 4-6) with final validation.
+33. Review the completed report at `Microsoft Assessment/{serviceName}-Code-Level-Resiliency-Assessment.md`.
 
 ### Phase 6: Assessment Evidence Audit (Optional)
 
 Phase 6 verifies that every source citation, verbatim code block, and fix block in the completed assessment is faithful to the repository, and keeps all cross-references in sync. It is optional: when the Phase 5 builders followed the Evidence Fidelity Contract (see [Resiliency Task Planner Context](../../instructions/hve-resiliency-planner-context.instructions.md)), this pass should find little to correct. Run it as a backstop, or when the report was assembled quickly.
 
-35. Run `/fix-assessment-finding` with a scope argument. Process tiers in ascending order so edits to the single report file never collide:
+34. Run `/fix-assessment-finding` with a scope argument. Process tiers in ascending order so edits to the single report file never collide:
     1. `/fix-assessment-finding P0`
     2. `/fix-assessment-finding P1`
     3. `/fix-assessment-finding P2`
     4. `/fix-assessment-finding P3`
     * `/fix-assessment-finding all` runs every tier in one pass, pausing after each tier for review. Prefer per-tier invocation for the tightest context.
     * Scope may also be a single finding ID (e.g. `/fix-assessment-finding P1-025`) for a targeted correction.
-36. Review the corrected report at `Microsoft Assessment/{serviceName}-Code-Level-Resiliency-Assessment.md`.
+35. Review the corrected report at `Microsoft Assessment/{serviceName}-Code-Level-Resiliency-Assessment.md`.
 
 ## Execution Rules
 
@@ -141,7 +140,7 @@ Phase 6 verifies that every source citation, verbatim code block, and fix block 
 ## Service Exclusion Rule
 
 * After Prompts 1a and 1b complete, dependencies classified only in Section 2 (Checked But Not Present) or Section 3 (Not Applicable) are dropped from scope
-* Prompts 2-7, service-specific prompts (9-18), and the consolidation report analyze only dependencies confirmed in Section 1 of Prompt 1a or Prompt 1b
+* Prompts 2-7, service-specific prompts (9-17), and the consolidation report analyze only dependencies confirmed in Section 1 of Prompt 1a or Prompt 1b
 * In Phase 2, run only the service-specific prompts for dependencies found in either producer's Section 1
 
 ## Deliverable Templates
@@ -358,7 +357,7 @@ Finalized artifact structure (assembled by `/hve-resiliency-researcher-5-finaliz
 - Constraints/limitations (if any): with evidence
 ```
 
-### Service-Specific Prompts (9-18) Deliverable Template
+### Service-Specific Prompts (9-17) Deliverable Template
 
 ```text
 # Prompt N Research Output — <Service Name>
