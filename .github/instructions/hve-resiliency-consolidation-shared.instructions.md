@@ -134,7 +134,7 @@ Use this schema exactly once for every finding rendered into Sections 2.1 and 3-
 * Dependency or Category: <canonical dependency or category>
 * Priority: P0 | P1 | P2 | P3
 * Ownership: <evidence-backed owner or schema-safe value>
-* Scenario: West US 2 to West US regional failover
+* Scenario: Regional failover between West US 2 and West US
 * Description: <evidence-based current behavior>
 * Failure Mode and Scenario-Specific Risk: <evidence-based risk>
 * Impacts: <operational, data, financial, and customer impacts supported by evidence>

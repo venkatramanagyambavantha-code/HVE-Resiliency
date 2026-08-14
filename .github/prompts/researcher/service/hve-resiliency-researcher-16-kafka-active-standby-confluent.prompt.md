@@ -17,7 +17,7 @@ Assess only application code and configuration that produces to or consumes from
 Apply these controls directly:
 
 * Scope the repository to application behavior before, during, and after a managed Kafka cluster flip.
-* Evaluate the authoritative scenario: regional failover from West US 2 to West US.
+* Evaluate the authoritative scenario: regional failover between West US 2 and West US.
 * Treat independent regional clusters, an active cluster, a standby cluster, managed replication, mirror-topic state, offset synchronization, promotion, failover, and failback as user-confirmed scenario assumptions only. Never present them as repository facts.
 * Treat bootstrap selection as application behavior and platform failover orchestration as out of scope.
 * Use Apache Kafka client 3.8 or later as the application client threshold only when a prerequisite-confirmed Confluent product or feature supplies an authoritative citation for that claim.
@@ -233,7 +233,7 @@ When status is `completed zero findings`, state that no validated findings were 
 
 Render every finding with these field names in this exact order and no additional fields:
 
-1. `Issue Description:` Include finding ID, concern ID, and `West US 2 to West US regional failover`.
+1. `Issue Description:` Include finding ID, concern ID, and `Regional failover between West US 2 and West US`.
 2. `Risk Level (P0/P1/P2/P3):`
 3. `Code location (file + line number):`
 4. `Why this is a risk to app or regional failover:`

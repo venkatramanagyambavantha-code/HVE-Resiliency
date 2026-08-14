@@ -27,9 +27,9 @@ summary and terminal summary. Do not infer eligibility, search for substitute
 eligibility evidence, or fall back to Prompt 0, another service prompt, or conditional
 skill behavior.
 
-For every eligible networking dependency, assess readiness for both failure scenarios:
+For every eligible networking dependency, assess readiness for the authoritative failure scenario:
 
-* Regional failover from West US 2 to West US
+* Regional failover between West US 2 and West US
 
 ## Task Researcher Boundary
 

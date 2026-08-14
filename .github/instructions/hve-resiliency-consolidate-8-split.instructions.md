@@ -60,7 +60,7 @@ The five artifact groups are the only routing axes for this pipeline. Each group
 * `secrets-adjacent`: Prompt `7`. Residuals sanitized by the Prompt 7 secret sweep that are not hard-coded secret or value findings and that map to no other section.
 * `services`: applicable optional Prompt IDs `8` through `19`. Membership is exactly the accepted service artifact records recorded in the sub-manifest's `groupRouting.services` entry. When `servicesApplicability` is `not-applicable`, the services group emits zero provisional findings and its sub-fragment records the negative-check scope.
 
-The authoritative platform scenario is West US 2 to West US regional failover.
+The authoritative platform scenario is regional failover between West US 2 and West US.
 
 ## Residual Discipline
 
@@ -113,7 +113,7 @@ Every provisional finding uses the outer Consolidation Shared Contract's Require
 * Dependency or Category: <canonical dependency or category>
 * Priority: P0 | P1 | P2 | P3
 * Ownership: <evidence-backed owner or schema-safe value>
-* Scenario: West US 2 to West US regional failover
+* Scenario: Regional failover between West US 2 and West US
 * Description: <evidence-based current behavior>
 * Failure Mode and Scenario-Specific Risk: <evidence-based risk>
 * Impacts: <operational, data, financial, and customer impacts supported by evidence>

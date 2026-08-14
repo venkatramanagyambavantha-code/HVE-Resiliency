@@ -104,7 +104,7 @@ Treat Microsoft Entra ID as one dependency and use these maximum budgets for the
 * 12 unique file reads with no rereads
 * 2 levels of reference indirection and 2 queued references per candidate
 * 16 unique candidate files and 12 unique issue candidates
-* 12 final finding rows across both failure scenarios
+* 12 final finding rows
 * 3 semantic citations per finding row
 * 2 retained excerpts per finding row, each at most 240 bytes
 * 12,000 bytes of retained sanitized evidence for the complete artifact
