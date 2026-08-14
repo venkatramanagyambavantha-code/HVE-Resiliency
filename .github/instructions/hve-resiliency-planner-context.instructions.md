@@ -42,23 +42,25 @@ When code cannot be captured or verified during the build, run `/fix-assessment-
 ## Engagement Context
 
 * **Customer**: Albertsons
-* **Objective**: Transition from a single-region deployment (West US with East US as DR only) to an **active/active deployment across West US and West US 2**
+* **Objective**: Transition from a single-region deployment (West US with East US as DR only) to a **multi-region deployment across West US and West US 2**
 * **Current State**: Single-region production deployment in West US. East US serves only as a passive disaster recovery target. No Global Load Balancer (GLB). Traffic enters through edge application gateways.
-* **Target State**: Multi-region active/active with GLB-driven full-stack failover across West US and West US 2. The GLB makes all failover decisions; applications do not fail themselves over. Applications must feed health data to the GLB via health probes.
+* **Target State**: Multi-region deployment with GLB-driven full-stack failover across West US and West US 2. The target topology (active/active or active/standby) is an engagement input, not an assumption. The GLB makes all failover decisions; applications do not fail themselves over. Applications must feed health data to the GLB via health probes.
 * **Scope**: Code assessment and resiliency recommendations across multiple application repos and microservices. Some services are **pattern-only** (Postgres SQL, Event Hub): recommendations but no full execution.
 * **Constraint**: The customer makes all code changes themselves. The team does **not** have source code write access. Reports must be actionable enough for the customer's developers to implement independently.
 
-> **Critical framing**: Every finding must be evaluated through the lens of this transition. The customer is not adding a second region for capacity; they are moving from a passive DR model to active/active. Findings that block or degrade this transition are the highest priority.
+> **Critical framing**: Every finding must be evaluated through the lens of this transition. The customer is not adding a second region for capacity; they are moving from a passive DR model to a multi-region deployment with real failover. Findings that block or degrade this transition are the highest priority.
 
 ## Region-Agnostic Output Rule
 
-All **generated report output** (finding descriptions, recommendations, code examples, H3 group names) must **never** reference "East US", "eastus", or any East region variant. East US is a legacy DR target that is not part of the active/active architecture.
+All **generated report output** (finding descriptions, recommendations, code examples, H3 group names) must **never** reference "East US", "eastus", or any East region variant. East US is a legacy DR target that is not part of the multi-region architecture.
 
 Prefer region-agnostic language throughout:
 
-* **Primary region**: the current production region
-* **Secondary region** or **failover region**: the target active/active peer
+* **Primary region**: the region serving production today
+* **Secondary region**, **failover region**, or **peer region**: the other region in the multi-region pair
 * **Both regions**: when referring to symmetric requirements
+
+The topology across the pair is either **active/active** (both regions serve production traffic concurrently) or **active/standby** (the peer carries no production traffic until failover). Treat the topology as evidence-determined, never assumed. Where a requirement holds under either topology, say **multi-region**; name the topology only when the requirement genuinely depends on it.
 
 "West US" and "West US 2" may be used when necessary (e.g., describing the customer's actual topology or referencing specific configuration), but prefer the generic terms above when the statement applies to any multi-region deployment.
 
@@ -68,7 +70,7 @@ In code examples and fix blocks, use placeholder values like `{primaryRegion}`, 
 
 ### The Litmus Test
 
-> **"Does going from single-region (West US with East US DR) to active/active (West US + West US 2) introduce or change this issue?"**
+> **"Does going from single-region (West US with East US DR) to multi-region (West US + West US 2) introduce or change this issue?"**
 
 * If **YES**: the issue is resiliency-related. The behavior changes, worsens, or becomes newly relevant when operating across multiple active regions or when a failover event occurs. **Categorize as a resiliency finding.**
 * If **NO**: the behavior is identical whether the application runs in a single region or multiple regions. This is a code-quality or logic bug. **Do not categorize as resiliency** unless the issue can be reframed in terms of resiliency impact (see Rule 2 below).
@@ -76,7 +78,7 @@ In code examples and fix blocks, use placeholder values like `{primaryRegion}`, 
 ### The Four Rules
 
 **Rule 1 — Failover Is the Central Pillar**
-If a finding does not interact with failover mechanics (GLB routing, health probes, region-aware configuration, dependency availability across regions), it should drop in priority. The transition from passive DR to active/active failover is the lens through which all findings are evaluated.
+If a finding does not interact with failover mechanics (GLB routing, health probes, region-aware configuration, dependency availability across regions), it should drop in priority. The transition from passive DR to multi-region failover is the lens through which all findings are evaluated.
 
 **Rule 2 — Resiliency Wording Is Required**
 Every finding placed in the resiliency bucket **must** articulate the resiliency impact in its description. The framing must be:
@@ -102,7 +104,7 @@ Use this consistently in all outputs:
 
 ### P0 — Critical Resiliency Risk
 
-**Definition**: The finding **blocks failover from functioning** or **renders the active/active deployment meaningless**. Without this fix, the investment in a second region provides no benefit.
+**Definition**: The finding **blocks failover from functioning** or **renders the multi-region deployment meaningless**. Without this fix, the investment in a second region provides no benefit.
 
 **Criteria** (any of the following):
 
@@ -126,7 +128,7 @@ Use this consistently in all outputs:
 
 ### P2 — Code Quality / Non-Resiliency
 
-**Definition**: The finding is a valid code issue but **behaves identically in single-region and active/active**. The multi-region deployment does not introduce, amplify, or change this issue.
+**Definition**: The finding is a valid code issue but **behaves identically in single-region and multi-region**. The multi-region deployment does not introduce, amplify, or change this issue.
 
 **Important**: These findings should still be reported. But they do **not** belong in the resiliency bucket and should not be prioritized above P0/P1 resiliency items. Frame them as code-quality recommendations, not resiliency risks.
 
@@ -148,7 +150,7 @@ Use this consistently in all outputs:
 START: New finding identified
   │
   ▼
-Q1: Does moving from single-region (with passive DR) to active/active
+Q1: Does moving from single-region (with passive DR) to multi-region
     introduce or change this issue?
   │
   ├── YES ──► Q2: Does this fix block failover from working at all?

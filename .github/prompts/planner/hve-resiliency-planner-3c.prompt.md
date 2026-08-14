@@ -29,15 +29,17 @@ All section headers, H3 group names, finding titles, and repo references must us
 
 The generated report must **never** reference "East US", "eastus", or any East region variant. Prefer region-agnostic terms:
 
-* **Primary region** — the current production region
-* **Secondary region** or **failover region** — the target active/active peer
+* **Primary region** — the region serving production today
+* **Secondary region**, **failover region**, or **peer region** — the other region in the multi-region pair
 * **Both regions** — when referring to symmetric requirements
+
+The topology across the pair is either **active/active** (both regions serve production traffic concurrently) or **active/standby** (the peer carries no production traffic until failover). Treat the topology as evidence-determined, never assumed. Where a requirement holds under either topology, say **multi-region**; name the topology only when the requirement genuinely depends on it.
 
 ## Classification: Resiliency vs Non-Resiliency
 
-Use the active/active litmus test to classify each P2 and P3 finding:
+Use the multi-region litmus test to classify each P2 and P3 finding:
 
-> **"Does going from single-region to active/active introduce or change this issue?"**
+> **"Does going from single-region to multi-region introduce or change this issue?"**
 
 * **YES** → `Resiliency Related: Yes` → place under Section 2 (Resilient Focused Recommendations)
 * **NO** → `Resiliency Related: No` → place under Section 3 (Non-Resilient Focused Recommendations)

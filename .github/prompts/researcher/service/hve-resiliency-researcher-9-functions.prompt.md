@@ -15,8 +15,8 @@ Functions behavior and requirements that directly affect regional failover.
 
 ## Functions Requirements
 
-* Deployment follows an active-active model across West US 2 and West US
-* Both regions continuously serve production traffic
+* Deployment spans West US 2 and West US as a multi-region pair
+* The topology is active-active or active-standby; treat it as a claim to verify from repository evidence and do not assume both regions continuously serve production traffic
 * Each region can handle 100% of peak load during a regional outage
 * Azure Front Door provides global traffic management
 * Automatic failover uses health probes

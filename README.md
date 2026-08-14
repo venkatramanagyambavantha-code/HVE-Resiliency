@@ -207,7 +207,7 @@ The framework is context-driven, not static. Its default behavior comes from two
 - [.github/instructions/hve-resiliency-platform-context.instructions.md](.github/instructions/hve-resiliency-platform-context.instructions.md)
 - [.github/instructions/hve-resiliency-planner-context.instructions.md](.github/instructions/hve-resiliency-planner-context.instructions.md)
 
-Edit these to match your engagement: target and failover architecture (active/passive vs active/active), what qualifies as a resiliency finding and which failure scenarios matter, the P0-P3 priority model, architectural assumptions, and output format. Re-run `/hve-resiliency-research` and the agents pick up the updated context automatically.
+Edit these to match your engagement: target and failover architecture (active/standby vs active/active), what qualifies as a resiliency finding and which failure scenarios matter, the P0-P3 priority model, architectural assumptions, and output format. Re-run `/hve-resiliency-research` and the agents pick up the updated context automatically.
 
 Treat the instruction files as part of the product and evolve them as the system changes. The quality of findings depends on how well the context reflects your architecture, the failure scenarios that matter, and your business goals.
 

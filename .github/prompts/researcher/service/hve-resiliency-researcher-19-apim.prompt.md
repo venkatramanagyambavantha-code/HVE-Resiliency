@@ -55,7 +55,7 @@ criteria:
 1. Alignment of Global Load Balancer and backend health probes.
 2. Application and data behavior during regional outage.
 3. Retries, timeouts, and exponential backoff.
-4. Stateless operation or correct active-active or active-passive behavior.
+4. Stateless operation or correct active-active or active-standby behavior.
 5. Pre-scaling or autoscaling of AKS, App Service, or VM backends for failover traffic.
 6. Region-local certificate and secret sourcing from application Key Vaults through
    managed identity.

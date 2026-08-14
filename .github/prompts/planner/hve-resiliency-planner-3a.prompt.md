@@ -9,7 +9,7 @@ argument-hint: "serviceName=... [reportTitle=...] [targetDeployment=...]"
 
 * ${input:serviceName}: (Required) Service name matching the repo name; used to locate artifacts and populate all headers, sections, and repo references throughout the report.
 * ${input:reportTitle}: (Optional) H1 title. Default: "Code-Level Resiliency Assessment".
-* ${input:targetDeployment}: (Optional) Target deployment model. Default: "Active/Active".
+* ${input:targetDeployment}: (Optional) Target deployment model, `Active/Active` or `Active/Standby`. Default: "Active/Active". Derive every topology-dependent statement from this value; never assume a topology it does not name.
 
 ## Source Artifacts
 
@@ -20,7 +20,7 @@ Read **only** the following before generating. Do **not** read the Developer Gui
 
 ## Critical Context
 
-This report serves the Albertsons engagement. The customer is transitioning from a single-region deployment with a passive DR target to an active/active deployment across two regions. Every finding must be evaluated through this lens. Use the classification rules and decision tree defined in `hve-resiliency-planner-context.instructions.md`   for all priority assignments.
+This report serves the Albertsons engagement. The customer is transitioning from a single-region deployment with a passive DR target to a multi-region deployment across two regions. Every finding must be evaluated through this lens. Use the classification rules and decision tree defined in `hve-resiliency-planner-context.instructions.md`   for all priority assignments.
 
 All section headers, H3 group names, finding titles, and repo references must use `{serviceName}` (the repo name), not hardcoded service names like "Braintree" or "Fiserv".
 
@@ -28,9 +28,11 @@ All section headers, H3 group names, finding titles, and repo references must us
 
 The generated report must **never** reference "East US", "eastus", or any East region variant anywhere in the report. Prefer region-agnostic terms:
 
-* **Primary region** — the current production region
-* **Secondary region** or **failover region** — the target active/active peer
+* **Primary region** — the region serving production today
+* **Secondary region**, **failover region**, or **peer region** — the other region in the multi-region pair
 * **Both regions** — when referring to symmetric requirements
+
+The topology across the pair is either **active/active** (both regions serve production traffic concurrently) or **active/standby** (the peer carries no production traffic until failover). Treat the topology as evidence-determined, never assumed. Where a requirement holds under either topology, say **multi-region**; name the topology only when the requirement genuinely depends on it.
 
 "West US" and "West US 2" may be used when necessary (e.g., describing the customer's actual topology), but prefer the generic terms above when the statement applies to any multi-region deployment.
 
@@ -113,7 +115,7 @@ Use `# 1. Assessment Overview` as the heading. Include all of the following sub-
     | **Non-Resiliency** | **P3**    | N     | Security-only observations and configuration hygiene items                     |
     |                    | **Total** | **N** |                                                                                |
 
-    To split findings between Resiliency and Non-Resiliency sections: all P0 and P1 findings are Resiliency. P2 and P3 findings are classified using the litmus test — findings that pass the active/active litmus test (behavior changes in multi-region) are Resiliency; findings with identical behavior regardless of topology are Non-Resiliency.
+    To split findings between Resiliency and Non-Resiliency sections: all P0 and P1 findings are Resiliency. P2 and P3 findings are classified using the litmus test — findings that pass the multi-region litmus test (behavior changes in multi-region) are Resiliency; findings with identical behavior regardless of topology are Non-Resiliency.
 
 5. **IMPORTANT callout**: End with this exact blockquote:
 

@@ -18,8 +18,9 @@ and report the eligibility block in the scope and terminal-outcome summaries. Do
 infer eligibility, search for replacement eligibility evidence, or fall back to Prompt
 0, another prompt, or conditional skill behavior.
 
-Review each confirmed dependency as Azure Managed Redis Enterprise in an active-active,
-multi-region configuration with eventual consistency. Assess readiness for regional failover between West US 2 and West US.
+Review each confirmed dependency as Azure Managed Redis Enterprise in a multi-region
+configuration with eventual consistency. Treat the topology (active-active or
+active-standby) as a claim to verify from repository evidence, not a given. Assess readiness for regional failover between West US 2 and West US.
 
 ## Task Researcher Boundary
 

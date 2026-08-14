@@ -21,7 +21,7 @@ Do **not** read the consolidated research, subagent files, or the Developer Guid
 
 ## Critical Context
 
-This report serves the Albertsons engagement. The customer is transitioning from a single-region deployment with a passive DR target to an active/active deployment across two regions. Use the classification rules from `hve-resiliency-planner-context.instructions.md` for all priority assignments.
+This report serves the Albertsons engagement. The customer is transitioning from a single-region deployment with a passive DR target to a multi-region deployment across two regions. Use the classification rules from `hve-resiliency-planner-context.instructions.md` for all priority assignments.
 
 All section headers, H3 group names, finding titles, and repo references must use `{serviceName}` (the repo name), not hardcoded service names.
 
@@ -29,9 +29,11 @@ All section headers, H3 group names, finding titles, and repo references must us
 
 The generated report must **never** reference "East US", "eastus", or any East region variant. Prefer region-agnostic terms:
 
-* **Primary region** — the current production region
-* **Secondary region** or **failover region** — the target active/active peer
+* **Primary region** — the region serving production today
+* **Secondary region**, **failover region**, or **peer region** — the other region in the multi-region pair
 * **Both regions** — when referring to symmetric requirements
+
+The topology across the pair is either **active/active** (both regions serve production traffic concurrently) or **active/standby** (the peer carries no production traffic until failover). Treat the topology as evidence-determined, never assumed. Where a requirement holds under either topology, say **multi-region**; name the topology only when the requirement genuinely depends on it.
 
 In code examples and fix blocks, use placeholder values like `{primaryRegion}`, `{secondaryRegion}`, or generic names rather than region-specific hostnames.
 
@@ -67,7 +69,7 @@ Every P0 and P1 finding uses this exact format (field order must be preserved):
 1. `#### PX-NNN: Short Title` — H4 heading
 2. `**Priority: PX — {Priority Label}**` — on its own line
 3. `**Resiliency Related:** Yes`
-4. `**Issue:**` — description of the problem. For P0/P1: explain how the issue is introduced or worsened by the transition from single-region to active/active.
+4. `**Issue:**` — description of the problem. For P0/P1: explain how the issue is introduced or worsened by the transition from single-region to multi-region.
 5. `**What does this solve:**` — one sentence, the outcome achieved
 6. `**Resiliency Impact:**` — 1–3 sentences framed in terms of regional failover impact
 7. `**Recommended Fix:**` — concrete narrative action, specific enough for the customer's developers to implement independently
