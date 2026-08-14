@@ -1,12 +1,12 @@
 ---
-description: Verify the four outcome fragments of the split Prompt 5 pipeline against the frozen manifest and workspace source, report-only
+description: Verify the three outcome fragments of the split Prompt 5 pipeline against the frozen manifest and workspace source, report-only
 agent: Task Researcher
 argument-hint: "[manifestPath=...]"
 ---
 
 # HVE Resiliency Researcher 5 - Verify
 
-Use [Application Platform Context](../../instructions/hve-resiliency-platform-context.instructions.md) and the [Researcher 5 Split Contract](../../instructions/hve-resiliency-researcher-5-split.instructions.md). This prompt audits the four outcome fragments only. It reports findings; it does not renumber rows, add rows, reorder rows, edit fragments, or modify the skeleton.
+Use [Application Platform Context](../../instructions/hve-resiliency-platform-context.instructions.md) and the [Researcher 5 Split Contract](../../instructions/hve-resiliency-researcher-5-split.instructions.md). This prompt audits the three outcome fragments only. It reports findings; it does not renumber rows, add rows, reorder rows, edit fragments, or modify the skeleton.
 
 ## Inputs
 
@@ -16,18 +16,18 @@ Use [Application Platform Context](../../instructions/hve-resiliency-platform-co
 
 * Run only the verify stage. Do not run any outcome fill or the finalize behavior.
 * Require the manifest produced by the scaffold step to exist, be readable, and be well-formed per the Frozen Manifest Sidecar Contract. If it is missing, unreadable, or structurally invalid, a prior step failed or ran out of order: stop `Blocked` per Status and Failure Semantics and do not write an audit report. If the manifest is well-formed but lists zero eligible dependencies, do not block: write a bounded audit report with no findings and a terminal `Complete` verify status.
-* Require all four fragment files (`startup-failure.md`, `silent-degradation.md`, `data-loss-partial-processing.md`, `blocking-transactions.md`) to exist under the manifest's `fragmentDir`. Missing fragments are reported as `fragment-missing`; verification continues on the present fragments.
+* Require all three fragment files (`startup-failure.md`, `data-loss-partial-processing.md`, `blocking-transactions.md`) to exist under the manifest's `fragmentDir`. Missing fragments are reported as `fragment-missing`; verification continues on the present fragments.
 
 ## Read Scope
 
-Read the frozen manifest, the four fragment files, and only the repository source files referenced by fragment citations. The skeleton is still a placeholder at this stage; verify the fragments, not the skeleton. Do not read Prompt 1a, Prompt 1b, or any other researcher artifact. Do not re-derive the eligible dependency list.
+Read the frozen manifest, the three fragment files, and only the repository source files referenced by fragment citations. The skeleton is still a placeholder at this stage; verify the fragments, not the skeleton. Do not read Prompt 1a, Prompt 1b, or any other researcher artifact. Do not re-derive the eligible dependency list.
 
 ## Verification Protocol
 
 For each fragment, confirm in this exact order and record one terminal disposition per row:
 
 1. **Fragment identity.** The fragment's frontmatter declares the expected `source-prompt`, `outcome-key`, and a terminal status (`Blocked`, `Incomplete`, or `Complete`). Reject any fragment whose `outcome-key` disagrees with its file name or with the manifest's `outcomeRouting`. Record `fragment-header-invalid` and stop verification for that fragment when invalid.
-2. **Row-schema completeness.** Every row carries all Required Row Schema fields in the order defined by the shared contract, a section-scoped ID in the correct pattern for the outcome key (`F-5-startup-00X`, `F-5-degradation-00X`, `F-5-data-loss-00X`, or `F-5-blocking-00X`), exactly one allowed scenario, and a canonical failure-type value. Record `schema-incomplete` when any closed field is missing, blank, or uses `Unknown`.
+2. **Row-schema completeness.** Every row carries all Required Row Schema fields in the order defined by the shared contract, a section-scoped ID in the correct pattern for the outcome key (`F-5-startup-00X`, `F-5-data-loss-00X`, or `F-5-blocking-00X`), exactly one allowed scenario, and a canonical failure-type value. Record `schema-incomplete` when any closed field is missing, blank, or uses `Unknown`.
 3. **Dependency scope.** Every row's Triggering dependency resolves to an entry in the manifest's frozen `eligibleDependencies` list. Record `dependency-out-of-scope` otherwise.
 4. **Outcome discipline.** Every row's Observed behavior maps to the fragment's outcome key. Record `outcome-mismatch` when a row belongs in a different fragment.
 5. **Scenario discipline.** No row combines regional-failover and partial-outage evidence. Record `scenario-combined` when both scenarios are cited in one row.

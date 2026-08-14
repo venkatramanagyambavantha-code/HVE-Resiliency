@@ -25,7 +25,7 @@ The only inputs to this stage are the manifest, the frozen eligible dependency l
 
 ## Outcome Focus
 
-Emit rows only for the observed outcome `data-loss-partial-processing`: a message, record, or write may be lost, partially processed, duplicated in a way that violates business intent, or left in an inconsistent state when a dependency exhibits a timeout, DNS failure, authentication failure, or partial outage. Skip any evidence that maps to startup failure, silent degradation, or blocking transactions; those outcomes belong to their own fragments.
+Emit rows only for the observed outcome `data-loss-partial-processing`: a message, record, or write may be lost, partially processed, duplicated in a way that violates business intent, or left in an inconsistent state when a dependency exhibits a timeout, DNS failure, authentication failure, or partial outage. Skip any evidence that maps to startup failure or blocking transactions; those outcomes belong to their own fragments.
 
 Data-loss / partial-processing discovery hints (evidence-only):
 
@@ -53,10 +53,10 @@ Never combine regional-failover and partial-outage evidence in one row. If the s
 
 ## Output
 
-Write the fragment to `<fragmentDir>/data-loss-partial-processing.md`, where `<fragmentDir>` is the `fragmentDir` recorded in the manifest. Begin the file with the `## 5.3 Data Loss or Partial Processing` heading followed by frontmatter recording `source-prompt: hve-resiliency-researcher-5-3-data-loss-partial-processing`, `outcome-key: data-loss-partial-processing`, and the fragment's terminal status. Do not modify the skeleton artifact. Do not touch any other fragment.
+Write the fragment to `<fragmentDir>/data-loss-partial-processing.md`, where `<fragmentDir>` is the `fragmentDir` recorded in the manifest. Begin the file with the `## 5.2 Data Loss or Partial Processing` heading followed by frontmatter recording `source-prompt: hve-resiliency-researcher-5-2-data-loss-partial-processing`, `outcome-key: data-loss-partial-processing`, and the fragment's terminal status. Do not modify the skeleton artifact. Do not touch any other fragment.
 
 ## Completion
 
 Report the row count, the count of rows carrying any `Unknown: not found after bounded search <scope>` descriptor, the fragment path, and the terminal fragment status.
 
-> **Next step:** Run `/hve-resiliency-researcher-5-4-blocking-transactions`
+> **Next step:** Run `/hve-resiliency-researcher-5-3-blocking-transactions`

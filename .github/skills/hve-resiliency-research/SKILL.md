@@ -48,12 +48,11 @@ Phase 1 is mandatory and sequential. Always begin with Prompt 0.
 8. Prompt 5 has been split into a bounded pipeline. Run these in order:
     1. `/hve-resiliency-researcher-5-0-scaffold` (validates Prompt 1a and 1b Section 1, freezes the eligible-dependency inventory, emits skeleton + manifest sidecar).
     2. `/hve-resiliency-researcher-5-1-startup-failure`.
-    3. `/hve-resiliency-researcher-5-2-silent-degradation`.
-    4. `/hve-resiliency-researcher-5-3-data-loss-partial-processing`.
-    5. `/hve-resiliency-researcher-5-4-blocking-transactions`.
-    6. `/hve-resiliency-researcher-5-verify` (audits the four fragments against the manifest and workspace source).
-    7. `/hve-resiliency-researcher-5-finalize` (assembles fragments into the single Prompt 5 artifact consumed by consolidation).
-    * The four outcome fills are disjoint and may run in parallel chats when time-boxing allows; only the scaffold must precede them and only verify + finalize must follow.
+    3. `/hve-resiliency-researcher-5-2-data-loss-partial-processing`.
+    4. `/hve-resiliency-researcher-5-3-blocking-transactions`.
+    5. `/hve-resiliency-researcher-5-verify` (audits the three fragments against the manifest and workspace source).
+    6. `/hve-resiliency-researcher-5-finalize` (assembles fragments into the single Prompt 5 artifact consumed by consolidation).
+    * The three outcome fills are disjoint and may run in parallel chats when time-boxing allows; only the scaffold must precede them and only verify + finalize must follow.
     * `/hve-resiliency-researcher-5` is retained as a deprecated redirect to the scaffold entry point.
 9. Run `/hve-resiliency-researcher-6` when shared dependency risk analysis is needed.
 
@@ -300,16 +299,16 @@ status: current
 
 ### Prompt 5 Deliverable Template
 
-The Prompt 5 pipeline emits four outcome fragments plus a manifest sidecar, and finalize assembles them into a single artifact with four subsections. The Required Row Schema is defined in the [Researcher 5 Split Contract](../../instructions/hve-resiliency-researcher-5-split.instructions.md) and applies uniformly to every rendered row.
+The Prompt 5 pipeline emits three outcome fragments plus a manifest sidecar, and finalize assembles them into a single artifact with three subsections. The Required Row Schema is defined in the [Researcher 5 Split Contract](../../instructions/hve-resiliency-researcher-5-split.instructions.md) and applies uniformly to every rendered row.
 
 Outputs produced by the pipeline:
 
 * Skeleton and final artifact: `<researchRoot>/YYYY-MM-DD/<repo-name>-hve-resiliency-researcher-5-research.md`
 * Manifest sidecar: `<researchRoot>/YYYY-MM-DD/<repo-name>-hve-resiliency-researcher-5-research.manifest.md`
-* Fragments: `<researchRoot>/YYYY-MM-DD/prompt-5-fragments/{startup-failure,silent-degradation,data-loss-partial-processing,blocking-transactions}.md`
+* Fragments: `<researchRoot>/YYYY-MM-DD/prompt-5-fragments/{startup-failure,data-loss-partial-processing,blocking-transactions}.md`
 * Verify audit: `<researchRoot>/YYYY-MM-DD/prompt-5-fragments/verify-audit.md`
 
-Row shape (each row is emitted with an outcome-scoped ID such as `F-5-startup-001`, `F-5-degradation-001`, `F-5-data-loss-001`, or `F-5-blocking-001`):
+Row shape (each row is emitted with an outcome-scoped ID such as `F-5-startup-001`, `F-5-data-loss-001`, or `F-5-blocking-001`):
 
 ```text
 ### F-5-<outcome>-00X
@@ -319,7 +318,7 @@ Row shape (each row is emitted with an outcome-scoped ID such as `F-5-startup-00
 - Triggering dependency + failure type (timeout / DNS failure / authentication failure / partial outage):
 - Scenario: Between West US 2 and West US regional failover
 - Code path / entrypoint:
-- Observed behavior (startup failure / silent degradation / data loss or partial processing / blocking transactions):
+- Observed behavior (startup failure / data loss or partial processing / blocking transactions):
 - User or customer-visible impact:
 - Business impact:
 - Blast radius:
@@ -340,9 +339,8 @@ Finalized artifact structure (assembled by `/hve-resiliency-researcher-5-finaliz
 ## Scope and Assumptions
 ## Task Implementation Requests
 ## 5.1 Startup Failure
-## 5.2 Silent Functional Degradation
-## 5.3 Data Loss or Partial Processing
-## 5.4 Blocking Transactions
+## 5.2 Data Loss or Partial Processing
+## 5.3 Blocking Transactions
 ## Ledger and Terminal Outcomes
 ```
 

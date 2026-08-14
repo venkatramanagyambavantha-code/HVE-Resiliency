@@ -80,10 +80,9 @@ Follow this sequence:
 | `/hve-resiliency-researcher-3`            | `/hve-resiliency-researcher-4`                                                                                                |
 | `/hve-resiliency-researcher-4`            | `/hve-resiliency-researcher-5-0-scaffold`                                                                                     |
 | `/hve-resiliency-researcher-5-0-scaffold` | `/hve-resiliency-researcher-5-1-startup-failure`                                                                              |
-| `/hve-resiliency-researcher-5-1-startup-failure` | `/hve-resiliency-researcher-5-2-silent-degradation`                                                                    |
-| `/hve-resiliency-researcher-5-2-silent-degradation` | `/hve-resiliency-researcher-5-3-data-loss-partial-processing`                                                       |
-| `/hve-resiliency-researcher-5-3-data-loss-partial-processing` | `/hve-resiliency-researcher-5-4-blocking-transactions`                                                    |
-| `/hve-resiliency-researcher-5-4-blocking-transactions` | `/hve-resiliency-researcher-5-verify`                                                                            |
+| `/hve-resiliency-researcher-5-1-startup-failure` | `/hve-resiliency-researcher-5-2-data-loss-partial-processing`                                                          |
+| `/hve-resiliency-researcher-5-2-data-loss-partial-processing` | `/hve-resiliency-researcher-5-3-blocking-transactions`                                                    |
+| `/hve-resiliency-researcher-5-3-blocking-transactions` | `/hve-resiliency-researcher-5-verify`                                                                            |
 | `/hve-resiliency-researcher-5-verify`     | `/hve-resiliency-researcher-5-finalize`                                                                                       |
 | `/hve-resiliency-researcher-5-finalize`   | `/hve-resiliency-researcher-6`                                                                                                |
 | `/hve-resiliency-researcher-5` (deprecated redirect) | `/hve-resiliency-researcher-5-0-scaffold`                                                                          |
