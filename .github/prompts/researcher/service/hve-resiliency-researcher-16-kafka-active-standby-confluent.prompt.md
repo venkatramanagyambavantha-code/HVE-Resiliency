@@ -17,7 +17,7 @@ Assess only application code and configuration that produces to or consumes from
 Apply these controls directly:
 
 * Scope the repository to application behavior before, during, and after a managed Kafka cluster flip.
-* Evaluate both authoritative scenarios: zone failure within West US 2, and regional failover from West US 2 to West US.
+* Evaluate the authoritative scenario: regional failover from West US 2 to West US.
 * Treat independent regional clusters, an active cluster, a standby cluster, managed replication, mirror-topic state, offset synchronization, promotion, failover, and failback as user-confirmed scenario assumptions only. Never present them as repository facts.
 * Treat bootstrap selection as application behavior and platform failover orchestration as out of scope.
 * Use Apache Kafka client 3.8 or later as the application client threshold only when a prerequisite-confirmed Confluent product or feature supplies an authoritative citation for that claim.
@@ -178,7 +178,7 @@ Never retain raw tool dumps, secret values, certificate bodies, private keys, or
 
 Assign candidates stable IDs `CAND-001` onward after sorting by concern ID, repository-relative path, first line, and normalized assertion text. Use the deduplication key `concern ID | scenario | failure mode | owning code path | observable effect`.
 
-Give every candidate exactly one terminal disposition: `finding`, `rejected false positive`, `rejected inference`, `duplicate of <candidate ID>`, or `unknown/evidence gap`. A duplicate may point only to an earlier candidate. Never merge materially distinct failure modes. Emit separate finding rows for the West US 2 zone-failure and West US 2-to-West US regional-failover scenarios when evidence supports both and their outcome, causal chain, priority, or constraints differ. Use one row marked `Both scenarios` in `Issue Description` only when all those semantics are identical.
+Give every candidate exactly one terminal disposition: `finding`, `rejected false positive`, `rejected inference`, `duplicate of <candidate ID>`, or `unknown/evidence gap`. A duplicate may point only to an earlier candidate. Never merge materially distinct failure modes.
 
 Map every substantive assertion to a sanitized citation containing repository-relative path, exact line or line range, symbol or property, and a minimal excerpt. Validate that each cited line exists, the excerpt matches, the evidence state is eligible, and the citation supports the assertion rather than merely mentioning a keyword.
 
@@ -188,7 +188,7 @@ Negative repository claims must name the manifest subset, cached query family, a
 
 Assign priority only from a cited causal chain connecting observed application behavior to an authoritative scenario impact:
 
-* `P0`: Causes outage, data loss, duplicate charges, or inability to fail over safely during zone or regional failure
+* `P0`: Causes outage, data loss, duplicate charges, or inability to fail over safely during regional failure
 * `P1`: Materially increases application, data, or customer risk during failure without fully blocking failover
 * `P2`: Weakens resilience posture or operational clarity without materially affecting failover correctness
 * `P3`: Non-blocking maintainability, readability, duplication, or consistency concern
@@ -233,10 +233,10 @@ When status is `completed zero findings`, state that no validated findings were 
 
 Render every finding with these field names in this exact order and no additional fields:
 
-1. `Issue Description:` Include finding ID, concern ID, and `West US 2 zone failure`, `West US 2 to West US regional failover`, or `Both scenarios`.
+1. `Issue Description:` Include finding ID, concern ID, and `West US 2 to West US regional failover`.
 2. `Risk Level (P0/P1/P2/P3):`
 3. `Code location (file + line number):`
-4. `Why this is a risk to app, zone or region failover:`
+4. `Why this is a risk to app or regional failover:`
 5. `Impact(s) if this is not changed:`
 6. `Existing mitigations present (evidence):`
 7. `Constraints/limitations (evidence):`

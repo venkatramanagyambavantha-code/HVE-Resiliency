@@ -17,14 +17,14 @@ Follow the [Consolidation Shared Contract](../../instructions/hve-resiliency-con
 
 Read the frozen manifest, then read only the artifacts whose primary section is Section 3: the accepted Prompt 2 artifact. Do not read artifacts outside this scope and do not re-run discovery.
 
-Render evidence-backed region or zone assumptions from code, configuration, deployment, or startup logic.
+Render evidence-backed region assumptions from code, configuration, deployment, or startup logic.
 
 ## Fill Protocol
 
 1. Load the manifest and confirm the Section 3 read scope.
 2. Read each routed artifact's bytes once; sanitize immediately.
 3. Normalize findings into source records and deduplicate within the section on the shared canonical-tuple identity, preserving every contributing record ID.
-4. Render each finding using the Required Finding Schema with section-scoped IDs `F-3-00X`. Never combine zone and regional evidence in one finding. 
+4. Render each finding using the Required Finding Schema with section-scoped IDs `F-3-00X`.
 
 ## Output
 

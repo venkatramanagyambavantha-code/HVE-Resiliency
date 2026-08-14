@@ -26,7 +26,7 @@ Unlike traditional architecture reviews, this framework:
 - Works directly on **source code and infrastructure definitions**
 - Produces **evidence-based findings with file and line references**
 - Translates findings into **actionable, backlog-ready remediation plans**
-- Focuses on **real failure scenarios** (zone failure and regional failover)
+- Focuses on **real failure scenarios** (regional failover between West US 2 and West US)
 
 It is designed for engineering teams building or operating systems in Azure, especially those targeting **high availability and multi-region resiliency**.
 
@@ -292,7 +292,7 @@ HVE (Hypervelocity Engineering) is a Microsoft engineering practice and toolset.
 - [HVE Essentials VS Code extension](https://marketplace.visualstudio.com/items?itemName=ise-hve.hve-essentials): Bundles `hve-core` prompts, instructions, and skills into VS Code.
 - [Microsoft Industry Solutions Engineering (ISE)](https://www.microsoft.com/en-us/industry/microsoft-industry-solutions-engineering): The Microsoft engineering org behind HVE.
 - [Azure Well-Architected Framework Reliability pillar](https://learn.microsoft.com/azure/well-architected/reliability/): Foundational reliability guidance referenced by the resiliency prompts.
-- [Azure reliability documentation](https://learn.microsoft.com/azure/reliability/): Per-service availability zone and regional failover reference content.
+- [Azure reliability documentation](https://learn.microsoft.com/azure/reliability/): Per-service regional failover reference content.
 
 ## Contributing
 

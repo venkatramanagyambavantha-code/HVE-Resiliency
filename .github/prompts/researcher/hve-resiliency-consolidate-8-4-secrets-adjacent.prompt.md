@@ -69,8 +69,6 @@ For every provisional finding, emit the Required Finding Schema from the shared 
 
 * `Disposition: provisional Section 8 residual candidate (resolved by outer finalize)`
 
-Never combine zone-failure and regional-failover evidence in one finding.
-
 ## Output
 
 Write the sub-fragment to `<subFragmentDir>/secrets-adjacent.md`, where `<subFragmentDir>` is the `subFragmentDir` recorded in the sub-manifest. Begin the file with frontmatter recording `source-prompt: hve-resiliency-consolidate-8-4-secrets-adjacent`, `group-key: secrets-adjacent`, `schema-version: hve-resiliency-consolidate-8-split/v1`, and the sub-fragment's terminal status. Follow the frontmatter with a single subsection in this fixed order:

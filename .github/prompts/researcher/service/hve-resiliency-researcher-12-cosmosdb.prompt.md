@@ -25,7 +25,7 @@ Execute only this Prompt 12 research workflow. Do not start another resiliency p
 perform recommendation or implementation work. Keep all repository interaction read-only. Use only
 repository evidence and report factual evidence gaps instead of assumptions.
 
-Assess only the current repository for these authoritative scenarios, one scenario per finding:
+Assess only the current repository for this authoritative scenario:
 
 * Full regional failover between West US 2 and West US
 
@@ -204,8 +204,7 @@ corrective reread. A citation is valid only when its sanitized content semantica
 assertion; line existence alone is insufficient. Narrow unsupported prose to the evidence. If no
 material supported assertion remains, retain an evidence-gap disposition and do not render a finding.
 
-Emit separate finding rows for every materially different failure mode and for each authoritative
-scenario when evidence supports both. Never combine zone and regional outcomes in one row. Deduplicate
+Emit separate finding rows for every materially different failure mode. Deduplicate
 only identical assertions with the same scenario, failure mode, outcome, priority, mitigations,
 constraints, and evidence owners. Preserve all merged candidate IDs.
 

@@ -37,7 +37,7 @@ Emit provisional Section 8 residual candidates only for the `failure-crossrepo` 
 Failure and cross-repository residual discovery hints (evidence-only):
 
 * Prompt 5 observations that Section 5 (Failure and Degraded-Mode Behavior) does not primary-claim and that map to no other section, restricted to observable behavior with a validated file-line citation.
-* Prompt 6 observations that Section 6 (Shared and Cross-Repository Dependencies) does not primary-claim and that map to no other section, restricted to shared library, centralized configuration, or platform-utility evidence that carries no zone or regional coupling claim already rendered in Section 6.
+* Prompt 6 observations that Section 6 (Shared and Cross-Repository Dependencies) does not primary-claim and that map to no other section, restricted to shared library, centralized configuration, or platform-utility evidence that carries no regional coupling claim already rendered in Section 6.
 
 Never emit a candidate solely because an artifact mentions a topic; require positive evidence with a validated file-line citation and confirm that no other section's primary or scoped rule already claims the canonical tuple.
 
@@ -63,8 +63,6 @@ Exclude any artifact whose `completionStatus` in the outer manifest is not `Comp
 For every provisional finding, emit the Required Finding Schema from the shared contract using section-scoped IDs of the form `F-8-failure-crossrepo-00X`, assigned in emission order starting at `F-8-failure-crossrepo-001`. Every finding block ends with the exact provisional marker line:
 
 * `Disposition: provisional Section 8 residual candidate (resolved by outer finalize)`
-
-Never combine zone-failure and regional-failover evidence in one finding. If the same canonical dependency or category and observation applies to both scenarios with materially different evidence, emit two findings.
 
 ## Output
 

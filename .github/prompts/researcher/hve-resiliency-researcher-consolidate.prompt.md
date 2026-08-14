@@ -195,7 +195,7 @@ Render evidence-backed startup failure, runtime degradation, partial processing,
 
 ## 6. Shared and Cross-Repository Dependencies
 
-Render evidence-backed region coupling, zone dependency, and ownership boundary findings from shared libraries, centralized configuration, or platform utilities using the required finding schema.
+Render evidence-backed region coupling and ownership boundary findings from shared libraries, centralized configuration, or platform utilities using the required finding schema.
 
 ## 7. Hard-Coded Values or Secrets in Code or Files
 

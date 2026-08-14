@@ -45,7 +45,7 @@ Re-verify a carried-forward citation only when it is internally contradictory, c
 
 ## Assessment Scope
 
-Analyze each eligible Azure and non-Azure dependency used by this repository for survivability during both scenarios:
+Analyze each eligible Azure and non-Azure dependency used by this repository for survivability during the authoritative scenario:
 
 * Full regional failover between West US 2 and West US
 

@@ -124,7 +124,7 @@ Use `# 1. Assessment Overview` as the heading. Include:
     |--------------------|-----------|-------|--------------------------------------------------------------------------------|
     | **Resiliency**     | **P0**    | N     | Blocks failover from functioning or renders multi-region deployment meaningless |
     | **Resiliency**     | **P1**    | N     | Materially increases risk during failure; procedural workarounds or limited blast radius |
-    | **Resiliency**     | **P2**    | N     | Weakens resilience posture; best-practice improvements for zone/region survivability |
+    | **Resiliency**     | **P2**    | N     | Weakens resilience posture; best-practice improvements for regional survivability |
     | **Resiliency**     | **P3**    | N     | Referential entries or compound interaction descriptions                       |
     | **Non-Resiliency** | **P2**    | N     | Code quality, security hygiene, observability, and configuration improvements  |
     | **Non-Resiliency** | **P3**    | N     | Security-only observations and configuration hygiene items                     |
@@ -140,7 +140,7 @@ End with `[Back to Top](#top)`.
 
 Organize all findings under exactly two top-level H1 sections:
 
-* `# 2. Resilient Focused Recommendations` — findings where `Resiliency Related: Yes` (directly affect zone survivability, regional failover, data integrity, or recovery time).
+* `# 2. Resilient Focused Recommendations` — findings where `Resiliency Related: Yes` (directly affect regional failover, data integrity, or recovery time).
 * `# 3. Non-Resilient Focused Recommendations` — findings where `Resiliency Related: No` (security hygiene, configuration consistency, operational best practices).
 
 Four-level hierarchy within each H1:
@@ -172,7 +172,7 @@ Every P0, P1, P2, and P3 finding uses this exact format (field order must be pre
 **Finding field guidance:**
 
 * **Issue** (P0/P1): Explain how the issue is introduced or worsened by the transition from single-region to active/active. (P2/P3): Note that behavior is identical regardless of topology.
-* **Resiliency Impact**: Frame in terms of zone failure or regional failover impact. Required for all `Resiliency Related: Yes` findings.
+* **Resiliency Impact**: Frame in terms of regional failover impact. Required for all `Resiliency Related: Yes` findings.
 * **Recommended Fix**: Must be specific enough for the customer's developers to implement independently without the team's involvement.
 
 Priority labels by level:

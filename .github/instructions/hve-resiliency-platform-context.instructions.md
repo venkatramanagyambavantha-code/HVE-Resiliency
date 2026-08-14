@@ -40,7 +40,7 @@ Every prompt ends in exactly one terminal state: `Complete`, `Incomplete`, or `B
 
 ## Priority Definitions
 
-* P0: Critical / Blocking. Causes outage, data loss, duplicate charges, or inability to fail over safely during zone or regional failure.
+* P0: Critical / Blocking. Causes outage, data loss, duplicate charges, or inability to fail over safely during regional failure.
 * P1: Required, Non-Blocking. Does not fully block failover but materially increases application risk, data risk, or customer impact during failure.
 * P2: Improvement / Best Practice. Does not materially impact correctness during failover but weakens resilience posture or operational clarity.
 * P3: Non-Blocking Code Consistency. Captures maintainability, readability, duplication, or inconsistent pattern issues that are non-blocking.

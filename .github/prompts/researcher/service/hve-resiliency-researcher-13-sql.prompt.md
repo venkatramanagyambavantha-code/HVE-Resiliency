@@ -15,12 +15,11 @@ Server.
 ## Assessment Scope
 
 Analyze this application only when Azure SQL is confirmed by the inherited
-service exclusion rule. Assess the application as using Azure SQL with zone
-redundancy and Failover Groups and Managed Identity authentication.
+service exclusion rule. Assess the application as using Azure SQL with Failover Groups and
+Managed Identity authentication.
 
 Evaluate only the application's ability to:
 
-* Survive zonal failures with zero data loss
 * Fail over regionally with controlled write safety
 * Prevent data corruption or split-brain during failover
 

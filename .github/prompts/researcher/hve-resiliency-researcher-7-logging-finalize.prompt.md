@@ -39,7 +39,7 @@ Load the manifest, the five category fragment files, the skeleton artifact, and 
 
 The pipeline-level status is:
 
-* `Blocked` if any fragment status is `Blocked`, or the verify audit contains `unsafe`, `fragment-header-invalid`, `payment-discipline-violation`, `dependency-out-of-scope`, `category-mismatch`, `scenario-combined`, or `prohibited-content` items that were not resolved by an operator before finalize was invoked.
+* `Blocked` if any fragment status is `Blocked`, or the verify audit contains `unsafe`, `fragment-header-invalid`, `payment-discipline-violation`, `dependency-out-of-scope`, `category-mismatch`, or `prohibited-content` items that were not resolved by an operator before finalize was invoked.
 * `Incomplete` otherwise if any fragment status is `Incomplete`, or the verify audit lists any `## Manual Review Required` item, or any emitted finding carries `Unknown: not found after bounded search <scope>` in a nullable field.
 * `Complete` only when every fragment status is `Complete`, the verify audit's `## Manual Review Required` list is empty, and no finding carries any `Unknown` descriptor.
 

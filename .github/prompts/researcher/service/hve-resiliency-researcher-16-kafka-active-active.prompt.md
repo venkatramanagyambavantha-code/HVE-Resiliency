@@ -84,7 +84,7 @@ Evaluate all 18 concern groups for every eligible Kafka dependency:
 7. Bootstrap DNS remains authoritative despite `advertised.listeners` metadata, and
    code does not persist or hard-code learned broker host and port values.
 8. GLB routing, health probes, backend health, DNS bootstrap, and client reconnect
-   behavior support zone and regional failover.
+   behavior support regional failover.
 9. Mirror promotion selects the surviving consumer read source without allowing writes
    to the promoted topic.
 10. Producer idempotence and retry behavior prevent duplicate writes.
@@ -213,7 +213,7 @@ Repeat these labels exactly and in this order for every issue:
 * Issue Description:
 * Risk Level (P0/P1/P2/P3):
 * Code location (file + line number):
-* Why this is a risk to app, zone or region failover:
+* Why this is a risk to app or regional failover:
 * Impact(s) if this is not changed:
 * Existing mitigations present (evidence):
 * Constraints/limitations (evidence):

@@ -12,7 +12,7 @@ whether that instructions file is auto-applied.
 ## Objective And Execution Boundary
 
 Assess only evidence-confirmed Azure Storage dependencies in the current
-repository. Evaluate these two scenarios independently:
+repository. Evaluate this scenario:
 
 1. Full regional failover between West US 2 and West US
 
@@ -279,9 +279,7 @@ Do not fabricate a finding citation from a coverage citation.
 
 Assign finding IDs `STO-F001`, `STO-F002`, and so on after sorting accepted
 candidates by service type, scenario order, failure mode, and owner path. Emit
-separate finding rows for materially distinct failure modes. When evidence
-supports both authoritative scenarios, emit a distinct row for each scenario,
-even when they share source evidence. Do not collapse scenario-specific behavior,
+separate finding rows for materially distinct failure modes. Do not collapse scenario-specific behavior,
 failure effects, mitigations, constraints, or unknowns.
 
 ## Priority Framework
@@ -302,7 +300,7 @@ as an evidence gap rather than a finding.
 Saturation occurs when all prerequisite-confirmed Storage dependencies have all
 six query families dispositioned, every retained candidate has one terminal
 disposition, every accepted finding has validated assertion-level citations,
-all seven focus areas and both scenarios have a coverage disposition, and the
+all seven focus areas have a coverage disposition, and the
 single corrective review creates no new candidate. After saturation, prohibit
 new searches and reads. A validated evidence-gap disposition completes its
 coverage cell and permits `Completed with zero findings` when every other
