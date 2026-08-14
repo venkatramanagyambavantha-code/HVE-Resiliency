@@ -31,11 +31,9 @@ Data-loss / partial-processing discovery hints (evidence-only):
 
 * Message-consumer commit strategy (auto commit vs. manual, before-execute vs. after-execute) on production topic paths.
 * Producer publish paths that acknowledge before durable persistence, or that drop on error without retry.
-* Multi-step transactions where a partial write can commit while a subsequent write fails silently.
 * Idempotency guards, dedupe keys, and unique indexes that are absent, incomplete, or bypassed on production paths.
 * Retry paths that produce duplicate side effects when downstream is only partially available.
 * Cache-write paths that update the cache but not the system of record, or vice versa, on partial dependency outages.
-* Reactive `.onErrorContinue` or `.onErrorResume` sites that drop or acknowledge the affected element without downstream compensation.
 
 Never emit a row solely because durability documentation is unavailable; require positive repository evidence that a code path can lose, duplicate, or partially process a record under the stated dependency failure type.
 
