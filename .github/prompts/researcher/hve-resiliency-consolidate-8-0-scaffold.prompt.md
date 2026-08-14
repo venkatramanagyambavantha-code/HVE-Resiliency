@@ -26,7 +26,7 @@ Read the outer manifest once. Compute the Section 8 group routing table by mappi
 * `core-context`: accepted artifacts with `promptId` `0`, `1a`, or `1b`.
 * `platform-state`: accepted artifacts with `promptId` `2`, `3`, or `4`.
 * `failure-crossrepo`: accepted artifacts with `promptId` `5` or `6`.
-* `services`: every accepted artifact whose `promptId` is one of `9` through `18`.
+* `services`: every accepted artifact whose `promptId` is one of `9` through `17`.
 
 Copy each artifact's `promptId`, normalized `path`, `completionStatus`, and `contentSha256` verbatim from the outer manifest. Do not re-derive them and do not recompute the digest.
 

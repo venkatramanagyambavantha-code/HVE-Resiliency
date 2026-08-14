@@ -2,7 +2,7 @@
 description: Research Entra ID resiliency for Application Platform regional failure
 ---
 
-# Application HVE Researcher 18 Entra ID
+# Application HVE Researcher 17 Entra ID
 
 Use [Application Platform Context](../../../instructions/hve-resiliency-platform-context.instructions.md)
 as supporting context. Apply every safety-critical control in this prompt directly, regardless of
@@ -146,7 +146,7 @@ Use one terminal status:
 
 ## Research Artifact
 
-Create `.copilot-tracking/research/<repo-name>-hve-resiliency-researcher-18-entraid.md`,
+Create `.copilot-tracking/research/<repo-name>-hve-resiliency-researcher-17-entraid.md`,
 where `<repo-name>` is the current repository name. Create the artifact after the
 prerequisite gate and update it progressively after gate disposition, production
 discovery, candidate disposition, finding creation, and validation.
