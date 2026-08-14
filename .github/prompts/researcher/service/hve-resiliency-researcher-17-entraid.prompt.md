@@ -10,16 +10,15 @@ whether that instructions file is auto-applied.
 
 ## Scope
 
-Research only the existing Entra ID assessment surfaces:
+Entra ID is a global Azure service. Failover is handled by the service itself as part
+of the shared services design, so it does not fail over between West US 2 and West US
+and no application-owned failover behavior governs it.
+
+Research only the existing Entra ID assessment surface:
 
 * Token acquisition, validation, and refresh behavior
-* JWT signing key (JWKS) retrieval and caching
-* Conditional Access or MFA-dependent flows
-* Synchronous calls to Entra ID during request handling
-* Hybrid identity dependencies such as AD FS or on-premises services
-* Health-probe alignment between global load balancing and backend services
 
-Assess each applicable surface independently for:
+Assess that surface for:
 
 * Full regional failover between West US 2 and West US
 
@@ -124,7 +123,7 @@ query-family results, normalized paths, file hashes, candidate dispositions, cit
 and sanitized excerpts. Reuse the cache instead of traversing or reading again. Merge
 path aliases and duplicate content before candidate or evidence counting.
 
-Use query families for only the assessment surfaces listed in Scope. A search operation
+Use query families for only the assessment surface listed in Scope. A search operation
 may combine related terms and file patterns. Follow references only when they can resolve
 production precedence or a listed surface, and count every followed file against the
 read and candidate budgets.
