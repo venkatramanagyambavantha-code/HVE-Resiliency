@@ -34,7 +34,6 @@ Blocking-transactions discovery hints (evidence-only):
 * Thread-pool, connection-pool, or WebClient connection-pool exhaustion under upstream partial outage.
 * Consumer poll loops that block indefinitely on a downstream call inside the message-processing pipeline, preventing rebalance or heartbeat.
 * Retry-with-backoff loops with no bounded maximum, no jitter cap, and no circuit breaker on a production call.
-* Distributed or database transactions whose scope covers a call to a dependency that can hang, holding locks or sessions.
 * Scheduled jobs, background workers, or reconciliation loops that queue and stall on a dependency call.
 
 Never emit a row solely because a timeout value is unknown; require positive repository evidence that a production code path can block, deadlock, or exhaust a resource under the stated dependency failure type.
