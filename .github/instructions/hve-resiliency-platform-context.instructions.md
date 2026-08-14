@@ -1,6 +1,6 @@
 ---
 description: Application Platform context and evidence-only rules for resiliency research prompts
-applyTo: '.github/prompts/researcher/hve-resiliency-researcher-*.prompt.md, .github/prompts/service/hve-resiliency-researcher-*.prompt.md'
+applyTo: '.github/prompts/researcher/hve-resiliency-researcher-*.prompt.md, .github/prompts/researcher/service/hve-resiliency-researcher-*.prompt.md'
 ---
 
 # Application Platform Context
@@ -8,8 +8,7 @@ applyTo: '.github/prompts/researcher/hve-resiliency-researcher-*.prompt.md, .git
 Apply this context to all Application Platform resiliency research prompts.
 
 * Albertsons operates applications in Azure
-* Validating readiness for zone failure within West US 2
-* Validating readiness for full regional failover from West US 2 to West US
+* Validating readiness for full application regional failover between West US 2 and West US
 * Scope is the current repository within the Application Platform
 * HVE Task Researcher rules: evidence only, no remediation, no code examples
 * All findings must cite file and line-level evidence
