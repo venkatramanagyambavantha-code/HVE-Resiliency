@@ -75,7 +75,7 @@ Dispatch these one at a time, each after the previous returns `Complete`:
 2. `.github/prompts/researcher/hve-resiliency-researcher-1a.prompt.md`
 3. `.github/prompts/researcher/hve-resiliency-researcher-1b.prompt.md`
 
-Then compute the frozen scope from Section 1 of the 1a and 1b artifacts: build the confirmed-dependency set (Section 1 only; exclude anything classified solely in Section 2 or 3), select the applicable service prompts (8-19) whose category appears in that set, and apply the Database-to-Kafka Pairing Standard to pick the Kafka prompt.
+Then compute the frozen scope from Section 1 of the 1a and 1b artifacts: build the confirmed-dependency set (Section 1 only; exclude anything classified solely in Section 2 or 3), select the applicable service prompts (9-18) whose category appears in that set, and apply the Database-to-Kafka Pairing Standard to pick the Kafka prompt.
 
 **Gates:**
 
@@ -92,7 +92,7 @@ After Step 2 resolves, dispatch this wave concurrently. All members depend only 
 * `.github/prompts/researcher/hve-resiliency-researcher-4.prompt.md`
 * `.github/prompts/researcher/hve-resiliency-researcher-6.prompt.md`
 * The Prompt 5 sub-pipeline, sequenced internally: `hve-resiliency-researcher-5-0-scaffold`, then the three outcome fills concurrently (`5-1-startup-failure`, `5-2-data-loss-partial-processing`, `5-3-blocking-transactions`), then `5-verify`, then `5-finalize`.
-* One service prompt per applicable dependency from the selected set (`.github/prompts/researcher/service/hve-resiliency-researcher-8-appgw` through `-19-apim`, plus the selected Kafka prompt). Skip any service not confirmed in Section 1.
+* One service prompt per applicable dependency from the selected set (`.github/prompts/researcher/service/hve-resiliency-researcher-9-functions` through `-18-entraid`, plus the selected Kafka prompt). Skip any service not confirmed in Section 1.
 
 **Gate:** if any dispatched step returns `Incomplete` or `Blocked`, or any verify sub-step reports a failure, stop and surface the specific artifact and reason. Do not enter Step 4 until every Step 3 artifact is `Complete`.
 

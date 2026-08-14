@@ -27,7 +27,7 @@ For conceptual background (what each phase produces and why), read [Resiliency R
 * [Pre-flight checklist](#pre-flight-checklist)
 * [Phase 0: Install and verify](#phase-0-install-and-verify)
 * [Phase 1: Core research (Prompts 0-7)](#phase-1-core-research-prompts-0-7)
-* [Phase 2: Service-specific research (Prompts 8-19)](#phase-2-service-specific-research-prompts-8-19)
+* [Phase 2: Service-specific research (Prompts 9-18)](#phase-2-service-specific-research-prompts-9-18)
 * [Phase 3: Consolidation](#phase-3-consolidation)
 * [Phase 4: Planning](#phase-4-planning)
 * [Phase 5: Code-level assessment report](#phase-5-code-level-assessment-report)
@@ -205,7 +205,7 @@ Phase 1 is complete when:
 
 The skill will not auto-start Phase 2. You must confirm in a subsequent turn.
 
-## Phase 2: Service-specific research (Prompts 8-19)
+## Phase 2: Service-specific research (Prompts 9-18)
 
 Phase 2 runs one deep-dive prompt per Azure service identified in Phase 1 Section 1. Services not in Section 1 are skipped.
 
@@ -215,7 +215,6 @@ Before proceeding, list the prompts the orchestrator plans to run. Cross-check e
 
 | Slash command | Service |
 |---------------|---------|
-| `/hve-resiliency-researcher-8-appgw` | Application Gateway |
 | `/hve-resiliency-researcher-9-functions` | Azure Functions |
 | `/hve-resiliency-researcher-10-keyvault` | Key Vault |
 | `/hve-resiliency-researcher-11-aks-istio` | AKS and Istio |
@@ -227,7 +226,6 @@ Before proceeding, list the prompts the orchestrator plans to run. Cross-check e
 | `/hve-resiliency-researcher-16-kafka-active-standby-confluent` | Kafka (Active-Standby via Confluent Cluster Linking, paired with a single-master database) |
 | `/hve-resiliency-researcher-17-networking` | Networking |
 | `/hve-resiliency-researcher-18-entraid` | Entra ID |
-| `/hve-resiliency-researcher-19-apim` | API Management |
 
 ### 2.2 Trigger Phase 2
 
