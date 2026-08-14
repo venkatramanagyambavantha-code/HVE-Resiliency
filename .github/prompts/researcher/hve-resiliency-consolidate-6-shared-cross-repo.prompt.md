@@ -17,14 +17,14 @@ Follow the [Consolidation Shared Contract](../../instructions/hve-resiliency-con
 
 Read the frozen manifest, then read only the artifacts whose primary section is Section 6: the accepted Prompt 6 artifact. Do not read artifacts outside this scope and do not re-run discovery.
 
-Render evidence-backed region coupling, zone dependency, and ownership boundary findings from shared libraries, centralized configuration, or platform utilities.
+Render evidence-backed region coupling and ownership boundary findings from shared libraries, centralized configuration, or platform utilities.
 
 ## Fill Protocol
 
 1. Load the manifest and confirm the Section 6 read scope.
 2. Read each routed artifact's bytes once; sanitize immediately.
 3. Normalize findings into source records and deduplicate within the section on the shared canonical-tuple identity, preserving every contributing record ID.
-4. Render each finding using the Required Finding Schema with section-scoped IDs `F-6-00X`. Never combine zone and regional evidence in one finding.
+4. Render each finding using the Required Finding Schema with section-scoped IDs `F-6-00X`.
 
 ## Output
 

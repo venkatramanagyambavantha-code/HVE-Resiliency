@@ -107,7 +107,7 @@ Use `# 1. Assessment Overview` as the heading. Include all of the following sub-
     |--------------------|-----------|-------|--------------------------------------------------------------------------------|
     | **Resiliency**     | **P0**    | N     | Blocks failover from functioning or renders multi-region deployment meaningless |
     | **Resiliency**     | **P1**    | N     | Materially increases risk during failure; procedural workarounds or limited blast radius |
-    | **Resiliency**     | **P2**    | N     | Weakens resilience posture; best-practice improvements for zone/region survivability |
+    | **Resiliency**     | **P2**    | N     | Weakens resilience posture; best-practice improvements for regional survivability |
     | **Resiliency**     | **P3**    | N     | Referential entries or compound interaction descriptions                       |
     | **Non-Resiliency** | **P2**    | N     | Code quality, security hygiene, observability, and configuration improvements  |
     | **Non-Resiliency** | **P3**    | N     | Security-only observations and configuration hygiene items                     |

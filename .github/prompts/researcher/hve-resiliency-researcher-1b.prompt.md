@@ -23,7 +23,7 @@ Produce exactly these sections and fields in this order.
 * Service / Dependency name
 * Evidence (file path + line number)
 * Brief description of how it is used
-* Whether it materially impacts zone or region failover (Yes/No + description of why this could impact zone or region failover)
+* Whether it materially impacts regional failover (Yes/No + description of why this could impact regional failover)
 * Existing mitigations present (if any): retries/timeouts/fallbacks/feature flags/runbooks, with evidence (file path + line number)
 * Health check present for this dependency? (Yes/No + evidence)
 * How health is determined (e.g., ping/query/auth call/SDK check/timeouts) + evidence

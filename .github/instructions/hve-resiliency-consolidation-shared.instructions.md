@@ -69,7 +69,7 @@ When a prompt's manifest path input is omitted, auto-locate the frozen outer con
 | --- | --- |
 | 1 Repository Context | Prompt 0, 1a Section 1, 1b Section 1 |
 | 2 Dependency Inventory | Prompt 1a, 1b (Sections 1-3) |
-| 3 Region and Zone Assumptions | Prompt 2 |
+| 3 Region Assumptions | Prompt 2 |
 | 4 State and Data Characteristics | Prompt 3 |
 | 5 Failure and Degraded-Mode Behavior | Prompt 4, 5 |
 | 6 Shared and Cross-Repository Dependencies | Prompt 6 |
@@ -107,7 +107,7 @@ The source-record canonical identity tuple is an object with exactly these prope
 
 Allocate normalized-record IDs after sorting canonical tuples by their serialized bytes using ordinal comparison. Start with `NR-` plus the first 12 digest characters. For colliding prefixes from unequal tuples, extend every colliding prefix by two hexadecimal characters and repeat until unique. If full digests collide for unequal canonical tuples, stop `Blocked`. Exact canonical tuple matches are duplicates, not collisions.
 
-Deduplicate source records only on exact source-record canonical identity matches. The finite failure-mode classes are `startup failure`, `request failure`, `timeout`, `DNS failure`, `authentication failure`, `partial outage`, `data loss`, `data inconsistency`, `blocked failover`, `degraded operation`, and `unknown observed failure`. Use `unknown observed failure` only when validated evidence demonstrates an observed failure that does not map to another class; it is not a fallback for a missing failure mode. Never combine zone and regional evidence in one finding.
+Deduplicate source records only on exact source-record canonical identity matches. The finite failure-mode classes are `startup failure`, `request failure`, `timeout`, `DNS failure`, `authentication failure`, `partial outage`, `data loss`, `data inconsistency`, `blocked failover`, `degraded operation`, and `unknown observed failure`. Use `unknown observed failure` only when validated evidence demonstrates an observed failure that does not map to another class; it is not a fallback for a missing failure mode.
 
 Merge semantically equivalent source records into one rendered finding that carries every contributing retained record ID. Keep findings separate when scenario, failure-mode class, priority, ownership, impacts, existing mitigations, constraints and limitations, or evidence chain materially differs. Apply source precedence only to equivalent claims: validated file-line evidence over uncited summaries, service-specific evidence over general evidence for that service, and Prompt 1a or 1b over later prompts for dependency applicability.
 
@@ -134,7 +134,7 @@ Use this schema exactly once for every finding rendered into Sections 2.1 and 3-
 * Dependency or Category: <canonical dependency or category>
 * Priority: P0 | P1 | P2 | P3
 * Ownership: <evidence-backed owner or schema-safe value>
-* Scenario: West US 2 zone failure | West US 2 to West US regional failover
+* Scenario: Regional failover between West US 2 and West US
 * Description: <evidence-based current behavior>
 * Failure Mode and Scenario-Specific Risk: <evidence-based risk>
 * Impacts: <operational, data, financial, and customer impacts supported by evidence>
@@ -150,7 +150,7 @@ The consolidated document uses the direct Sections 1-9 structure below. Section 
 * Assessment Scope header and Notes
 * 1. Repository Context
 * 2. Dependency Inventory (2.1 Used Dependencies, 2.2 Checked but Not Present, 2.3 Not Applicable Dependency Categories)
-* 3. Region and Zone Assumptions
+* 3. Region Assumptions
 * 4. State and Data Characteristics
 * 5. Failure and Degraded-Mode Behavior
 * 6. Shared and Cross-Repository Dependencies

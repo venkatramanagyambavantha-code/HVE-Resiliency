@@ -39,7 +39,7 @@ Load the sub-manifest, the five group sub-fragment files, the sub-skeleton, and 
 
 The nested-pipeline status is:
 
-* `Blocked` if any sub-fragment status is `Blocked`, or the verify audit contains any `## Manual Review Required` item with disposition `unsafe`, `fragment-header-invalid`, `provisional-marker-missing`, `group-out-of-scope`, `scenario-combined`, `prohibited-content`, `services-applicability-violation`, `citation-drift`, `path-unresolved`, or `line-out-of-range` that was not resolved by an operator before finalize was invoked.
+* `Blocked` if any sub-fragment status is `Blocked`, or the verify audit contains any `## Manual Review Required` item with disposition `unsafe`, `fragment-header-invalid`, `provisional-marker-missing`, `group-out-of-scope`, `prohibited-content`, `services-applicability-violation`, `citation-drift`, `path-unresolved`, or `line-out-of-range` that was not resolved by an operator before finalize was invoked.
 * `Incomplete` otherwise if any sub-fragment status is `Incomplete`, or the verify audit lists any remaining `## Manual Review Required` item.
 * `Complete` only when every sub-fragment status is `Complete`, the verify audit's `## Manual Review Required` list is empty, and no cross-fragment `duplicate-finding-key` is reported.
 

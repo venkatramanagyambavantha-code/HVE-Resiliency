@@ -57,7 +57,7 @@ The five assessment categories are the only assessment axes for this pipeline. E
 * `log-hygiene`: log structure, levels, sinks, payload exposure, redaction, secrets, PCI data, and PII.
 * `silent-outage-diagnostics`: health and dependency diagnostics, healthy-process silent failure, and safe metrics, traces, spans, tags, and dependency signals.
 
-Both platform scenarios apply: West US 2 zone failure and West US 2 to West US regional failover. Never combine zone and regional evidence in one row or finding.
+The authoritative platform scenario is regional failover between West US 2 and West US.
 
 ## Bounded Discovery (inherited by every fill prompt)
 
@@ -116,7 +116,7 @@ Every Section 2 finding uses these fields exactly, in this order, with a single 
 * Diagnostic outcome
 * Observed behavior
 * Priority: P0 | P1 | P2 | P3
-* Scenario: West US 2 zone failure | West US 2 to West US regional failover
+* Scenario: Regional failover between West US 2 and West US
 * Optional impact (nullable)
 * Diagnostic impact (nullable)
 * Operational impact (nullable)

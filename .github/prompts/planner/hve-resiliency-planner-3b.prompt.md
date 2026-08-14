@@ -69,7 +69,7 @@ Every P0 and P1 finding uses this exact format (field order must be preserved):
 3. `**Resiliency Related:** Yes`
 4. `**Issue:**` — description of the problem. For P0/P1: explain how the issue is introduced or worsened by the transition from single-region to active/active.
 5. `**What does this solve:**` — one sentence, the outcome achieved
-6. `**Resiliency Impact:**` — 1–3 sentences framed in terms of zone failure or regional failover impact
+6. `**Resiliency Impact:**` — 1–3 sentences framed in terms of regional failover impact
 7. `**Recommended Fix:**` — concrete narrative action, specific enough for the customer's developers to implement independently
 8. `**File:** file/path.ext:line` — followed by a fenced code block with the current problematic code (must include a language identifier). Pull from Developer Guide.
 9. `**Fix:**` — followed by a separate fenced code block with the corrected implementation (must include a language identifier). Pull from Developer Guide.

@@ -37,7 +37,7 @@ OUTPUT FORMAT for <repo-name>-Developer-Guide.md (use this exact section order):
    - Finding ID: F-### (must match <repo-name>-Master.md)
    - Priority: P0/P1/P2/P3
    - Evidence reference(s):
-   - Risk explanation (what breaks during zone loss / regional failover):
+   - Risk explanation (what breaks during regional failover between West US 2 and West US):
    - Hard-coded security values check: list any hard-coded secrets/keys/certs/security endpoints or explicitly state "No hard-coded security values found for this finding."
    - Recommended pattern (named):
    - Implementation guidance (step-by-step):

@@ -65,8 +65,6 @@ For every provisional finding, emit the Required Finding Schema from the shared 
 
 * `Disposition: provisional Section 8 residual candidate (resolved by outer finalize)`
 
-Never combine zone-failure and regional-failover evidence in one finding. If the same canonical dependency or category and observation applies to both scenarios with materially different evidence, emit two findings.
-
 ## Output
 
 Write the sub-fragment to `<subFragmentDir>/core-context.md`, where `<subFragmentDir>` is the `subFragmentDir` recorded in the sub-manifest. Begin the file with frontmatter recording `source-prompt: hve-resiliency-consolidate-8-1-core-context`, `group-key: core-context`, `schema-version: hve-resiliency-consolidate-8-split/v1`, and the sub-fragment's terminal status (`Blocked`, `Incomplete`, or `Complete`). Follow the frontmatter with a single subsection in this fixed order:

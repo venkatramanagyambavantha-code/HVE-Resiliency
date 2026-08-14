@@ -24,7 +24,7 @@ Render sanitized evidence of hard-coded secrets or values. Never render a secret
 1. Load the manifest and confirm the Section 7 secret sweep scope.
 2. Read each artifact's bytes once; sanitize immediately, before any comparison or write.
 3. Normalize secret and hard-coded-value findings into source records and deduplicate within the section on the shared canonical-tuple identity, preserving every contributing record ID.
-4. Render each finding using the Required Finding Schema with section-scoped IDs `F-7-00X`. Never combine zone and regional evidence in one finding.
+4. Render each finding using the Required Finding Schema with section-scoped IDs `F-7-00X`.
 
 ## Output
 

@@ -46,7 +46,6 @@ assumption as evidence:
 * An application operating in one region does not depend on Azure services in the
   other region because of latency.
 * Other Azure services use multi-region or replicated patterns.
-* A zone failure within a region is survivable without customer impact.
 
 ## Assessment Scope
 

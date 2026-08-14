@@ -55,7 +55,7 @@ Identify repository code paths where dependency timeouts, DNS failures, authenti
 * `data-loss-partial-processing`: a message, record, or write may be lost, partially processed, duplicated in a way that violates business intent, or left in an inconsistent state.
 * `blocking-transactions`: a request path, consumer, producer, or scheduled job blocks, deadlocks, exhausts a resource, or holds a transaction open beyond its bounded time.
 
-Both platform scenarios apply: West US 2 zone failure and West US 2 to West US regional failover. Never combine zone and regional evidence in one row.
+The authoritative platform scenario is regional failover between West US 2 and West US.
 
 ## Bounded Discovery (inherited by every fill prompt)
 
@@ -74,7 +74,7 @@ Treat every reached numeric limit as source exhaustion. Do not broaden, reword, 
 
 ## Row Identity and Deduplication
 
-Within one outcome fragment, a row key is: confirmed dependency + failure type (timeout / DNS failure / authentication failure / partial outage) + production entrypoint + scenario (West US 2 zone failure or West US 2 to West US regional failover). Separate distinct outcomes, distinct priorities, or distinct scenarios into distinct rows. Retain every causal citation on the row it belongs to.
+Within one outcome fragment, a row key is: confirmed dependency + failure type (timeout / DNS failure / authentication failure / partial outage) + production entrypoint + scenario (regional failover between West US 2 and West US). Separate distinct outcomes or distinct priorities into distinct rows. Retain every causal citation on the row it belongs to.
 
 Emit a row only when positive repository evidence establishes its dependency and production owner, entrypoint, or path.
 
@@ -88,7 +88,7 @@ Every rendered row uses these fields exactly, in this order, with a single row-s
 * Failure mode
 * Priority: P0 | P1 | P2 | P3
 * Triggering dependency + failure type (timeout / DNS failure / authentication failure / partial outage)
-* Scenario: West US 2 zone failure | West US 2 to West US regional failover
+* Scenario: Regional failover between West US 2 and West US
 * Code path / entrypoint
 * Observed behavior (startup failure / silent degradation / data loss or partial processing / blocking transactions)
 * User or customer-visible impact

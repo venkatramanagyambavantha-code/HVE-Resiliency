@@ -104,7 +104,7 @@ Treat Microsoft Entra ID as one dependency and use these maximum budgets for the
 * 12 unique file reads with no rereads
 * 2 levels of reference indirection and 2 queued references per candidate
 * 16 unique candidate files and 12 unique issue candidates
-* 12 final finding rows across both failure scenarios
+* 12 final finding rows
 * 3 semantic citations per finding row
 * 2 retained excerpts per finding row, each at most 240 bytes
 * 12,000 bytes of retained sanitized evidence for the complete artifact
@@ -175,10 +175,7 @@ Under `Findings`, repeat this exact field schema for every finding row:
 * Constraints/limitations (evidence):
 * Remediation guidance: None (HVE Task Researcher role is evidence-only)
 
-Give each finding row a unique heading containing a finding ID and exactly one scenario.
-When the same issue affects both authoritative scenarios, emit two distinct rows with
-separate evidence, risk, and impact. Never combine zone-failure and regional-failover
-outcomes in one row.
+Give each finding row a unique heading containing a finding ID.
 
 Every field must be present, in the stated order, and nonempty. When evidence cannot
 resolve a value, write `Unknown:` and the bounded reason inside that field. Unknown must
@@ -193,8 +190,8 @@ write exactly `No finding rows emitted for terminal status: <status>.` under `Fi
 Before completion, validate that:
 
 * The Prompt 1a/1b gate and positive Entra proof disposition support the terminal status.
-* Both authoritative scenarios were independently assessed for every applicable surface.
-* Finding rows use the exact schema and separate scenarios.
+* The authoritative scenario was assessed for every applicable surface.
+* Finding rows use the exact schema.
 * Priority definitions, citations, sanitization, counters, evidence limits, and negative
    claims comply with this prompt.
 * The artifact path starts with the repository name and the file ends with one newline.

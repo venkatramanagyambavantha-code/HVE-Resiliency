@@ -24,7 +24,7 @@ Because fill prompts run in parallel and the scaffold does not normalize finding
 1. Load the manifest and confirm the Section 8 residual scope.
 2. Read each candidate artifact's bytes once; sanitize immediately.
 3. Normalize residual findings into source records and deduplicate within the section on the shared canonical-tuple identity, preserving every contributing record ID.
-4. Render each provisional finding using the Required Finding Schema with section-scoped IDs `F-8-00X`. Never combine zone and regional evidence in one finding.
+4. Render each provisional finding using the Required Finding Schema with section-scoped IDs `F-8-00X`.
 
 ## Output
 
