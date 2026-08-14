@@ -81,7 +81,7 @@ Optional for the post-workflow backlog handoff:
 
 Complete these in order. Do not start Phase 0 until every item is checked.
 
-1. Confirm the engagement scope is written down: target repo, in-scope services, primary and secondary Azure regions, and the failover model (active/active vs active/passive).
+1. Confirm the engagement scope is written down: target repo, in-scope services, primary and secondary Azure regions, and the failover model (active/active vs active/standby).
 2. Review and, if needed, customize `.github/instructions/hve-resiliency-platform-context.instructions.md` and `.github/instructions/hve-resiliency-planner-context.instructions.md` to match the engagement scope.
 3. Capture a baseline token budget. Use the [Token consumption estimates](../README.md#token-consumption-estimates) table to forecast Mode A vs Mode B cost for the target repo size.
 4. Decide the execution mode you will request when the skill asks (see [Operator decision matrix](#operator-decision-matrix-mode-a-vs-mode-b)).
