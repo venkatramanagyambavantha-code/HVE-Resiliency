@@ -18,9 +18,8 @@ Inventory every repository file once, including extensionless operations. Exclud
 Resolve this bounded negative matrix:
 
 * Compute: Azure Kubernetes Service (AKS), Azure Functions, Azure App Service
-* Edge: Azure API Management, Application Gateway
 * Data: Cosmos DB for MongoDB, Azure SQL Database/Managed Instance, Azure Storage by subtype, Azure Managed Redis
-* Messaging: Confluent Cloud Kafka
+* Messaging: Kafka on Confluent Cloud
 * Identity/configuration: Entra ID, Managed/Workload Identity, Key Vault, App Configuration
 * Observability: Azure Monitor
 * Delivery: Azure Container Registry
