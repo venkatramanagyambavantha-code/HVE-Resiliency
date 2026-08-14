@@ -39,6 +39,8 @@ Core-context residual discovery hints (evidence-only):
 * Repository context observations from Prompt 0 that do not fit Section 1's evidence-backed prose bullets and do not fit Sections 2-7 primary or scoped rules.
 * Dependency inventory observations from Prompt 1a or 1b that neither Section 2 (Dependency Inventory) nor a Section 2.1 service-finding scope claims, and that are not classified in Prompt 1a or 1b Section 2 (Checked but Not Present) or Section 3 (Not Applicable).
 * Cross-artifact context notes retained by 1a or 1b that describe an observable production behavior with a validated file-line citation and that map to no other section.
+* Sanitized observations from this group's artifacts that describe a hard-coded value which is not a secret and which Section 7 does not primary-claim, restricted to observable production behavior with a validated file-line citation and a canonical dependency or category.
+* Configuration-lifecycle observations from this group's artifacts that carry no secret metadata and that map to no other section.
 
 Never emit a candidate solely because an artifact mentions a topic; require positive evidence with a validated file-line citation and confirm that no other section's primary or scoped rule already claims the canonical tuple.
 

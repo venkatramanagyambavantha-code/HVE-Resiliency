@@ -73,7 +73,7 @@ When a prompt's manifest path input is omitted, auto-locate the frozen outer con
 | 4 State and Data Characteristics | Prompt 3 |
 | 5 Failure and Degraded-Mode Behavior | Prompt 4, 5 |
 | 6 Shared and Cross-Repository Dependencies | Prompt 6 |
-| 7 Hard-Coded Values or Secrets | Prompt 7 plus the secret sweep scope over any artifact |
+| 7 Hard-Coded Values or Secrets | The secret sweep scope over any artifact |
 | 8 Other Findings | Residual scope over any artifact |
 | 9 Research Findings Index | Aggregated finding IDs from Sections 2.1 and 3-8 |
 
@@ -81,7 +81,7 @@ Service findings (prompt IDs 8-19) render into Sections 2.1 and 3-8 by category,
 
 ## Required and Optional Prompt IDs
 
-Required prompt IDs are `0`, `1a`, `1b`, `2`, `3`, `4`, `5`, `6`, and `7`. Service prompt IDs `8` through `19` are optional and applicable only when their dependency category or service appears in Section 1 of an accepted Prompt 1a or Prompt 1b artifact. An absent service artifact is not a conflict when that service is inapplicable.
+Required prompt IDs are `0`, `1a`, `1b`, `2`, `3`, `4`, `5`, and `6`. Service prompt IDs `8` through `19` are optional and applicable only when their dependency category or service appears in Section 1 of an accepted Prompt 1a or Prompt 1b artifact. An absent service artifact is not a conflict when that service is inapplicable.
 
 ## Sanitization
 

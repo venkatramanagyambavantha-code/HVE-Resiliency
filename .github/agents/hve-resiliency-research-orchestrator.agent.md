@@ -92,7 +92,6 @@ After Step 2 resolves, dispatch this wave concurrently. All members depend only 
 * `.github/prompts/researcher/hve-resiliency-researcher-4.prompt.md`
 * `.github/prompts/researcher/hve-resiliency-researcher-6.prompt.md`
 * The Prompt 5 sub-pipeline, sequenced internally: `hve-resiliency-researcher-5-0-scaffold`, then the four outcome fills concurrently (`5-1-startup-failure`, `5-2-silent-degradation`, `5-3-data-loss-partial-processing`, `5-4-blocking-transactions`), then `5-verify`, then `5-finalize`.
-* The Prompt 7 Logging sub-pipeline, sequenced internally: `hve-resiliency-researcher-7-logging-0-scaffold`, then the five category fills concurrently (`7-logging-1-startup-health`, `-2-transactions`, `-3-correlation-context`, `-4-log-hygiene`, `-5-silent-outage-diagnostics`), then `7-logging-verify`, then `7-logging-finalize`.
 * One service prompt per applicable dependency from the selected set (`.github/prompts/researcher/service/hve-resiliency-researcher-8-appgw` through `-19-apim`, plus the selected Kafka prompt). Skip any service not confirmed in Section 1.
 
 **Gate:** if any dispatched step returns `Incomplete` or `Blocked`, or any verify sub-step reports a failure, stop and surface the specific artifact and reason. Do not enter Step 4 until every Step 3 artifact is `Complete`.

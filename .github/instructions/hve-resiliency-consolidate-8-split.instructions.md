@@ -5,7 +5,7 @@ applyTo: '.github/prompts/researcher/hve-resiliency-consolidate-8-*.prompt.md'
 
 # HVE Resiliency Consolidate 8 Split Contract
 
-Apply this contract to every prompt in the split Consolidate 8 pipeline: the scaffold prompt, the five group-fill prompts, the verify prompt, and the finalize prompt. Each pipeline prompt inherits these stage-invariant rules and adds only its stage-specific behavior. When a pipeline prompt conflicts with this contract, the pipeline prompt's stage-specific scope takes precedence for that stage only; the evidence-only prohibitions and output schema below are never overridden.
+Apply this contract to every prompt in the split Consolidate 8 pipeline: the scaffold prompt, the four group-fill prompts, the verify prompt, and the finalize prompt. Each pipeline prompt inherits these stage-invariant rules and adds only its stage-specific behavior. When a pipeline prompt conflicts with this contract, the pipeline prompt's stage-specific scope takes precedence for that stage only; the evidence-only prohibitions and output schema below are never overridden.
 
 This split pipeline is a nested sub-pipeline inside the outer HVE Resiliency Consolidation pipeline. Use the [Consolidation Shared Contract](hve-resiliency-consolidation-shared.instructions.md) for the outer manifest contract, sanitization, line-number integrity, the Required Finding Schema, schema-safe values, the source-record canonical-tuple identity, and evidence-only prohibitions. Use [Application Platform Context](hve-resiliency-platform-context.instructions.md) for inherited platform scenarios, dependency applicability rules, and P0-P3 definitions.
 
@@ -16,15 +16,15 @@ The nested pipeline replaces the retired single-shot `hve-resiliency-consolidate
 The split Consolidate 8 workflow is a bounded sub-pipeline that fills Section 8 (Other Findings Not Categorized Above) of the consolidated resiliency research document:
 
 1. Scaffold (`-8-0-scaffold`): validate the outer consolidation manifest once, freeze the Section 8 group-routing table derived from the outer manifest's accepted artifacts, emit an empty Section 8 sub-skeleton fragment file plus a Section 8 sub-manifest sidecar. No provisional findings are rendered.
-2. Group fill (`-8-1-core-context`, `-8-2-platform-state`, `-8-3-failure-crossrepo`, `-8-4-secrets-adjacent`, `-8-5-services`): each prompt reads only the Section 8 sub-manifest, the outer manifest, and the accepted source artifacts routed to its group; emits Section 8 provisional findings for exactly one artifact group; and writes them to its own sub-fragment file. The five fills may run in any order and never edit each other's sub-fragments or the sub-skeleton.
-3. Verify (`-8-verify`): audit all five group sub-fragments against the Section 8 sub-manifest and against the source artifacts routed to each group. Report-only.
-4. Finalize (`-8-finalize`): assemble the five group sub-fragments into the single Section 8 fragment (`sections/section-8.md`) consumed by the outer verify-5-8 and outer finalize prompts. Set nested-pipeline status once. Preserve provisional markers and section-scoped IDs; never renumber into `F-00X`.
+2. Group fill (`-8-1-core-context`, `-8-2-platform-state`, `-8-3-failure-crossrepo`, `-8-4-services`): each prompt reads only the Section 8 sub-manifest, the outer manifest, and the accepted source artifacts routed to its group; emits Section 8 provisional findings for exactly one artifact group; and writes them to its own sub-fragment file. The four fills may run in any order and never edit each other's sub-fragments or the sub-skeleton.
+3. Verify (`-8-verify`): audit all four group sub-fragments against the Section 8 sub-manifest and against the source artifacts routed to each group. Report-only.
+4. Finalize (`-8-finalize`): assemble the four group sub-fragments into the single Section 8 fragment (`sections/section-8.md`) consumed by the outer verify-5-8 and outer finalize prompts. Set nested-pipeline status once. Preserve provisional markers and section-scoped IDs; never renumber into `F-00X`.
 
 Every artifact emitted by this nested pipeline uses schema version `hve-resiliency-consolidate-8-split/v1` and targets the current repository.
 
 ## Evidence-Only Prohibitions
 
-Preserve the Task Researcher evidence-only contract end to end. Do not enter Task Researcher Phase 2. Do not produce alternatives, recommendations, selected approaches, examples, implementation details, design changes, remediation, advisory language, or next-step suggestions beyond the single Next step link required by the platform context. Do not introduce artifact groups beyond the five declared in Artifact Groups below. Do not re-run discovery. Do not read Prompt 1a, Prompt 1b, or any accepted source artifact directly during scaffold; scaffold reads only the outer manifest. Emit only sanitized, evidence-backed provisional findings.
+Preserve the Task Researcher evidence-only contract end to end. Do not enter Task Researcher Phase 2. Do not produce alternatives, recommendations, selected approaches, examples, implementation details, design changes, remediation, advisory language, or next-step suggestions beyond the single Next step link required by the platform context. Do not introduce artifact groups beyond the four declared in Artifact Groups below. Do not re-run discovery. Do not read Prompt 1a, Prompt 1b, or any accepted source artifact directly during scaffold; scaffold reads only the outer manifest. Emit only sanitized, evidence-backed provisional findings.
 
 ## Frozen Sub-Manifest Sidecar Contract
 
@@ -39,8 +39,8 @@ The sub-manifest records:
 * `outerManifestSha256`: lowercase SHA-256 hexadecimal digest of the outer manifest's sanitized bytes at scaffold time.
 * `consolidatedDocDir`: normalized workspace-relative directory that holds `sections/section-8.md`.
 * `subSkeletonPath`: normalized workspace-relative path to the Section 8 sub-skeleton fragment file emitted by scaffold.
-* `subFragmentDir`: normalized workspace-relative directory holding the five group sub-fragments. Fixed to `<consolidatedDocDir>/sections/section-8-fragments/`.
-* `groupRouting`: the five fixed routing keys `core-context`, `platform-state`, `failure-crossrepo`, `secrets-adjacent`, `services`, each mapped to its fill prompt ID, its sub-fragment file name, and the enumerated accepted source artifact records that the group owns.
+* `subFragmentDir`: normalized workspace-relative directory holding the four group sub-fragments. Fixed to `<consolidatedDocDir>/sections/section-8-fragments/`.
+* `groupRouting`: the four fixed routing keys `core-context`, `platform-state`, `failure-crossrepo`, `services`, each mapped to its fill prompt ID, its sub-fragment file name, and the enumerated accepted source artifact records that the group owns.
 * `sources`: the accepted source artifact records copied verbatim from the outer manifest, each carrying `promptId`, normalized `path`, `completionStatus`, and `contentSha256`.
 * `servicesApplicability`: `applicable` when the outer manifest records at least one accepted optional service artifact (Prompt IDs `8`-`19`), otherwise `not-applicable`. This value is frozen; downstream stages do not re-derive it.
 
@@ -52,13 +52,14 @@ Downstream stages read the outer manifest through this sub-manifest's `outerMani
 
 ## Artifact Groups (inherited by every group-fill prompt)
 
-The five artifact groups are the only routing axes for this pipeline. Each group-fill prompt owns exactly one group and emits provisional Section 8 findings only for that group.
+The four artifact groups are the only routing axes for this pipeline. Each group-fill prompt owns exactly one group and emits provisional Section 8 findings only for that group.
 
 * `core-context`: Prompts `0`, `1a`, `1b`. Residuals from repository context and dependency inventory scaffolding that map to no other section.
 * `platform-state`: Prompts `2`, `3`, `4`. Residuals from region, state and data, and adjacent platform-context artifacts that map to no other section.
 * `failure-crossrepo`: Prompts `5`, `6`. Residuals from failure and degraded-mode behavior and shared cross-repository dependency artifacts that map to no other section.
-* `secrets-adjacent`: Prompt `7`. Residuals sanitized by the Prompt 7 secret sweep that are not hard-coded secret or value findings and that map to no other section.
 * `services`: applicable optional Prompt IDs `8` through `19`. Membership is exactly the accepted service artifact records recorded in the sub-manifest's `groupRouting.services` entry. When `servicesApplicability` is `not-applicable`, the services group emits zero provisional findings and its sub-fragment records the negative-check scope.
+
+Hard-coded values that are not secrets, and configuration-lifecycle residuals, are emitted by whichever group owns the source artifact they were observed in; Section 7 primary-claims every hard-coded secret or value finding.
 
 The authoritative platform scenario is regional failover between West US 2 and West US.
 
@@ -98,7 +99,7 @@ Treat every reached numeric limit as source exhaustion. Do not broaden, reword, 
 
 Use the outer source-record canonical identity tuple defined in the Consolidation Shared Contract: `dependencyOrCategory`, `failureMode`, `lineRange`, `path`, `scenario`, and `sourceFindingIdentity`. Compute the tuple only after sanitization and normalization. Deduplicate provisional findings only on exact canonical-tuple matches within one group sub-fragment.
 
-Across groups, the five fill prompts operate on disjoint accepted source artifact sets, so the same canonical tuple cannot appear in more than one group sub-fragment. If a fill prompt observes a candidate whose accepted source artifact belongs to another group's set, drop the candidate and do not emit it in the current fragment.
+Across groups, the four fill prompts operate on disjoint accepted source artifact sets, so the same canonical tuple cannot appear in more than one group sub-fragment. If a fill prompt observes a candidate whose accepted source artifact belongs to another group's set, drop the candidate and do not emit it in the current fragment.
 
 ## Section-Scoped Finding IDs
 
@@ -131,7 +132,7 @@ Permit `Unknown: evidence unavailable`, bounded `Not observed in completed sourc
 
 Sanitize buffered content immediately after reading and before any write, hash, comparison, or emitted record. Never retain or reproduce secret values. Normalize workspace-relative paths to `/` while preserving repository path case. Encode text as UTF-8 without a byte-order mark. Use lowercase SHA-256 hexadecimal digests.
 
-For potential secrets observed in a source artifact, retain only the secret type, normalized file path and line, key or symbol name, and a stable redacted identity. Mark an artifact unsafe and stop `Blocked` when sanitization cannot be guaranteed. The `secrets-adjacent` fill in particular must never reproduce a secret value or a reversible derivative.
+For potential secrets observed in a source artifact, retain only the secret type, normalized file path and line, key or symbol name, and a stable redacted identity. Mark an artifact unsafe and stop `Blocked` when sanitization cannot be guaranteed. No group fill may reproduce a secret value or a reversible derivative.
 
 Never estimate line numbers. Never merge line ranges. Never recalculate line numbers. Copy file paths and line numbers verbatim from the source artifact. If a line number cannot be validated, do not emit the provisional finding.
 
@@ -140,7 +141,7 @@ Never estimate line numbers. Never merge line ranges. Never recalculate line num
 * Sub-skeleton fragment: `<consolidatedDocDir>/sections/section-8-fragments/section-8.sub-skeleton.md`.
 * Sub-manifest sidecar: `<consolidatedDocDir>/sections/section-8-fragments/section-8.manifest.md`.
 * Sub-fragment directory: `<consolidatedDocDir>/sections/section-8-fragments/`.
-* Sub-fragment files: `core-context.md`, `platform-state.md`, `failure-crossrepo.md`, `secrets-adjacent.md`, `services.md`.
+* Sub-fragment files: `core-context.md`, `platform-state.md`, `failure-crossrepo.md`, `services.md`.
 * Verify audit report: `<consolidatedDocDir>/sections/section-8-fragments/verify-audit.md`.
 * Final assembled Section 8 fragment: `<consolidatedDocDir>/sections/section-8.md`.
 
@@ -154,4 +155,4 @@ Every stage sets exactly one terminal status on its own output:
 * `Incomplete`: bounded discovery exhausted with at least one accepted source artifact contributing zero considered candidates due to hard-limit truncation, or one or more sub-fragments carry `Incomplete` at finalize time.
 * `Complete`: every accepted source artifact in the group was scanned to a terminal ledger outcome and every emitted provisional finding conforms to the Required Finding Schema and the residual discipline.
 
-The nested-pipeline status is set exclusively by the nested finalize prompt on the assembled `sections/section-8.md`, based on the terminal status of each of the five sub-fragments plus the nested verify report. The outer consolidation pipeline's overall status remains the responsibility of the outer finalize prompt (`hve-resiliency-consolidate-9-finalize`).
+The nested-pipeline status is set exclusively by the nested finalize prompt on the assembled `sections/section-8.md`, based on the terminal status of each of the four sub-fragments plus the nested verify report. The outer consolidation pipeline's overall status remains the responsibility of the outer finalize prompt (`hve-resiliency-consolidate-9-finalize`).

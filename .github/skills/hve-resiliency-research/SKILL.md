@@ -56,34 +56,33 @@ Phase 1 is mandatory and sequential. Always begin with Prompt 0.
     * The four outcome fills are disjoint and may run in parallel chats when time-boxing allows; only the scaffold must precede them and only verify + finalize must follow.
     * `/hve-resiliency-researcher-5` is retained as a deprecated redirect to the scaffold entry point.
 9. Run `/hve-resiliency-researcher-6` when shared dependency risk analysis is needed.
-10. Run `/hve-resiliency-researcher-7-logging` (Logging).
 
 ### Phase 2: Service-Specific Research (Prompts 8-19, Circumstantial)
 
 Phase 2 runs only after Phase 1 is complete. Run only the prompts matching dependencies confirmed in Section 1 of Prompt 1a or Prompt 1b. Skip services found only in Sections 2-3 or not found. Recommend applicable prompts from the combined Prompt 1a and Prompt 1b results.
 
-11. Run `/hve-resiliency-researcher-8-appgw` (App Gateway)
-12. Run `/hve-resiliency-researcher-9-functions` (Azure Functions)
-13. Run `/hve-resiliency-researcher-10-keyvault` (Key Vault)
-14. Run `/hve-resiliency-researcher-11-aks-istio` (AKS and Istio)
-15. Run `/hve-resiliency-researcher-12-cosmosdb` (Cosmos DB)
-16. Run `/hve-resiliency-researcher-13-sql` (SQL Server)
-17. Run `/hve-resiliency-researcher-14-redis` (Redis)
-18. Run `/hve-resiliency-researcher-15-storage` (Azure Storage)
-19. Determine whether Cosmos DB and/or Azure SQL were confirmed in Prompt 1a Section 1, then run the matching Kafka prompt per the Database-to-Kafka Pairing Standard (see [Resiliency Research Platform Context](../../instructions/hve-resiliency-platform-context.instructions.md)). Kafka runs on Confluent Cloud; do not ask which Kafka provider is in use.
+10. Run `/hve-resiliency-researcher-8-appgw` (App Gateway)
+11. Run `/hve-resiliency-researcher-9-functions` (Azure Functions)
+12. Run `/hve-resiliency-researcher-10-keyvault` (Key Vault)
+13. Run `/hve-resiliency-researcher-11-aks-istio` (AKS and Istio)
+14. Run `/hve-resiliency-researcher-12-cosmosdb` (Cosmos DB)
+15. Run `/hve-resiliency-researcher-13-sql` (SQL Server)
+16. Run `/hve-resiliency-researcher-14-redis` (Redis)
+17. Run `/hve-resiliency-researcher-15-storage` (Azure Storage)
+18. Determine whether Cosmos DB and/or Azure SQL were confirmed in Prompt 1a Section 1, then run the matching Kafka prompt per the Database-to-Kafka Pairing Standard (see [Resiliency Research Platform Context](../../instructions/hve-resiliency-platform-context.instructions.md)). Kafka runs on Confluent Cloud; do not ask which Kafka provider is in use.
     * Cosmos DB confirmed, Azure SQL not confirmed -> Run `/hve-resiliency-researcher-16-kafka-active-active`
     * Azure SQL confirmed, with or without Cosmos DB -> Run `/hve-resiliency-researcher-16-kafka-active-standby-confluent`
     * Neither confirmed -> Do not auto-select; ask the user which Kafka topology the application uses before proceeding
-20. Run `/hve-resiliency-researcher-17-networking` (Networking)
-21. Run `/hve-resiliency-researcher-18-entraid` (Entra ID)
-22. Run `/hve-resiliency-researcher-19-apim` (APIM)
+19. Run `/hve-resiliency-researcher-17-networking` (Networking)
+20. Run `/hve-resiliency-researcher-18-entraid` (Entra ID)
+21. Run `/hve-resiliency-researcher-19-apim` (APIM)
 
 ### Phase 3: Consolidation
 
 Consolidation has been split into a bounded pipeline. Run these in order:
 
-23. Run `/hve-resiliency-consolidate-0-scaffold` (enumerates accepted researcher artifacts, emits the consolidated skeleton and the frozen manifest sidecar).
-24. Run each section-fill prompt against the manifest emitted in step 23. Fills write to independent fragment files under `<consolidatedDocDir>/sections/` and may run in parallel chats:
+22. Run `/hve-resiliency-consolidate-0-scaffold` (enumerates accepted researcher artifacts, emits the consolidated skeleton and the frozen manifest sidecar).
+23. Run each section-fill prompt against the manifest emitted in step 22. Fills write to independent fragment files under `<consolidatedDocDir>/sections/` and may run in parallel chats:
     * `/hve-resiliency-consolidate-1-repository-context`
     * `/hve-resiliency-consolidate-2-dependency-inventory`
     * `/hve-resiliency-consolidate-3-region-zone`
@@ -92,38 +91,38 @@ Consolidation has been split into a bounded pipeline. Run these in order:
     * `/hve-resiliency-consolidate-6-shared-cross-repo`
     * `/hve-resiliency-consolidate-7-secrets`
     * `/hve-resiliency-consolidate-8-other`
-25. Run `/hve-resiliency-consolidate-verify-1-4` to audit Sections 1-4 fragments against routed source artifacts (report-only).
-26. Run `/hve-resiliency-consolidate-verify-5-8` to audit Sections 5-8 fragments against routed source artifacts (report-only).
-27. Run `/hve-resiliency-consolidate-9-finalize` to assemble the fragments, run index-level dedup and section precedence, reconcile finding IDs into the authoritative `F-00X` scheme, and build the Section 9 index.
-28. Review the consolidated report at `.copilot-tracking/research/`.
+24. Run `/hve-resiliency-consolidate-verify-1-4` to audit Sections 1-4 fragments against routed source artifacts (report-only).
+25. Run `/hve-resiliency-consolidate-verify-5-8` to audit Sections 5-8 fragments against routed source artifacts (report-only).
+26. Run `/hve-resiliency-consolidate-9-finalize` to assemble the fragments, run index-level dedup and section precedence, reconcile finding IDs into the authoritative `F-00X` scheme, and build the Section 9 index.
+27. Review the consolidated report at `.copilot-tracking/research/`.
 
 ### Phase 4: Planning
 
-29. Run `/hve-resiliency-planner-0` to lock in evidence constraints from the consolidated research.
-30. Run `/hve-resiliency-planner-1` to create the Executive / Master Resiliency Report.
-31. Run `/hve-resiliency-planner-0` again to re-establish evidence lock-in.
-32. Run `/hve-resiliency-planner-2` to create the Developer Guide with code-level remediation.
+28. Run `/hve-resiliency-planner-0` to lock in evidence constraints from the consolidated research.
+29. Run `/hve-resiliency-planner-1` to create the Executive / Master Resiliency Report.
+30. Run `/hve-resiliency-planner-0` again to re-establish evidence lock-in.
+31. Run `/hve-resiliency-planner-2` to create the Developer Guide with code-level remediation.
 
 ### Phase 5: Code-Level Resiliency Assessment Report
 
-33. Run `/hve-resiliency-planner-3a` to create the report header, Table of Contents, and Assessment Overview (Section 1).
-34. Run `/hve-resiliency-planner-3b` to append P0 and P1 Resilient Focused Recommendations (Section 2, partial).
-35. Run `/hve-resiliency-planner-3c` to append P2/P3 resiliency findings and Non-Resilient Focused Recommendations (Sections 2 completion + Section 3).
-36. Run `/hve-resiliency-planner-3d` to append IaC Gap Analysis, Full Finding Matrix, and Microsoft Standards Alignment (Sections 4-6) with final validation.
-37. Review the completed report at `Microsoft Assessment/{serviceName}-Code-Level-Resiliency-Assessment.md`.
+32. Run `/hve-resiliency-planner-3a` to create the report header, Table of Contents, and Assessment Overview (Section 1).
+33. Run `/hve-resiliency-planner-3b` to append P0 and P1 Resilient Focused Recommendations (Section 2, partial).
+34. Run `/hve-resiliency-planner-3c` to append P2/P3 resiliency findings and Non-Resilient Focused Recommendations (Sections 2 completion + Section 3).
+35. Run `/hve-resiliency-planner-3d` to append IaC Gap Analysis, Full Finding Matrix, and Microsoft Standards Alignment (Sections 4-6) with final validation.
+36. Review the completed report at `Microsoft Assessment/{serviceName}-Code-Level-Resiliency-Assessment.md`.
 
 ### Phase 6: Assessment Evidence Audit (Optional)
 
 Phase 6 verifies that every source citation, verbatim code block, and fix block in the completed assessment is faithful to the repository, and keeps all cross-references in sync. It is optional: when the Phase 5 builders followed the Evidence Fidelity Contract (see [Resiliency Task Planner Context](../../instructions/hve-resiliency-planner-context.instructions.md)), this pass should find little to correct. Run it as a backstop, or when the report was assembled quickly.
 
-38. Run `/fix-assessment-finding` with a scope argument. Process tiers in ascending order so edits to the single report file never collide:
+37. Run `/fix-assessment-finding` with a scope argument. Process tiers in ascending order so edits to the single report file never collide:
     1. `/fix-assessment-finding P0`
     2. `/fix-assessment-finding P1`
     3. `/fix-assessment-finding P2`
     4. `/fix-assessment-finding P3`
     * `/fix-assessment-finding all` runs every tier in one pass, pausing after each tier for review. Prefer per-tier invocation for the tightest context.
     * Scope may also be a single finding ID (e.g. `/fix-assessment-finding P1-025`) for a targeted correction.
-39. Review the corrected report at `Microsoft Assessment/{serviceName}-Code-Level-Resiliency-Assessment.md`.
+38. Review the corrected report at `Microsoft Assessment/{serviceName}-Code-Level-Resiliency-Assessment.md`.
 
 ## Execution Rules
 

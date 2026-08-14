@@ -226,7 +226,7 @@ The framework follows an application-centric, evidence-first flow built on HVE C
 
 | Phase               | Prompts                                                          | Notes                                       |
 | ------------------- | ---------------------------------------------------------------- | ------------------------------------------- |
-| 1. Core Research    | `researcher-0` … `researcher-7-logging`                     | Sequential. Mode-aware.                     |
+| 1. Core Research    | `researcher-0` … `researcher-6`                             | Sequential. Mode-aware.                     |
 | 2. Service Research | `researcher/service/*` (8-19, filtered to applicable services) | Mode B allows up to 3 concurrent subagents. |
 | 3. Consolidation    | `consolidate-0-scaffold` … `consolidate-9-finalize` (split pipeline with verify passes) | User-gated,`/clear` between steps.        |
 | 4. Planning         | `planner-0`, `planner-1`, `planner-0`, `planner-2`       | User-gated,`/clear` between steps.        |
