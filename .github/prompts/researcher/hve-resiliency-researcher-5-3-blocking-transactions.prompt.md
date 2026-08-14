@@ -25,7 +25,7 @@ The only inputs to this stage are the manifest, the frozen eligible dependency l
 
 ## Outcome Focus
 
-Emit rows only for the observed outcome `blocking-transactions`: a request path, consumer, producer, or scheduled job blocks, deadlocks, exhausts a resource, or holds a transaction open beyond its bounded time when a dependency exhibits a timeout, DNS failure, authentication failure, or partial outage. Skip any evidence that maps to startup failure, silent degradation, or data loss or partial processing; those outcomes belong to their own fragments.
+Emit rows only for the observed outcome `blocking-transactions`: a request path, consumer, producer, or scheduled job blocks, deadlocks, exhausts a resource, or holds a transaction open beyond its bounded time when a dependency exhibits a timeout, DNS failure, authentication failure, or partial outage. Skip any evidence that maps to startup failure or data loss or partial processing; those outcomes belong to their own fragments.
 
 Blocking-transactions discovery hints (evidence-only):
 
@@ -52,7 +52,7 @@ Never combine regional-failover and partial-outage evidence in one row. If the s
 
 ## Output
 
-Write the fragment to `<fragmentDir>/blocking-transactions.md`, where `<fragmentDir>` is the `fragmentDir` recorded in the manifest. Begin the file with the `## 5.4 Blocking Transactions` heading followed by frontmatter recording `source-prompt: hve-resiliency-researcher-5-4-blocking-transactions`, `outcome-key: blocking-transactions`, and the fragment's terminal status. Do not modify the skeleton artifact. Do not touch any other fragment.
+Write the fragment to `<fragmentDir>/blocking-transactions.md`, where `<fragmentDir>` is the `fragmentDir` recorded in the manifest. Begin the file with the `## 5.3 Blocking Transactions` heading followed by frontmatter recording `source-prompt: hve-resiliency-researcher-5-3-blocking-transactions`, `outcome-key: blocking-transactions`, and the fragment's terminal status. Do not modify the skeleton artifact. Do not touch any other fragment.
 
 ## Completion
 

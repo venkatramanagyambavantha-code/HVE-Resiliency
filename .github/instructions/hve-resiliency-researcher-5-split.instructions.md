@@ -5,7 +5,7 @@ applyTo: '.github/prompts/researcher/hve-resiliency-researcher-5-*.prompt.md'
 
 # HVE Resiliency Researcher 5 Split Contract
 
-Apply this contract to every prompt in the split Researcher 5 pipeline: the scaffold prompt, the four outcome-fill prompts, the verify prompt, and the finalize prompt. Each pipeline prompt inherits these stage-invariant rules and adds only its stage-specific behavior. When a pipeline prompt conflicts with this contract, the pipeline prompt's stage-specific scope takes precedence for that stage only; the evidence-only prohibitions and output schema below are never overridden.
+Apply this contract to every prompt in the split Researcher 5 pipeline: the scaffold prompt, the three outcome-fill prompts, the verify prompt, and the finalize prompt. Each pipeline prompt inherits these stage-invariant rules and adds only its stage-specific behavior. When a pipeline prompt conflicts with this contract, the pipeline prompt's stage-specific scope takes precedence for that stage only; the evidence-only prohibitions and output schema below are never overridden.
 
 Use [Application Platform Context](hve-resiliency-platform-context.instructions.md) for inherited platform scenarios, dependency applicability rules, and P0-P3 definitions.
 
@@ -14,9 +14,9 @@ Use [Application Platform Context](hve-resiliency-platform-context.instructions.
 The split Researcher 5 workflow replaces the single monolithic `hve-resiliency-researcher-5` prompt:
 
 1. Scaffold (`-5-0-scaffold`): validate Prompt 1a and 1b Section 1 prerequisites once, freeze the eligible-dependency inventory, emit an empty Prompt 5 skeleton artifact plus a frozen manifest sidecar. No failure-mode rows are rendered.
-2. Outcome fill (`-5-1-startup-failure`, `-5-2-silent-degradation`, `-5-3-data-loss-partial-processing`, `-5-4-blocking-transactions`): each prompt reads only the frozen manifest and the eligible dependencies, emits rows for exactly one observed outcome class, and writes them to its own fragment file. The four fills may run in any order and never edit each other's fragments or the skeleton.
-3. Verify (`-5-verify`): audit all four outcome fragments against the manifest and against workspace source. Report-only.
-4. Finalize (`-5-finalize`): assemble the four outcome fragments into the single Prompt 5 research artifact consumed by `hve-resiliency-consolidate-5-failure-degraded`. Set completion status once.
+2. Outcome fill (`-5-1-startup-failure`, `-5-2-data-loss-partial-processing`, `-5-3-blocking-transactions`): each prompt reads only the frozen manifest and the eligible dependencies, emits rows for exactly one observed outcome class, and writes them to its own fragment file. The three fills may run in any order and never edit each other's fragments or the skeleton.
+3. Verify (`-5-verify`): audit all three outcome fragments against the manifest and against workspace source. Report-only.
+4. Finalize (`-5-finalize`): assemble the three outcome fragments into the single Prompt 5 research artifact consumed by `hve-resiliency-consolidate-5-failure-degraded`. Set completion status once.
 
 Every artifact emitted by this pipeline uses `source-prompt: hve-resiliency-researcher-5` and `schema-version: 1` and targets the current repository only.
 
@@ -35,23 +35,22 @@ The manifest records:
 * `generatedAt`: UTC date `YYYY-MM-DD`.
 * `researchRoot`: normalized workspace-relative research root.
 * `skeletonPath`: normalized workspace-relative path to the Prompt 5 skeleton artifact.
-* `fragmentDir`: normalized workspace-relative directory holding the four outcome fragments.
+* `fragmentDir`: normalized workspace-relative directory holding the three outcome fragments.
 * `sources`: the accepted Prompt 1a and Prompt 1b artifact records. Each record carries `promptId` (`1a` or `1b`), normalized `path`, `completionStatus`, and `contentSha256` (lowercase SHA-256 hexadecimal digest of the sanitized bytes).
 * `eligibleDependencies`: the frozen list of dependencies confirmed as used in Section 1 of the accepted 1a and 1b artifacts, excluding every entry classified in Section 2 or Section 3. Each record carries `dependency` (canonical name), `source` (`1a` or `1b`), and `evidence` (`<normalized-path>:L<start>-L<end>` copied verbatim from the source artifact).
 
 ## Manifest Auto-Location
 
 When a prompt's `manifestPath` input is omitted, auto-locate the frozen Prompt 5 manifest sidecar instead of asking the user. Enumerate files whose name ends with `-hve-resiliency-researcher-5-research.manifest.md` under the research root (`.copilot-tracking/research/` and its `YYYY-MM-DD/` dated subdirectories). Select the candidate under the lexicographically largest dated segment; if dated segments tie or are absent, select the one whose normalized path sorts last using ordinal comparison. Never use file modification time. If exactly one resolves, use it. If none resolve, stop `Blocked` with `Prompt 5 manifest not found; run hve-resiliency-researcher-5-0-scaffold first`. An explicitly supplied path always overrides auto-location.
-* `outcomeRouting`: the four fixed routing keys `startup-failure`, `silent-degradation`, `data-loss-partial-processing`, and `blocking-transactions`, each mapped to its fill prompt ID and its fragment file name.
+* `outcomeRouting`: the three fixed routing keys `startup-failure`, `data-loss-partial-processing`, and `blocking-transactions`, each mapped to its fill prompt ID and its fragment file name.
 
 Downstream stages never read Prompt 1a or Prompt 1b directly. They read the manifest and use the frozen `eligibleDependencies` list.
 
 ## Assessment Scope (inherited by every fill prompt)
 
-Identify repository code paths where dependency timeouts, DNS failures, authentication errors, or partial outages cause one of exactly these four observed outcomes:
+Identify repository code paths where dependency timeouts, DNS failures, authentication errors, or partial outages cause one of exactly these three observed outcomes:
 
 * `startup-failure`: application fails to start or fails to reach a healthy state on boot.
-* `silent-degradation`: application continues to serve requests but functional behavior is silently reduced (dropped events, ignored errors, downgraded responses, feature flags forcing bypass, no operator signal).
 * `data-loss-partial-processing`: a message, record, or write may be lost, partially processed, duplicated in a way that violates business intent, or left in an inconsistent state.
 * `blocking-transactions`: a request path, consumer, producer, or scheduled job blocks, deadlocks, exhausts a resource, or holds a transaction open beyond its bounded time.
 
@@ -78,11 +77,11 @@ Within one outcome fragment, a row key is: confirmed dependency + failure type (
 
 Emit a row only when positive repository evidence establishes its dependency and production owner, entrypoint, or path.
 
-Across fragments, the four fill prompts operate on disjoint outcome classes. If the same dependency + failure type + entrypoint produces two distinct observed outcomes, each outcome renders its own row in its own fragment. Do not merge rows across fragments during fill. Finalize will emit them as separate findings.
+Across fragments, the three fill prompts operate on disjoint outcome classes. If the same dependency + failure type + entrypoint produces two distinct observed outcomes, each outcome renders its own row in its own fragment. Do not merge rows across fragments during fill. Finalize will emit them as separate findings.
 
 ## Required Row Schema
 
-Every rendered row uses these fields exactly, in this order, with a single row-scoped ID of the form `F-5-<outcome-key>-00X` (for example `F-5-startup-001`, `F-5-degradation-002`, `F-5-data-loss-003`, `F-5-blocking-004`). Finalize preserves these IDs and reconciles ordering.
+Every rendered row uses these fields exactly, in this order, with a single row-scoped ID of the form `F-5-<outcome-key>-00X` (for example `F-5-startup-001`, `F-5-data-loss-003`, `F-5-blocking-004`). Finalize preserves these IDs and reconciles ordering.
 
 * Row ID
 * Failure mode
@@ -90,7 +89,7 @@ Every rendered row uses these fields exactly, in this order, with a single row-s
 * Triggering dependency + failure type (timeout / DNS failure / authentication failure / partial outage)
 * Scenario: Regional failover between West US 2 and West US
 * Code path / entrypoint
-* Observed behavior (startup failure / silent degradation / data loss or partial processing / blocking transactions)
+* Observed behavior (startup failure / data loss or partial processing / blocking transactions)
 * User or customer-visible impact
 * Business impact
 * Blast radius
@@ -119,7 +118,7 @@ Never estimate line numbers. Never merge line ranges. Never recalculate line num
 * Skeleton artifact: `<researchRoot>/YYYY-MM-DD/<repo-name>-hve-resiliency-researcher-5-research.md`.
 * Manifest sidecar: `<researchRoot>/YYYY-MM-DD/<repo-name>-hve-resiliency-researcher-5-research.manifest.md`.
 * Fragment directory: `<researchRoot>/YYYY-MM-DD/prompt-5-fragments/`.
-* Fragment files: `startup-failure.md`, `silent-degradation.md`, `data-loss-partial-processing.md`, `blocking-transactions.md`.
+* Fragment files: `startup-failure.md`, `data-loss-partial-processing.md`, `blocking-transactions.md`.
 * Verify audit report: `<researchRoot>/YYYY-MM-DD/prompt-5-fragments/verify-audit.md`.
 
 The finalize prompt writes the assembled result back to the skeleton artifact path, replacing the placeholders left by scaffold with the assembled fragment content. It never creates a separate final file.
@@ -134,4 +133,4 @@ Every stage sets exactly one terminal status on its own output:
 
 A `Blocked` or `Incomplete` run must not fill gaps by inference or by external search.
 
-The pipeline overall status is set exclusively by the finalize prompt on the assembled skeleton artifact, based on the terminal status of each of the four fragments plus the verify report.
+The pipeline overall status is set exclusively by the finalize prompt on the assembled skeleton artifact, based on the terminal status of each of the three fragments plus the verify report.

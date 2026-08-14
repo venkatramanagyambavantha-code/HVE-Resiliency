@@ -25,7 +25,7 @@ The only inputs to this stage are the manifest, the frozen eligible dependency l
 
 ## Outcome Focus
 
-Emit rows only for the observed outcome `startup-failure`: application fails to start or fails to reach a healthy state on boot when a dependency exhibits a timeout, DNS failure, authentication failure, or partial outage. Skip any evidence that maps to silent degradation, data loss or partial processing, or blocking transactions during steady-state request handling; those outcomes belong to their own fragments.
+Emit rows only for the observed outcome `startup-failure`: application fails to start or fails to reach a healthy state on boot when a dependency exhibits a timeout, DNS failure, authentication failure, or partial outage. Skip any evidence that maps to data loss or partial processing, or blocking transactions during steady-state request handling; those outcomes belong to their own fragments.
 
 Startup-failure discovery hints (evidence-only):
 
@@ -57,4 +57,4 @@ Write the fragment to `<fragmentDir>/startup-failure.md`, where `<fragmentDir>` 
 
 Report the row count, the count of rows carrying any `Unknown: not found after bounded search <scope>` descriptor, the fragment path, and the terminal fragment status.
 
-> **Next step:** Run `/hve-resiliency-researcher-5-2-silent-degradation`
+> **Next step:** Run `/hve-resiliency-researcher-5-2-data-loss-partial-processing`

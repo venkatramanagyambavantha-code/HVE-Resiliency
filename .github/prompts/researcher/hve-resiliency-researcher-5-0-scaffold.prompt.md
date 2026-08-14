@@ -43,7 +43,7 @@ The resulting `eligibleDependencies` list is the frozen Prompt 5 dependency scop
 
 Emit the frozen manifest sidecar per the Frozen Manifest Sidecar Contract in the shared instructions. Write it to `<researchRoot>/YYYY-MM-DD/<repo-name>-hve-resiliency-researcher-5-research.manifest.md`, where `YYYY-MM-DD` is the current UTC date and `<repo-name>` is the workspace root basename.
 
-Include the four fixed `outcomeRouting` records mapping each outcome key to its fill prompt ID (`hve-resiliency-researcher-5-1-startup-failure`, `hve-resiliency-researcher-5-2-silent-degradation`, `hve-resiliency-researcher-5-3-data-loss-partial-processing`, `hve-resiliency-researcher-5-4-blocking-transactions`) and its fragment file name.
+Include the three fixed `outcomeRouting` records mapping each outcome key to its fill prompt ID (`hve-resiliency-researcher-5-1-startup-failure`, `hve-resiliency-researcher-5-2-data-loss-partial-processing`, `hve-resiliency-researcher-5-3-blocking-transactions`) and its fragment file name.
 
 ## Skeleton Emission
 
@@ -53,7 +53,7 @@ Emit the Prompt 5 skeleton artifact at `<researchRoot>/YYYY-MM-DD/<repo-name>-hv
 <!-- markdownlint-disable-file -->
 ---
 title: <repo-name> Failure and Degraded Mode Behavior (Researcher 5)
-description: Evidence-only enumeration of failure modes where dependency timeouts, DNS failures, authentication errors, or partial outages cause startup failure, silent degradation, data loss or partial processing, or blocking transactions
+description: Evidence-only enumeration of failure modes where dependency timeouts, DNS failures, authentication errors, or partial outages cause startup failure, data loss or partial processing, or blocking transactions
 ms.date: YYYY-MM-DD
 ms.topic: research
 source-prompt: hve-resiliency-researcher-5
@@ -77,17 +77,13 @@ Prompt 5 is evidence-only. There are no implementation tasks.
 
 <!-- fragment placeholder: filled by hve-resiliency-researcher-5-1-startup-failure -->
 
-## 5.2 Silent Functional Degradation
+## 5.2 Data Loss or Partial Processing
 
-<!-- fragment placeholder: filled by hve-resiliency-researcher-5-2-silent-degradation -->
+<!-- fragment placeholder: filled by hve-resiliency-researcher-5-2-data-loss-partial-processing -->
 
-## 5.3 Data Loss or Partial Processing
+## 5.3 Blocking Transactions
 
-<!-- fragment placeholder: filled by hve-resiliency-researcher-5-3-data-loss-partial-processing -->
-
-## 5.4 Blocking Transactions
-
-<!-- fragment placeholder: filled by hve-resiliency-researcher-5-4-blocking-transactions -->
+<!-- fragment placeholder: filled by hve-resiliency-researcher-5-3-blocking-transactions -->
 
 ## Ledger and Terminal Outcomes
 
