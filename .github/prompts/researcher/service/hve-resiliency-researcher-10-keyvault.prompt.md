@@ -32,20 +32,28 @@ Assess only the current repository for these scenarios:
 
 * Full regional failover between West US 2 and West US
 
-Assess only these seven Key Vault areas:
+A separate Key Vault is provisioned per region: West US 2 and West US each have their own vault, with
+values scoped and configured specific to that region. Key provisioning and cross-region synchronization
+are the customer's responsibility and are never application-code findings. Neither are failover
+triggers, platform limitations, private endpoint behavior, identity and authentication configuration,
+deployment and infrastructure as code, or pipeline write guardrails.
 
-1. Regional vault model
-2. Secret, certificate, and key consistency
-3. Application behavior
-4. Failover triggers
-5. Platform limitations
-6. Synchronization and drift controls
-7. Health and global load balancer alignment
+Assess only these four Key Vault areas. Record a finding wherever the expected behavior is not
+evidenced.
+
+1. Region-specific vault URL: whether the SDK or application code connects to the Key Vault of its own
+   region. Record a finding where a shared, cross-region, or hardcoded vault URL is evidenced.
+2. Retry or circuit-breaker behavior on the Key Vault SDK or connector. Record a finding where none is
+   present.
+3. Whether Key Vault availability is reflected in the application health endpoint. Record a finding
+   where it is not.
+4. Secret retrieval pattern: whether secrets are read once and cached, or fetched on the request path.
+   Record a finding where a request-path fetch puts Key Vault on the hot path, or where every instance
+   refetches on start, because the surviving region starts or scales its instances together at failover
+   and Key Vault throttles.
 
 Do not add assessment areas or ownership fields. Verify architectural statements from repository
-evidence. Do not assume a two-vault model, active-active behavior, automatic failover behavior, private
-endpoint behavior, synchronization, or application and pipeline responsibility. Record unsupported
-model, private endpoint, synchronization, or responsibility statements as evidence gaps or constraints,
+evidence. Record unsupported model or responsibility statements as evidence gaps or constraints,
 without converting them into recommendations.
 
 ## Prerequisite gate
@@ -100,11 +108,9 @@ families only:
 * Dependency manifests
 * Key Vault SDK imports and client construction
 * Vault URI and regional configuration
-* Identity and authentication
-* Retry, timeout, fallback, and exception handling
-* Health endpoints and global load balancer probes
-* Deployment and infrastructure as code
-* Pipelines, synchronization, drift controls, and write guardrails
+* Retry, timeout, fallback, caching, and exception handling
+* Health endpoints and dependency readiness
+* Deployment and infrastructure as code, as the binding site for a regional vault URI
 
 Exclude generated or build output, dependency directories, vendored files, binaries, archives,
 certificates, keys, trust stores, caches, unrelated services, and tests unless demonstrably coupled to a
@@ -116,13 +122,10 @@ after it is frozen.
 
 Run these finite query families against the frozen manifest, once each, in this order:
 
-1. Regional vault model: regional endpoints, vault selection, deployment topology, and region binding
-2. Secret, certificate, and key consistency: duplicated categories, versions, refresh, and consistency
-3. Application behavior: client construction, retries, timeouts, fallback, caching, and exceptions
-4. Failover triggers: health signals, trigger conditions, sequencing, timing, DNS, and endpoint changes
-5. Platform limitations: service assumptions, private endpoints, identity, and unsupported failover claims
-6. Synchronization and drift controls: pipelines, replication, reconciliation, writes, and guardrails
-7. Health and global load balancer alignment: health endpoints, probe contracts, routing, and dependencies
+1. Regional vault selection: regional endpoints, vault URI, vault selection, and region binding
+2. Client resilience: client construction, retries, timeouts, backoff, circuit breaker, fallback, and exceptions
+3. Secret retrieval pattern: caching, refresh, startup versus request-path retrieval, and throttling handling
+4. Health signaling: health endpoints, probe contracts, and dependency readiness
 
 Use one baseline physical read per admitted text file. Allow one defect-specific corrective reread per
 file at most. Follow one owner or source indirection for each evidence-backed dependency, at depth 1

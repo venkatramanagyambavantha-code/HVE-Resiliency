@@ -90,6 +90,62 @@ header in the same feedback cell; where they conflict, the strategy governs.
   out or is partially unavailable.
 * Disposition: not duplicated in Prompt 14; coverage relies on Prompt 5.
 
+## Prompt 10 — Key Vault
+
+Reviewer strategy: a separate Key Vault per region, values scoped and configured specific to
+that region. Key provisioning and cross-region synchronization remain the customer's
+responsibility. Three findings required: region-specific vault URL, retry or circuit breaker,
+and Key Vault in the application health endpoint.
+
+The reviewer also noted "The current propmt is not explicit on this strategy for the finding
+Ask", so the scope section now states the two-vault-per-region model directly rather than
+leaving it to be inferred.
+
+### Added, not present in the prompt or the feedback
+
+**Secret retrieval pattern**
+
+* Assessment: the three required findings cover which vault is called, how failures are
+  handled, and whether health reflects it, but not how often the application calls Key Vault.
+  Fetching secrets on the request path puts Key Vault on the hot path, and refetching on every
+  instance start matters specifically at failover, when the surviving region starts or scales
+  its instances together and Key Vault throttles. That is application code and is amplified by
+  regional failover rather than being a general availability concern.
+* Disposition: added as area 4, with a matching query family.
+
+### Removed, agreeing with feedback
+
+* Secret, certificate, and key consistency, failover triggers, platform limitations, and
+  synchronization and drift controls: annotated "Not required as part of App Code Asessment".
+  Agreed; provisioning and synchronization are the customer's responsibility under the
+  strategy.
+* Identity and authentication: annotated "Not required for resiliency." Agreed.
+* Deployment and infrastructure as code, and pipelines with write guardrails: annotated "Not
+  app code resliency requirement. To be addressed as part of DevOps/Infra". Agreed as
+  assessment areas.
+* Zonal failure: annotated for removal, and already removed by the first zonal-removal pull
+  request.
+
+### Retained as an evidence source, not an assessment area
+
+**Deployment and infrastructure as code**
+
+* The reviewer removed it as an assessment topic, which is applied. It is kept in the frozen
+  manifest source families, relabelled as the binding site for a regional vault URI, because
+  the vault URL that finding 1 depends on is frequently set in a deployment manifest or Helm
+  value rather than in source. Dropping it from the manifest would leave finding 1 without
+  the evidence it needs.
+* Identity and authentication and the pipelines family were dropped from the manifest as well
+  as from the areas, since nothing assesses them now.
+
+### Changed
+
+* Health and global load balancer alignment is reframed to whether Key Vault availability is
+  reflected in the application health endpoint, matching Prompts 9 and 11 through 15. The
+  reviewer asked for it to be "more explicit, if not available add a finding".
+* The scope section previously said "Do not assume a two-vault model", which now contradicts
+  the strategy that states one vault per region.
+
 ## Prompt 11 — AKS and Istio
 
 Reviewer strategy: two independent clusters, each running Istio as its ingress gateway.
