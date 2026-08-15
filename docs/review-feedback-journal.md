@@ -141,7 +141,7 @@ the steady-state mirror read control, and Kafka client 3.8 or later.
 
 ### Changed at the reviewer's request
 
-**Topology must be declared, not inferred**
+**Kafka strategy must be explicitly provided, not inferred**
 
 * Reviewer annotation: "Kakfa strategy must be explicitly provided rather than inferred. In
   case of wrong detection, entire prompt needs to be rerun. Devs, Architect and App team
@@ -152,7 +152,7 @@ the steady-state mirror read control, and Kafka client 3.8 or later.
   and states that a wrongly detected strategy invalidates the run and forces a full rerun.
   The prompt deliberately does not name who provides the strategy or through what
   mechanism, because the feedback does not say.
-* Mechanism: the strategy arrives as a declared `${input:kafkaStrategy}` argument, following
+* Mechanism: the strategy arrives as an `${input:kafkaStrategy}` argument, following
   the `${input:targetDeployment}` precedent on planner-3 and planner-3a. Writing the
   prohibition without a channel would have left an agent with nowhere to read the value,
   and therefore no way to comply except by blocking every run or quietly inferring anyway.
@@ -196,8 +196,8 @@ covers them.
   configuration, mirror creation and promotion, cross-cluster offset synchronization,
   global load balancer routing and health probes, and platform failback. These are now
   named in the scope as infrastructure that is never an application-code finding.
-* The database-pairing concern is removed as an assessment area, since the topology is now
-  declared rather than derived from the database model.
+* The database-pairing concern is removed as an assessment area, since the strategy is now
+  explicitly provided rather than derived from the database model.
 * Zonal readiness: annotated "Cluster will be setup in a way to handle zone failure. Why
   app needs to be zone aware?" Agreed, and already removed by the first zonal-removal pull
   request.
@@ -534,6 +534,10 @@ replication still leaves to the application.
   is a deliberate exception to the standing rule that non-Kafka prompts assess both
   active-active and active-standby, on the same basis as the Kafka prompts: the
   topology is stated by the platform design rather than left to repository evidence.
+* The Active-Standby feedback objected to the evidence-only, read-only, and
+  secret-preservation controls on that prompt. It is not clear whether the objection was
+  that these duplicate the Application Platform Context, or that they do not belong on a
+  service prompt at all. The controls are retained unchanged pending that clarification.
 * Feedback on Prompt 14 and Prompt 15 flagged content that earlier merged pull requests
   had already removed, including zone-failure scope. The review copy appears to predate
   those merges, so remaining feedback in the same sheet should be checked against
