@@ -15,19 +15,32 @@ Global Load Balancer.
 
 ## Assessment Scope
 
-Assess only application code and configuration, not infrastructure, for regional failover between West US 2 and West US.
-Evaluate these ten questions without adding assessment areas:
+Two independent AKS clusters, one per region, each running Istio as its ingress
+gateway. Every microservice is deployed on both clusters from the same container
+images, versions, and configuration. A single Azure Container Registry with
+geo-replication to West US 2 and West US serves both clusters, so each pulls images
+from its local replica. Cluster provisioning, node pool sizing, registry
+geo-replication, and Istio installation are infrastructure and are never
+application-code findings.
 
-* Are timeouts defined for all outbound calls?
-* Are retries bounded and using backoff + jitter?
-* Are retries idempotent and safe?
-* Any assumptions that dependencies are always available?
-* Unbounded retries or retry storms?
-* Blocking or synchronous fan-out calls?
-* Are health probes aligned between GLB and backend services?
-* Risk of thread, connection, or resource exhaustion during partial failures?
-* Do readiness probes reflect real dependency health?
-* Could unhealthy pods still receive traffic?
+Assess only application code and configuration, not infrastructure, for regional
+failover between West US 2 and West US. Evaluate exactly these eleven areas without
+adding assessment areas. Record a finding wherever the expected behavior is not
+evidenced.
+
+1. Timeouts defined for all outbound calls
+2. Bounded retries using backoff and jitter
+3. Retry idempotency and safety
+4. Assumptions that a dependency is always available
+5. Unbounded retries or retry storms
+6. Blocking or synchronous fan-out calls
+7. Thread, connection, or resource exhaustion during partial failures
+8. Readiness probes reflecting real dependency health rather than process liveness
+9. Unhealthy pods continuing to receive traffic
+10. Whether the application health endpoint reflects the health of the dependencies
+    that decide whether this region can serve traffic
+11. Pod statelessness: request-scoped or session state held in the pod rather than
+    externalized, so that a pod or cluster lost during failover loses it
 
 ## Bounded Evidence Protocol
 
@@ -37,13 +50,13 @@ exclusion rule.
 1. For each confirmed dependency, allow at most 2 repository searches, 3 file
    reads, 2 repository traversal hops, and 1 follow-up discovery action. Start
    each dependency's counters at zero, increment a counter after its action,
-   and never reset or transfer counters across questions, repeated research,
-   or subagent calls. A single action may answer multiple questions without
+   and never reset or transfer counters across assessment areas, repeated research,
+   or subagent calls. A single action may answer multiple assessment areas without
    consuming another action.
 2. Allow at most 2 total research rounds for the prompt. The prompt-wide round
    counter starts at zero, becomes 1 before the first discovery action, and
    becomes 2 before the first follow-up or second-pass action. It never resets
-   across dependencies, questions, repeated research, or subagent calls. Do
+   across dependencies, assessment areas, repeated research, or subagent calls. Do
    not start a third round.
 3. Prohibit production discovery by default. Access production only when the
    user supplies both an approved source and a bounded access method. Stay
@@ -60,11 +73,11 @@ exclusion rule.
    budgets is legal and is not a prohibited revisit. After exhaustion, do not
    broaden or repeat a query, revisit a source, add a traversal, or reset a
    counter.
-5. Give every question for every eligible dependency exactly one terminal
+5. Give every assessment area for every eligible dependency exactly one terminal
    outcome: cited file-and-line evidence; `Unknown` after bounded repository
    evidence is exhausted; not applicable under the inherited exclusion rule;
    or `Unknown` because a named external evidence gap blocks the value.
-6. Stop discovery when all question-and-dependency pairs have terminal
+6. Stop discovery when all area-and-dependency pairs have terminal
    outcomes or round 2 is exhausted, whichever occurs first. At the round
    limit, serialize every unresolved value as `Unknown: two-round prompt budget
    exhausted`. During final consolidation after round 2, assert that every
