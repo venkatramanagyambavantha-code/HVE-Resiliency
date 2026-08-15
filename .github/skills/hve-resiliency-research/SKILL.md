@@ -67,10 +67,10 @@ Phase 2 runs only after Phase 1 is complete. Run only the prompts matching depen
 14. Run `/hve-resiliency-researcher-13-sql` (SQL Server)
 15. Run `/hve-resiliency-researcher-14-redis` (Redis)
 16. Run `/hve-resiliency-researcher-15-storage` (Azure Storage)
-17. Determine whether Cosmos DB and/or Azure SQL were confirmed in Prompt 1a Section 1, then run the matching Kafka prompt per the Database-to-Kafka Pairing Standard (see [Resiliency Research Platform Context](../../instructions/hve-resiliency-platform-context.instructions.md)). Kafka runs on Confluent Cloud; do not ask which Kafka provider is in use.
-    * Cosmos DB confirmed, Azure SQL not confirmed -> Run `/hve-resiliency-researcher-16-kafka-active-active`
-    * Azure SQL confirmed, with or without Cosmos DB -> Run `/hve-resiliency-researcher-16-kafka-active-standby-confluent`
-    * Neither confirmed -> Do not auto-select; ask the user which Kafka topology the application uses before proceeding
+17. Run the Kafka prompt that matches the explicitly provided Kafka strategy. The strategy is agreed by the development, architecture, and application teams before the assessment starts and is never inferred from the database model (see [Resiliency Research Platform Context](../../instructions/hve-resiliency-platform-context.instructions.md)). Kafka runs on Confluent Cloud; do not ask which Kafka provider is in use.
+    * `kafkaStrategy=Active-Active` -> Run `/hve-resiliency-researcher-16-kafka-active-active`
+    * `kafkaStrategy=Active-Standby` -> Run `/hve-resiliency-researcher-16-kafka-active-standby-confluent`
+    * No strategy provided -> Do not auto-select and do not derive one from the database model; ask for the agreed strategy before proceeding
 18. Run `/hve-resiliency-researcher-17-entraid` (Entra ID)
 
 ### Phase 3: Consolidation

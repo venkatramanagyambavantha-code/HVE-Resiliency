@@ -1,5 +1,6 @@
 ---
 description: Run bounded Prompt 16 Kafka Active-Standby-Confluent resiliency research
+argument-hint: "kafkaStrategy=Active-Active|Active-Standby (this prompt requires Active-Standby)"
 ---
 
 # HVE Resiliency Researcher 16 Kafka Active-Standby-Confluent
@@ -10,6 +11,14 @@ whether that instructions file is auto-applied.
 
 Execute this self-contained, read-only research workflow to completion. Do not use generic Task Researcher alternatives or rely on nested instruction, skill, or agent resolution.
 
+## Inputs
+
+* `${input:kafkaStrategy}`: (Required) The Kafka strategy for this application, agreed by the development, architecture, and application teams before the assessment starts. Accepted values are `Active-Active` and `Active-Standby`. Match the supplied value case-insensitively after trimming surrounding whitespace, and treat any value outside that pair as unrecognized rather than resolving it by synonym or inference. This prompt runs only for `Active-Standby`; `Active-Active` selects `hve-resiliency-researcher-16-kafka-active-active` instead.
+
+Never infer the Kafka strategy. Do not derive it from the confirmed database model, from the Database-to-Kafka Pairing Standard, or from any repository signal. If `${input:kafkaStrategy}` is absent, ambiguous, or anything other than `Active-Standby`, stop before any discovery action and record the eligibility block in the status-aware artifact.
+
+A wrongly detected strategy invalidates the whole run. If the strategy is later found to be wrong, rerun this prompt in full against the correct strategy rather than amending its findings.
+
 ## Scope And Safety Controls
 
 Assess only application code and configuration that produces to or consumes from Kafka under the Confluent Cloud active-standby scenario. Do not assess, redesign, recommend, configure, or provide examples for Confluent provisioning or operations. Do not provide remediation, implementation guidance, configuration examples, or a planning handoff.
@@ -18,7 +27,8 @@ Apply these controls directly:
 
 * Scope the repository to application behavior before, during, and after a managed Kafka cluster flip.
 * Evaluate the authoritative scenario: regional failover between West US 2 and West US.
-* Treat independent regional clusters, an active cluster, a standby cluster, managed replication, mirror-topic state, offset synchronization, promotion, failover, and failback as user-confirmed scenario assumptions only. Never present them as repository facts.
+* Applications connect through DNS rather than region-specific endpoints. DNS resolution directs traffic to the correct regional topic based on primary and secondary designation and the health of each region.
+* Independent regional clusters, the active and standby clusters, managed replication, mirror-topic state, offset synchronization, promotion, failover, and failback are handled by the Kafka shared services setup. They are never application-code findings, and failure detection and DNS reset are the shared service team's responsibility.
 * Treat bootstrap selection as application behavior and platform failover orchestration as out of scope.
 * Use Apache Kafka client 3.8 or later as the application client threshold only when a prerequisite-confirmed Confluent product or feature supplies an authoritative citation for that claim.
 * Produce evidence-only findings with repository-relative file and line citations. Never convert absent external control-plane material into an application finding.
@@ -67,12 +77,11 @@ Apply prerequisite consistency rules before repository discovery:
 1. Reject unreadable, malformed, wrong-repository, wrong-producer, nonterminal, or citation-free artifacts as blocked prerequisites.
 2. Reject duplicate artifacts for one producer as blocked unless their normalized verdicts and citation sets are byte-for-byte identical after line-ending normalization; retain one and record the duplicate.
 3. Kafka use is determined primarily by Prompt 1b, because Prompt 1a is scoped to Azure services and Prompt 1b is scoped to non-Azure services. Continue when the Prompt 1b Kafka verdict is `used`, regardless of the Prompt 1a Kafka verdict, provided the two verdicts do not directly contradict on the same Kafka-protocol backend. A direct contradiction exists only when Prompt 1a Section 1 identifies an Azure Kafka-protocol backend such as Event Hubs with a Kafka-protocol endpoint that Prompt 1b Section 2 or Section 3 disproves for the same broker set with a citation, or vice versa; classify a direct contradiction of that shape as blocked. Classify a Prompt 1b Kafka verdict of `unknown` as blocked. Classify a Prompt 1b Kafka verdict of `not-used` as not applicable, regardless of the Prompt 1a verdict.
-4. When Prompt 1a Section 1 identifies Cosmos DB or Azure SQL as used, require at least one matching Prompt 12 or Prompt 13 artifact, apply topology conflict rules (derive `mixed` only when one proves `single-master` and the other proves `multi-master`; identical normalized verdicts remain that verdict; any other conflict, malformed combination, or `unknown` is blocked), and use that verdict as the database-to-Kafka pairing input. When Prompt 1a places both Cosmos DB and Azure SQL in Section 2 or Section 3 and Prompt 1b Section 1 identifies a non-Azure database (for example, MongoDB Atlas) with a `Topology verdict:`, `Topology classification:`, or equivalent producer-declared topology field carrying a citation-backed hyphenated value, accept that Prompt 1b field as the pairing input under the same normalization rules and do not require Prompt 12 or Prompt 13. When neither Prompt 1a Section 1 nor Prompt 1b Section 1 establishes a citation-backed topology, treat the pairing input as `unknown` and record it as an evidence gap on the `KAS-20` concern rather than blocking the run.
-5. Classify `multi-master` as not applicable, because this active-standby prompt is not the selected pairing; direct the user to `hve-resiliency-researcher-16-kafka-active-active`. Classify `single-master` or `mixed` as eligible. Treat `unknown` per Rule 4 as an evidence gap on `KAS-20`, not as a blocker.
-6. Treat the Kafka platform as Confluent Cloud, a confirmed engagement platform fact; do not ask the operator which Kafka provider or Confluent product is in use. Establish whether the active-standby feature is in play (Cluster Linking, Replicator, MirrorMaker, or a user-named equivalent) from a cited prerequisite or the conversation. When the feature is established, run in Tier A and enable Confluent-specific concerns (`KAS-11`, and the managed-replication portions of `KAS-14`, `KAS-18`, and `KAS-20`). When the feature is not established but Prompt 1b Section 1 or the user establishes an Active-Standby Kafka topology with citations (for example, a `Topology classification: Active-Standby` producer field), run in Tier B: disposition every managed-replication-dependent assertion as `unknown/evidence gap` mapped to the missing feature detail, do not enter the Conditional External Evidence Protocol, and continue with the vendor-agnostic Kafka concerns. When neither the active-standby feature nor an Active-Standby topology is established, classify the run as blocked.
-7. When Prompt 1b Section 1 explicitly classifies the Kafka topology as Active-Active (or an equivalent multi-active label) with a citation, classify the run as not applicable and direct the user to `hve-resiliency-researcher-16-kafka-active-active`. Prompt 16 active-standby does not execute for that topology.
+4. Take the Kafka strategy from `${input:kafkaStrategy}`. Do not derive it from the confirmed database model, from Prompt 12 or Prompt 13 topology verdicts, or from the Database-to-Kafka Pairing Standard. Classify the run as not applicable and direct the user to `hve-resiliency-researcher-16-kafka-active-active` when the supplied strategy is `Active-Active`; classify it as blocked when no strategy is supplied.
+5. Treat the Kafka platform as Confluent Cloud, a confirmed engagement platform fact; do not ask the operator which Kafka provider or Confluent product is in use.
+6. Where the confirmed database model contradicts the supplied strategy, for example a multi-master database alongside an `Active-Standby` strategy, record the mismatch in the prerequisite ledger rather than changing the strategy or blocking the run. The mismatch is a gate observation, not an application-code finding.
 
-Do not infer Kafka use, Confluent identity, database service identity, or database topology from generic repository evidence. Stop immediately after rendering the status-aware artifact when the gate is not applicable or blocked. Record the selected tier (Tier A or Tier B) and its evidence pointers in the prerequisite ledger.
+Do not infer Kafka use, Confluent identity, database service identity, or database topology from generic repository evidence. Stop immediately after rendering the status-aware artifact when the gate is not applicable or blocked. Record the supplied strategy and its evidence pointers in the prerequisite ledger.
 
 ## Assumption And Evidence-State Register
 
@@ -89,7 +98,7 @@ Generic Kafka clients, bootstrap properties, configuration, or a Confluent depen
 
 ## Conditional External Evidence Protocol
 
-Enter this branch only in Tier A, after the prerequisite gate confirms the exact Confluent product and active-standby feature, and only when a specific platform-behavior assertion needed to validate the causal chain of an otherwise in-scope application finding remains unresolved by repository and prerequisite evidence. Tier B runs never enter this branch; they disposition managed-replication-dependent assertions as `unknown/evidence gap` and select a completed status from bounded repository evidence only. Never fetch to identify the product or feature, fill missing topology proof, or establish deployed configuration, topology, runtime state, regions, replication health, lag, offsets, ACLs, schemas, RPO, or data loss.
+Enter this branch only when a specific platform-behavior assertion needed to validate the causal chain of an otherwise in-scope application finding remains unresolved by repository and prerequisite evidence. When the assertion depends on managed-replication behavior that repository evidence cannot reach, disposition it as `unknown/evidence gap` and select a completed status from bounded repository evidence rather than entering this branch. Never fetch to identify the product or feature, fill missing topology proof, or establish deployed configuration, topology, runtime state, regions, replication health, lag, offsets, ACLs, schemas, RPO, or data loss.
 
 Use only authoritative Confluent vendor documentation for the confirmed product and feature. Access a page only by a claim-specific canonical URL already supplied by eligible evidence or the user; do not use broad web search, search-engine results, recursive link traversal, or links discovered from a fetched page. Enforce a run-wide maximum of two external retrieval attempts or pages and two retained external citations. Count every attempted page, including unavailable or failed retrievals, against the fetch cap. Fetch each canonical URL at most once, cache its sanitized result, and reuse that cache for every later assertion.
 
@@ -107,7 +116,7 @@ Keep evidence classes mechanically distinct in the artifact and every assertion 
 
 ## Immutable Production Source Manifest
 
-Construct one immutable text-only manifest before concern searches. Include at most 80 unique files, sorted by repository-relative path, from these roots only:
+Construct one immutable text-only manifest before area searches. Include at most 80 unique files, sorted by repository-relative path, from these roots only:
 
 * Build manifests and resolved dependency reports already present in the repository root
 * `src/main/` application source and resources
@@ -118,37 +127,27 @@ Exclude `.git/`, `.copilot-tracking/`, `target/`, generated output, vendored dep
 
 Record each manifest item as a default, production-bound value, or unavailable operational value. Apply this effective-value precedence from strongest to weakest: deployment or runtime binding, production profile override, application default, then code default. A stronger source wins only when it explicitly binds the same property. Do not guess unavailable deployment, secret-store, runtime, or external control-plane values.
 
-Follow at most one level of indirection from an included production source. Read no more than 12 indirection targets. Do not mutate the manifest after concern searches begin; newly mentioned out-of-manifest files become evidence gaps.
+Follow at most one level of indirection from an included production source. Read no more than 12 indirection targets. Do not mutate the manifest after area searches begin; newly mentioned out-of-manifest files become evidence gaps.
 
-## Closed Application Concern Taxonomy
+## Assessment Areas
 
-Use only the following concern IDs and meanings. Do not add, split, rename, or expand assessment topics:
+Cluster provisioning, Cluster Linking or Replicator configuration, mirror-topic state, promotion, cross-cluster offset synchronization, platform failover detection, DNS reset, and failback are handled by the Kafka shared services setup and are never application-code findings.
 
-1. `KAS-01`: Kafka bootstrap and DNS usage, hard-coded brokers, cached IP addresses, endpoint refresh, region-specific settings, and startup-only client construction
-2. `KAS-02`: `advertised.listeners` metadata caching and reuse of broker addresses that bypass bootstrap re-resolution after a cluster flip
-3. `KAS-03`: Direct and transitive Apache Kafka client version 3.8 or later
-4. `KAS-04`: Recovery of producers, consumers, stream processors, admin clients, schema clients, and health checks without restart, redeployment, manual configuration, or cache clearing
-5. `KAS-05`: Producer idempotence, acknowledgements, delivery callbacks, retry safety, buffering, flush behavior, ambiguous outcomes, and message-loss tolerance
-6. `KAS-06`: Consumer commit timing, stable group identity, synchronized-offset use, reset policy, replay tolerance, revocation, rebalance, and duplicate handling
-7. `KAS-07`: Reconnect and retry backoff, request and delivery timeouts, metadata refresh, retry exhaustion, cancellation, and exception handling
-8. `KAS-08`: Runtime cutover configuration or routing state loaded only at startup or cached for process lifetime
-9. `KAS-09`: Duplicate and idempotent processing after retry, replay, redelivery, failover, or rebalance
-10. `KAS-10`: Fire-and-forget sends, ignored failures, premature success, unsafe shutdown, commits before processing, and unhandled offset gaps
-11. `KAS-11`: Workflows that assume the standby has every latest record immediately after platform failover
-12. `KAS-12`: Workflows, state transitions, or transactions that cannot tolerate delayed, replayed, duplicated, or out-of-order events
-13. `KAS-13`: Non-idempotent business side effects that can create duplicate outcomes after retry or resume
-14. `KAS-14`: Cluster-specific schema, authentication, authorization, endpoint, credential, certificate, trust-store, principal, ACL, or cached-state dependencies
-15. `KAS-15`: Backpressure and catch-up behavior, bounded queues, poll starvation, max-poll intervals, memory growth, dropped work, and downstream overload
-16. `KAS-16`: Startup, dependency injection, singleton ownership, worker cancellation, graceful shutdown, readiness, restart loops, and permanently stopped clients
-17. `KAS-17`: Database writes, external API calls, Kafka transactions, outbox or inbox patterns, commit boundaries, poison messages, dead letters, and interrupted partial completion
-18. `KAS-18`: Failback and regional recovery, reconnection, replay, offset continuity, backlog processing, and restored steady state
-19. `KAS-19`: West US and West US 2 symmetry for bootstrap endpoints, topics, group IDs, retry policies, credentials, client versions, and observability
-20. `KAS-20`: Database-to-Kafka pairing between the prerequisite topology verdict and the active-standby Kafka scenario
-21. `KAS-21`: Alignment among GLB health, application readiness, Kafka connectivity, and downstream processing health
+Evaluate exactly these nine areas for every eligible Kafka dependency. Do not add, split, rename, or expand assessment areas. Record a finding wherever the expected behavior is not evidenced.
+
+1. DNS-based connection. The application connects through DNS rather than region-specific endpoints. Record a finding where a hard-coded broker, a cached IP address, a region-specific bootstrap setting, or a pinned regional endpoint is evidenced.
+2. Bootstrap re-resolution. Bootstrap DNS stays authoritative. Record a finding where `advertised.listeners` metadata or learned broker addresses are cached or persisted in a way that bypasses re-resolution, since DNS redirection is how this strategy fails over.
+3. Direct and transitive Apache Kafka client version 3.8 or later.
+4. Client recovery across a cluster flip. Producers, consumers, stream processors, admin clients, schema clients, and health checks reconnect with bounded retry backoff, request and delivery timeouts, and metadata refresh.
+5. Runtime cutover. Record a finding where routing or connection state is resolved once at startup or cached for the process lifetime, so a DNS change has no effect without a restart.
+6. Duplicate, delayed, and out-of-order processing. Producer idempotence, acknowledgements, delivery callbacks, consumer commit timing, stable group identity, reset policy, replay tolerance, non-idempotent business side effects, outbox or inbox patterns, and commit boundaries. Record a finding where a flip can produce duplicate business outcomes or where strict ordering is assumed.
+7. Standby freshness. Record a finding where a workflow assumes the standby holds every latest record immediately after the flip, since replication is asynchronous.
+8. Backpressure and catch-up after the flip. Bounded queues, poll starvation, max-poll intervals, and memory growth while the application drains a backlog.
+9. Whether Kafka availability is reflected in the application health endpoint.
 
 ## Bounded Discovery And Read Protocol
 
-Create one bundled query family for each concern ID using only terms already named by that concern and confirmed repository identifiers. Search each concern family exactly once against the immutable manifest, cache the result, and reuse that cache. Use one additional bundled dependency query for Kafka client declarations and resolved runtime versions. Do not perform broad rediscovery, synonym expansion, or repeated searches.
+Create one bundled query family for each assessment area using only terms already named by that area and confirmed repository identifiers. Search each area family exactly once against the immutable manifest, cache the result, and reuse that cache. Use one additional bundled dependency query for Kafka client declarations and resolved runtime versions. Do not perform broad rediscovery, synonym expansion, or repeated searches.
 
 Enforce these run-wide hard caps:
 
@@ -176,7 +175,7 @@ Never retain raw tool dumps, secret values, certificate bodies, private keys, or
 
 ## Candidate And Evidence Controls
 
-Assign candidates stable IDs `CAND-001` onward after sorting by concern ID, repository-relative path, first line, and normalized assertion text. Use the deduplication key `concern ID | scenario | failure mode | owning code path | observable effect`.
+Assign candidates stable IDs `CAND-001` onward after sorting by assessment area, repository-relative path, first line, and normalized assertion text. Use the deduplication key `assessment area | scenario | failure mode | owning code path | observable effect`.
 
 Give every candidate exactly one terminal disposition: `finding`, `rejected false positive`, `rejected inference`, `duplicate of <candidate ID>`, or `unknown/evidence gap`. A duplicate may point only to an earlier candidate. Never merge materially distinct failure modes.
 
@@ -233,7 +232,7 @@ When status is `completed zero findings`, state that no validated findings were 
 
 Render every finding with these field names in this exact order and no additional fields:
 
-1. `Issue Description:` Include finding ID, concern ID, and `Regional failover between West US 2 and West US`.
+1. `Issue Description:` Include finding ID, assessment area, and `Regional failover between West US 2 and West US`.
 2. `Risk Level (P0/P1/P2/P3):`
 3. `Code location (file + line number):`
 4. `Why this is a risk to app or regional failover:`

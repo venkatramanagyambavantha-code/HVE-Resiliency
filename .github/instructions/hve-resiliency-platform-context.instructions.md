@@ -53,11 +53,11 @@ Every prompt ends in exactly one terminal state: `Complete`, `Incomplete`, or `B
 ## Database-to-Kafka Pairing Standard
 
 * Kafka runs on Confluent Cloud (managed). Treat Confluent Cloud as the confirmed Kafka platform for both topologies; never ask the operator which Kafka provider, product, or environment is in use.
-* Databases that support Active-Active multi-master writes (for example Cosmos DB via Mongo API) pair with Kafka Active-Active
-* Databases that support only Active-Standby single-master writes (for example Azure SQL) pair with Kafka Active-Standby
-* An application using both an Active-Active and an Active-Standby database pairs with Kafka Active-Standby
-* Before running the Kafka service-specific prompt (16), confirm whether Cosmos DB and/or Azure SQL were confirmed in the Prompt 1 Section 1 dependency inventory, then select `hve-resiliency-researcher-16-kafka-active-active` or `hve-resiliency-researcher-16-kafka-active-standby-confluent` accordingly. When neither is confirmed, do not auto-select; ask the operator which Kafka topology the application uses before selecting the prompt.
-* Kafka service-specific prompts (16) must record whether the repository's confirmed database resiliency model matches the Kafka topology assumed by the selected prompt, and flag any mismatch as a finding
+* The Kafka strategy is explicitly provided for each application and is never inferred. Supply it to the Kafka service prompt as `kafkaStrategy`, agreed by the development, architecture, and application teams before the assessment starts. A wrongly detected strategy invalidates the run and requires a full rerun.
+* The database model is a cross-check on the provided strategy, not a selector for it. Multi-master writes (for example Cosmos DB via Mongo API) are consistent with Kafka Active-Active; single-master writes (for example Azure SQL) are consistent with Kafka Active-Standby; an application using both is consistent with Kafka Active-Standby
+* Where the confirmed database model contradicts the provided strategy, record the mismatch as a gate observation in the prerequisite ledger. It is not an application-code finding. Do not change the strategy and do not block the run
+* Before running the Kafka service-specific prompt (16), select the prompt from the provided `kafkaStrategy` value. The accepted values are exactly `Active-Active` and `Active-Standby`, matched case-insensitively after trimming surrounding whitespace: `Active-Active` selects `hve-resiliency-researcher-16-kafka-active-active`, `Active-Standby` selects `hve-resiliency-researcher-16-kafka-active-standby-confluent`. Treat any other value as unrecognized and ask for the agreed strategy. Do not select by database model.
+* Kafka service-specific prompts (16) must record whether the repository's confirmed database resiliency model matches the strategy the selected prompt was given, and flag any mismatch in the prerequisite ledger
 
 ## Context Management
 

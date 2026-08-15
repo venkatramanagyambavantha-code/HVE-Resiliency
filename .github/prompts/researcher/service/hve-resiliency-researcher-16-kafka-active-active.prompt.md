@@ -1,6 +1,7 @@
 ---
 description: "Run Prompt 16 Kafka Active-Active resiliency analysis"
 agent: "Task Researcher"
+argument-hint: "kafkaStrategy=Active-Active|Active-Standby (this prompt requires Active-Active)"
 ---
 
 # HVE Resiliency Researcher 16 Kafka Active-Active
@@ -11,21 +12,34 @@ whether that instructions file is auto-applied.
 
 Kafka runs on Confluent Cloud; treat that as a confirmed platform fact and do not ask the operator which Kafka provider or environment is in use.
 
+## Inputs
+
+* `${input:kafkaStrategy}`: (Required) The Kafka strategy for this application, agreed by
+  the development, architecture, and application teams before the assessment starts.
+  Accepted values are `Active-Active` and `Active-Standby`. Match the supplied value
+  case-insensitively after trimming surrounding whitespace, and treat any value outside
+  that pair as unrecognized rather than resolving it by synonym or inference. This prompt
+  runs only for `Active-Active`; `Active-Standby` selects
+  `hve-resiliency-researcher-16-kafka-active-standby-confluent` instead.
+
 ## Eligibility And Scope
 
 Run Prompt 16 directly and only when the provided Prompt 1 output meets both entry
 conditions before any repository traversal or discovery action:
 
 1. Prompt 1 Section 1 confirms Kafka as used.
-2. Prompt 1 Section 1 provides unambiguous database evidence that selects the
-   Active-Active Kafka topology under the Database-to-Kafka Pairing Standard.
+2. `${input:kafkaStrategy}` is supplied and equals `Active-Active`.
 
-Confirm whether Cosmos DB and Azure SQL are present and whether the confirmed database
-model matches Active-Active Kafka. If either entry condition is missing or ambiguous,
-stop at round 0 with no discovery actions. Record the eligibility block in the concise
-scope summary and terminal-outcome summary. Do not infer eligibility, search for
-substitute eligibility evidence, or fall back to Prompt 0, another prompt, or
-conditional skill behavior.
+Never infer the Kafka strategy. Do not derive it from the confirmed database model, from
+the Database-to-Kafka Pairing Standard, or from any repository signal. If
+`${input:kafkaStrategy}` is absent, ambiguous, or anything other than `Active-Active`,
+stop at round 0 with no discovery actions and record the eligibility block in the concise
+scope summary and terminal-outcome summary. Do not search for substitute eligibility evidence
+or fall back to Prompt 0, another prompt, or conditional skill behavior.
+
+A wrongly detected strategy invalidates the whole run. If the strategy is later found to
+be wrong, rerun this prompt in full against the correct strategy rather than amending its
+findings.
 
 Apply the inherited service exclusion rule. Analyze only Kafka dependencies confirmed
 as used in Prompt 1 Section 1. Treat dependencies classified as Checked But Not Present
@@ -67,44 +81,34 @@ region-local writable topic, not to the mirror or promoted topic.
 
 ## Assessment Concerns
 
-Evaluate all 18 concern groups for every eligible Kafka dependency:
+Cluster provisioning, Cluster Linking configuration, mirror creation and promotion,
+offset synchronization between clusters, global load balancer routing, and failback of
+the platform are infrastructure and are never application-code findings.
 
-1. Independent regional Kafka clusters, region-local writable topics, and one-way peer
-   mirrors created through Cluster Linking follow the architecture invariants.
-2. Consumer-level feature-flag cutover controls the read source at runtime and is not
-   ignored or bypassed.
-3. Producer routing targets only the surviving region's region-local writable topic in
-   steady state and after traffic redirection, never a mirror or promoted topic.
-4. Consumer subscriptions include the local writable topic and peer mirror topic when
-   the feature flag requires both, preserving completeness across cutover.
-5. Source, mirror, and promoted-topic offsets and consumer-group offset synchronization
-   remain correct across regions.
-6. Writable and mirror or promoted reads do not create duplicate business processing
-   during feature-flag transitions.
-7. Bootstrap DNS remains authoritative despite `advertised.listeners` metadata, and
-   code does not persist or hard-code learned broker host and port values.
-8. GLB routing, health probes, backend health, DNS bootstrap, and client reconnect
-   behavior support regional failover.
-9. Mirror promotion selects the surviving consumer read source without allowing writes
-   to the promoted topic.
-10. Producer idempotence and retry behavior prevent duplicate writes.
-11. Consumers tolerate replay and rebalance behavior.
-12. Code and configuration avoid single-active-region, single-topic, and static-target
-    assumptions that bypass the feature flag.
-13. Cross-region replication dependencies tolerate lag, stale mirrors, delayed
-    delivery, and temporary mirror unavailability.
-14. Business workflows and state or transactional transitions tolerate delayed,
-    replayed, and out-of-order events where strict ordering had been assumed.
-15. Non-idempotent operations do not create duplicate business outcomes after replay,
-    replication, retry, or repeated consumption.
-16. Producer and consumer routing loaded or cached at startup can change at runtime
-    without an application restart.
-17. Failback and regional recovery cover producer and consumer routing, offset
-    synchronization, mirror rebuild, replay, backlog processing, and restoration of
-    normal Active-Active operation.
-18. The confirmed database model matches Active-Active Kafka. Multi-master databases
-    pair with Active-Active Kafka, while any confirmed single-master database creates a
-    pairing mismatch.
+Evaluate exactly these seven areas for every eligible Kafka dependency. Record a
+finding wherever the expected behavior is not evidenced.
+
+1. Producer topic targeting: the producer writes only to the current region's writable
+   topic. Record a finding where a cross-region topic, a hardcoded topic endpoint, or a
+   write to a mirror or promoted topic is evidenced.
+2. Consumer read source: the consumer reads only from the current region's topic in
+   steady state, and from the mirror topic within the current region during failover.
+   Record a finding where this pattern is not implemented.
+3. Steady-state mirror read control: a feature flag blocks mirror topic reads in steady
+   state. Record a finding where no such control is present.
+4. Kafka client version: the application uses Apache Kafka client 3.8 or later, direct
+   or transitive. Record a finding where an earlier version is evidenced.
+5. Duplicate and out-of-order processing across cutover: reading the writable topic and
+   the mirror topic around a flag transition can deliver the same event twice or out of
+   order. Record a finding where consumption, business workflows, or state transitions
+   are not idempotent, or assume strict ordering, and where producer retries can write
+   duplicates.
+6. Runtime effect of the cutover control: the read source must change at runtime.
+   Record a finding where producer or consumer routing is resolved once at startup and
+   cached, so flipping the feature flag has no effect without a restart.
+7. Broker bootstrap: bootstrap DNS stays authoritative. Record a finding where code
+   persists or hard-codes broker host and port values learned from
+   `advertised.listeners`, which prevents reconnection after regional failover.
 
 For each evidence-backed issue, classify the failure risk as P0, P1, P2, or P3 under
 the Application Platform Context. Explain why the classification applies and cite the
@@ -120,7 +124,7 @@ For each eligible Kafka dependency, initialize these action counters to zero:
 * At most 2 repository traversal hops
 * At most 1 focused follow-up
 
-Apply each dependency's counters cumulatively across aliases, all 18 concerns,
+Apply each dependency's counters cumulatively across aliases, all seven areas,
 environments, both rounds, repeated research, delegated work, and subagent calls.
 Increment a counter immediately after its action. Never reset, transfer, duplicate, or
 reassign a counter. Reuse one action's evidence for every concern it answers.
