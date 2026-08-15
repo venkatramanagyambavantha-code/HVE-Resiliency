@@ -90,6 +90,118 @@ header in the same feedback cell; where they conflict, the strategy governs.
   out or is partially unavailable.
 * Disposition: not duplicated in Prompt 14; coverage relies on Prompt 5.
 
+## Prompt 16 — Kafka Active-Standby, and the shared Kafka strategy change
+
+Reviewer strategy: applications connect through DNS rather than region-specific endpoints.
+DNS resolution directs traffic to the correct regional topic based on primary and secondary
+designation and the health of each region. A minimum Kafka client version of 3.8 is
+required. The same "strategy must be explicitly provided rather than inferred" note appears
+on this cell as on Active-Active, so both prompts take the identical gate.
+
+### Shared change across both Kafka prompts
+
+Both prompts now declare `${input:kafkaStrategy}` and run only when the supplied value
+matches their own strategy. The platform context's Database-to-Kafka Pairing Standard is
+demoted from a selector to a cross-check: the database model no longer chooses the prompt,
+and a contradiction between the confirmed database model and the supplied strategy is
+recorded as a finding rather than changing the strategy or blocking the run. SKILL.md
+selects the prompt from the supplied value and asks for it when absent, instead of deriving
+it from whether Cosmos DB or Azure SQL was confirmed.
+
+This removed the Tier A and Tier B branching from the Active-Standby prompt, which existed
+only to handle a topology established by inference at varying confidence.
+
+### Removed, agreeing with feedback
+
+* Independent regional clusters, active and standby clusters, managed replication,
+  mirror-topic state, offset synchronization, promotion, failover, and failback: annotated
+  "This will be handled by the kafka shared services setup. We need not asess the App code
+  from this perspective." Agreed, and now named as shared-services responsibility that is
+  never an application-code finding.
+* Failure detection and DNS reset: annotated "Any failure will be detected by the shared
+  service team and DNS will be reset as required. No impact on the app." Agreed.
+* Zonal readiness: already removed by the first zonal-removal pull request.
+* Database-to-Kafka pairing as an eligibility rule: removed, since the strategy is now
+  supplied.
+
+The twenty-one concern taxonomy reduces to eleven. Dropped: failback and regional recovery,
+cluster-specific credential and trust-store dependencies, West US to West US 2 configuration
+symmetry, and the pairing rule. The reviewer asked "What is the source of these? Why do we
+need these for resiliency asessment ?", and the honest answer for those four is that they
+are platform or deployment concerns rather than application code. The remaining eleven are
+all application code.
+
+## Prompt 16 — Kafka Active-Active
+
+Reviewer strategy: the producer always writes to the current region's topic. The consumer
+always reads from the current region's topic, and during failover reads from the mirror
+topic within the current region. In steady state, reads from the mirror topic are blocked
+by a feature flag. Four findings required: producer topic targeting, consumer read source,
+the steady-state mirror read control, and Kafka client 3.8 or later.
+
+### Changed at the reviewer's request
+
+**Topology must be declared, not inferred**
+
+* Reviewer annotation: "Kakfa strategy must be explicitly provided rather than inferred. In
+  case of wrong detection, entire prompt needs to be rerun. Devs, Architect and App team
+  must be aligned on the strategy before asessment is started."
+* Disposition: the eligibility gate no longer derives the strategy from the confirmed
+  database model. It now requires the Kafka strategy to be explicitly provided as
+  Active-Active with the development, architecture, and application teams aligned on it,
+  and states that a wrongly detected strategy invalidates the run and forces a full rerun.
+  The prompt deliberately does not name who provides the strategy or through what
+  mechanism, because the feedback does not say.
+* Mechanism: the strategy arrives as a declared `${input:kafkaStrategy}` argument, following
+  the `${input:targetDeployment}` precedent on planner-3 and planner-3a. Writing the
+  prohibition without a channel would have left an agent with nowhere to read the value,
+  and therefore no way to comply except by blocking every run or quietly inferring anyway.
+* The Database-to-Kafka Pairing Standard and SKILL.md are changed in the same commit, so
+  the framework never infers a strategy and then hands it to a prompt that rejects
+  inferred strategies.
+
+### Added, not present in the prompt or the feedback
+
+Eighteen concern groups reduce to seven areas. The four required findings are areas 1
+through 4. Three application-code concerns from the original eighteen are retained because
+they are consequences of the cutover mechanism the strategy describes, and no other prompt
+covers them.
+
+**Duplicate and out-of-order processing across cutover** (was concerns 6, 10, 11, 14, 15)
+
+* Assessment: the strategy's own mechanism creates this. Around a flag transition the
+  consumer can read the writable topic and the mirror topic, so the same event can arrive
+  twice or out of order. Whether consumption, business workflows, and state transitions are
+  idempotent, and whether producer retries can write duplicates, is application code.
+* Disposition: retained as area 5.
+
+**Runtime effect of the cutover control** (was concern 16)
+
+* Assessment: finding 3 asks only whether a feature flag exists. If the read source is
+  resolved once at startup and cached, flipping the flag does nothing without a restart,
+  and the control the strategy depends on silently fails at the moment it is needed.
+* Disposition: retained as area 6.
+
+**Broker bootstrap** (was concern 7)
+
+* Assessment: code that persists or hard-codes broker host and port values learned from
+  `advertised.listeners` cannot reconnect after regional failover. Application code, and
+  not covered by any of the four findings.
+* Disposition: retained as area 7.
+
+### Removed, agreeing with feedback
+
+* Reviewer annotation on the concern list: "These are all Infra and setup related. Why App
+  code needs to be asessed on these?" Agreed for cluster provisioning, Cluster Linking
+  configuration, mirror creation and promotion, cross-cluster offset synchronization,
+  global load balancer routing and health probes, and platform failback. These are now
+  named in the scope as infrastructure that is never an application-code finding.
+* The database-pairing concern is removed as an assessment area, since the topology is now
+  declared rather than derived from the database model.
+* Zonal readiness: annotated "Cluster will be setup in a way to handle zone failure. Why
+  app needs to be zone aware?" Agreed, and already removed by the first zonal-removal pull
+  request.
+
 ## Prompt 10 — Key Vault
 
 Reviewer strategy: a separate Key Vault per region, values scoped and configured specific to
