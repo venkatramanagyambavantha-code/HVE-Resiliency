@@ -90,6 +90,99 @@ header in the same feedback cell; where they conflict, the strategy governs.
   out or is partially unavailable.
 * Disposition: not duplicated in Prompt 14; coverage relies on Prompt 5.
 
+## Prompt 12 — Cosmos DB
+
+Reviewer strategy: multi-region writes for active-active workloads. Both West US 2 and
+West US accept writes simultaneously, eliminating the write region as a single point of
+failure.
+
+### Added at the reviewer's request
+
+**`_etag` optimistic concurrency**
+
+* Reviewer annotation: "This is not mentioned and it must be part of a finding in case
+  of Cosmos Updates of a document."
+* Disposition: added as its own assessment area with its own query family, covering
+  update paths that read, modify, and write a document without a precondition. Kept
+  separate from the write-safety area so the requirement stays visible.
+* Term selection: Microsoft documents `_etag` and `If-Match` optimistic concurrency
+  under "Applies to: NoSQL" only, and this prompt is scoped to the Cosmos DB Mongo API,
+  where concurrency is expressed through a version or `_etag` value inside an update
+  filter. The family carries both vocabularies. These are search terms rather than
+  architectural claims: a family is one bundled invocation, so extra terms cost nothing
+  and the evidence gates discard false positives, while a missing term is unrecoverable.
+
+### Added, not present in the prompt or the feedback
+
+**Cosmos DB availability in the application health endpoint**
+
+* Assessment: the prompt had "backend health-probe and global load balancer health
+  alignment", the platform-side framing the reviewer rejected on Functions, Storage,
+  Redis, and SQL. The application-side question is whether its own health endpoint
+  reflects Cosmos availability.
+* Disposition: reframed, and the query family narrowed to drop global load balancer and
+  routing terms.
+
+### Retained against feedback
+
+**Read-your-writes across regions**
+
+* Reviewer annotation: "No custom logic to be implemented. SDK should cover it. No need
+  to assess from this front." Also covered by "Point number 4, 6 and 8 are more Infra
+  aligned."
+* Assessment: partly disagree. The driver carries a session token within one client
+  instance, so single-client read-your-writes is covered. It does not carry across
+  instances: a load-balanced request that writes through one pod and reads through
+  another can miss its own write under session consistency. That is application design.
+* Disposition: removed as a standalone area, because the reviewer is right about the
+  common case and a dedicated area would mostly produce noise. Recorded here because the
+  cross-instance case is real and needs its own area if session consistency is later
+  confirmed in evidence.
+
+### Removed, agreeing with feedback
+
+**Mid-request behavior when a write region becomes unavailable** (was area 6)
+
+* Reviewer annotation: failed requests "should be recovered operationally rather than in
+  code", since handling it in the application "would introduce excessive complexity".
+* Assessment: agreed. With multi-region writes the local region accepts the write, so
+  the mid-request window is narrow, and the retry and idempotency areas already cover
+  the application-side response.
+
+**Evidence-bound data-loss exposure and no-data-loss acceptance boundary** (was area 8)
+
+* Reviewer annotation: "This should be handled at shared service/infra level. This
+  should not be part of App Code."
+* Assessment: agreed for Cosmos DB, and deliberately different from the SQL prompt,
+  where asynchronous replication leaves an application-visible recovery point.
+  Multi-region writes acknowledge locally, so the durability boundary is a platform
+  property.
+
+**Failover configuration in the driver** (part of area 2)
+
+* Reviewer annotation: "Failover configuration is part of Infra not app, This needs to
+  be removed."
+* Assessment: agreed. Driver retries and timeouts stay.
+
+**East US and fallback selection**
+
+* Reviewer annotations: "Why East US? Not able to infer anything from the entire
+  statement", and the underlined "East US, hosts, URIs, DNS, and fallback selection"
+  marked for removal because failback selection assumes application logic that belongs
+  to the global load balancer.
+* Assessment: agreed on both. East US is removed from the scope paragraph, the region
+  and endpoint selection family, and the priority-derivation sentence. The scope
+  paragraph itself was rewritten: it previously instructed the reader to treat
+  active-active and multi-region writes as unverified claims, which contradicts the
+  strategy that states them as the configuration. That contradiction is why the
+  paragraph could not be read coherently.
+
+**Zonal failure**
+
+* Reviewer annotation: "No impcat on application code/design ... This needs to be
+  removed."
+* Assessment: agreed, and already removed by the first zonal-removal pull request.
+
 ## Prompt 13 — Azure SQL
 
 Reviewer strategy: West US 2 is the primary read-write region and West US is the
