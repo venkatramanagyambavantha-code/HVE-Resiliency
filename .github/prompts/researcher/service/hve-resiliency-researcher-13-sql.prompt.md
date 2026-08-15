@@ -18,22 +18,30 @@ Analyze this application only when Azure SQL is confirmed by the inherited
 service exclusion rule. Assess the application as using Azure SQL with Failover Groups and
 Managed Identity authentication.
 
-Evaluate only the application's ability to:
-
-* Fail over regionally with controlled write safety
-* Prevent data corruption or split-brain during failover
+West US 2 is the primary read-write region and West US is the hot-standby secondary.
+The secondary stays continuously synchronized with the primary through asynchronous
+data replication, which keeps transactional workloads free of cross-region latency but
+leaves a non-zero recovery point: a transaction committed at the primary may not have
+reached the secondary when failover occurs. Failover Groups own the role change,
+endpoint redirection, replication, and write fencing, and there is a single write
+region, so split-brain and write-blocking behavior are not application-code findings.
+The application owns how it connects, how it behaves across the failover window, and
+whether it tolerates replication lag.
 
 Assess these existing areas without adding assessment areas:
 
-* Database access through the Failover Group read-write listener rather than
-  direct endpoints
-* Write safety during regional failover, including write blocking, fencing,
-  and maintenance mode
-* Client and application retry, timeout, and circuit-breaker behavior
+* Database access through the Failover Group read-write listener rather than direct
+  server endpoints or region-pinned connection strings
+* Client and application behavior across the failover window, including retry,
+  timeout, circuit-breaker, and connection-pool invalidation once the listener
+  resolves to the new primary
 * Transaction idempotency and duplicate-write prevention
-* Connection-pool behavior during SQL role changes
-* State handling through stateless pods, externalized sessions, and queues
-* Health-probe alignment between the global load balancer and backend services
+* Tolerance of the non-zero recovery point that asynchronous replication creates,
+  including whether application code assumes a committed transaction survives
+  failover and whether reconciliation exists for transactions that do not
+* Read-after-write assumptions when reading through the read-only listener or the
+  secondary replica, which lags the primary
+* Whether Azure SQL availability is reflected in the application health endpoint
 
 ## Bounded Evidence Protocol
 
