@@ -13,7 +13,7 @@ Execute this self-contained, read-only research workflow to completion. Do not u
 
 ## Inputs
 
-* `${input:kafkaStrategy}`: (Required) The Kafka strategy for this application, agreed by the development, architecture, and application teams before the assessment starts. This prompt runs only when the supplied value is `Active-Standby`.
+* `${input:kafkaStrategy}`: (Required) The Kafka strategy for this application, agreed by the development, architecture, and application teams before the assessment starts. Accepted values are `Active-Active` and `Active-Standby`. Match the supplied value case-insensitively after trimming surrounding whitespace, and treat any value outside that pair as unrecognized rather than resolving it by synonym or inference. This prompt runs only for `Active-Standby`; `Active-Active` selects `hve-resiliency-researcher-16-kafka-active-active` instead.
 
 Never infer the Kafka strategy. Do not derive it from the confirmed database model, from the Database-to-Kafka Pairing Standard, or from any repository signal. If `${input:kafkaStrategy}` is absent, ambiguous, or anything other than `Active-Standby`, stop before any discovery action and record the eligibility block in the status-aware artifact.
 

@@ -15,8 +15,12 @@ Kafka runs on Confluent Cloud; treat that as a confirmed platform fact and do no
 ## Inputs
 
 * `${input:kafkaStrategy}`: (Required) The Kafka strategy for this application, agreed by
-  the development, architecture, and application teams before the assessment starts. This
-  prompt runs only when the supplied value is `Active-Active`.
+  the development, architecture, and application teams before the assessment starts.
+  Accepted values are `Active-Active` and `Active-Standby`. Match the supplied value
+  case-insensitively after trimming surrounding whitespace, and treat any value outside
+  that pair as unrecognized rather than resolving it by synonym or inference. This prompt
+  runs only for `Active-Active`; `Active-Standby` selects
+  `hve-resiliency-researcher-16-kafka-active-standby-confluent` instead.
 
 ## Eligibility And Scope
 
