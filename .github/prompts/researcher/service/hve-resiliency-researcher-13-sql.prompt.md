@@ -1,6 +1,6 @@
 ---
 description: Run Prompt 13 SQL Server resiliency analysis for Application
-agent: Task Researcher
+agent: "Task Researcher"
 ---
 
 # Application HVE Researcher 13 SQL Server
@@ -98,7 +98,7 @@ Track counters cumulatively in execution state. Keep tool calls, counters,
 searches, reads, file analysis, discovery narration, and repeated evidence out
 of the authoritative research artifact.
 
-## Evidence and Output Contract
+## Evidence And Output Contract
 
 Outside round-limit exhaustion, use `Unknown` only in an existing schema field
 and name the exhausted repository source class or external evidence gap. Never

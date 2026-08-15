@@ -20,7 +20,7 @@ whether that instructions file is auto-applied.
 Use only these exact paths for prerequisite artifacts. Never search, glob, select the latest file, or
 infer a prerequisite path.
 
-## Scope and execution override
+## Scope And Execution Override
 
 Execute this Key Vault service prompt only. Do not auto-start the full resiliency workflow. Skip Task
 Researcher Phase 2 and any recommendation-oriented completion behavior. Use repository evidence only.
@@ -56,7 +56,7 @@ Do not add assessment areas or ownership fields. Verify architectural statements
 evidence. Record unsupported model or responsibility statements as evidence gaps or constraints,
 without converting them into recommendations.
 
-## Prerequisite gate
+## Prerequisite Gate
 
 Validate both input paths before repository research:
 
@@ -87,7 +87,7 @@ Vault. Select `Blocked` for a missing, stale, malformed, ambiguous, conflicting,
 or unverifiable input. Do not scan the repository as a fallback and do not emit an empty finding result
 when this gate fails.
 
-## Sanitization boundary
+## Sanitization Boundary
 
 Sanitize data before every write, hash input, comparison, manifest record, excerpt, candidate record,
 log entry, or output operation. Never retain vault names or full URIs; tenant,
@@ -98,7 +98,7 @@ Retain only the generalized type, normalized workspace-relative file and line, s
 category, non-sensitive behavior, and a stable redacted identity. Use the stable redacted identity for
 comparisons and hashes. Select `Blocked` when safe sanitization is impossible.
 
-## Frozen production manifest
+## Production Source Manifest
 
 After the prerequisite gate and before reading production source content, perform one path-enumeration
 pass and create one immutable, normalized, text-only production manifest. Sanitize every manifest value
@@ -118,7 +118,7 @@ production path. Treat documentation only as an evidence lead; it is not final e
 validated production citation. Freeze the manifest before content reads. Do not admit additional files
 after it is frozen.
 
-## Bounded evidence collection
+## Bounded Evidence Collection
 
 Run these finite query families against the frozen manifest, once each, in this order:
 
@@ -144,7 +144,7 @@ Apply these run caps:
 Reaching a hard limit stops new admission and discovery. Finish bounded classification and disposition of
 already retained candidates. Mark the run `Incomplete` unless a higher-precedence terminal state applies.
 
-## Candidate ledger and finding construction
+## Candidate And Evidence Controls
 
 Create each stable candidate ID from the deterministic normalized tuple of assessment area, scenario,
 failure-mode class, normalized path and line, and sanitized symbol or category. Sort this tuple before
@@ -177,14 +177,14 @@ them as findings. Use `Unknown: evidence unavailable` only in nullable prose fie
 mitigations, or constraints. Never use it for priority, scenario, issue identity, code location, or
 evidence.
 
-## Negative evidence rules
+## Negative Evidence Rules
 
 Use `Complete with no evidence` only when Key Vault applicability is confirmed and every frozen source
 family and query family completes without an evidence-bearing candidate. For an absence within otherwise
 partial coverage, use `Not observed in completed searches` and identify its completed scope. Do not make
 exhaustive negative claims when coverage is partial.
 
-## Terminal status and metrics
+## Terminal Status And Metrics
 
 Apply terminal status precedence in this order:
 
@@ -202,7 +202,7 @@ rereads, query families, candidates by disposition, findings, citations and inva
 unsupported assertions, narrowed assertions, indirections, subagent invocations (always zero),
 sanitization failures, retained sanitized evidence bytes, and each hard limit.
 
-## Completion gate
+## Completion Gate
 
 Select `Complete` only after the manifest is frozen; every admitted file and finite query family is
 complete; every retained candidate has a terminal disposition; required citations, output schema, and
@@ -211,7 +211,7 @@ semantic support from a mapped sanitized excerpt and citation; no required confl
 verification pass produces no changes. Permit at most one corrective pass and corrective render. If
 correction occurs, run one post-correction verification. Do not exceed two full verification passes total.
 
-## Output
+## Research Artifact
 
 Write one sanitized research artifact to
 `.copilot-tracking/research/<repository-name>-hve-resiliency-researcher-10-keyvault-research-output.md`,

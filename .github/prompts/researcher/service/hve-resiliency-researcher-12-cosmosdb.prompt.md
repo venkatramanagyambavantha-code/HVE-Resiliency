@@ -1,6 +1,7 @@
 ---
 description: "Assess Cosmos DB Mongo API regional failover evidence with bounded repository research"
 argument-hint: "prompt1aArtifactPath=... prompt1bArtifactPath=..."
+agent: "Task Researcher"
 ---
 
 # Application HVE Researcher 12 Cosmos DB
@@ -19,7 +20,7 @@ whether that instructions file is auto-applied.
 Use only these paths for prerequisite artifacts. Do not search, glob, select a recent file, or infer a
 prerequisite path.
 
-## Scope and execution contract
+## Scope And Execution Contract
 
 Execute only this Prompt 12 research workflow. Do not start another resiliency prompt, delegate work, or
 perform recommendation or implementation work. Keep all repository interaction read-only. Use only
@@ -51,7 +52,7 @@ Keep the Cosmos DB scope closed to these six assessment areas:
 
 Do not add assessment areas, ownership fields, recommendations, alternatives, examples, or code changes.
 
-## Prerequisite gate
+## Prerequisite Gate
 
 Validate both input artifacts before repository discovery:
 
@@ -110,7 +111,7 @@ confirmed dependency scope. Select `blocked-prerequisite` for a missing, malform
 conflicting, cross-run, cross-revision, or unverifiable artifact, unavailable current revision, invalid
 citation, or absent Cosmos DB applicability decision. Do not scan the repository as a fallback.
 
-## Minimum capabilities and safety boundary
+## Minimum Capabilities And Safety Boundary
 
 Require deterministic path enumeration, bounded text search over an explicit file list, bounded file and
 line reads, current repository name and revision reads, and atomic Markdown artifact writing. Prohibit
@@ -136,7 +137,7 @@ retained in caches, ledgers, candidates, evidence stores, and the artifact. Sele
 if caller-side sanitization cannot be guaranteed before the first retention or derivation, or a
 `bounded-partial` status if sanitization fails after retained evidence collection begins.
 
-## Immutable production manifest
+## Production Source Manifest
 
 After the prerequisite gate, enumerate paths once and freeze one normalized, sorted, text-only production
 manifest. Admit at most 240 files from only these roots and file classes:
@@ -156,7 +157,7 @@ may not be reintroduced as production evidence. Record an external production va
 value, control-plane setting, or deployment binding unavailable from this manifest as an evidence gap.
 Do not admit files after the manifest freezes or perform another path traversal.
 
-## Finite bundled query matrix
+## Bundled Query Matrix
 
 Run exactly one bounded search invocation for each query family below, in order, against the frozen
 manifest. Bundle all listed terms for that family into its single invocation, cache the complete sanitized
@@ -191,7 +192,7 @@ Reaching a cap immediately stops new searches, reads, indirections, candidate ad
 admission governed by that cap. Complete bounded disposition and rendering for already retained records,
 then select the applicable `bounded-partial` status. Never evict an earlier record to admit a later one.
 
-## Candidate and assertion ledger
+## Candidate And Evidence Controls
 
 Sort cached hits by normalized path, line, query family, and sanitized identity before candidate admission.
 Create each candidate ID from the deterministic tuple of assessment area, authoritative scenario,
@@ -210,7 +211,7 @@ Emit separate finding rows for every materially different failure mode. Deduplic
 only identical assertions with the same scenario, failure mode, outcome, priority, mitigations,
 constraints, and evidence owners. Preserve all merged candidate IDs.
 
-## Evidence, priority, and field semantics
+## Evidence, Priority, And Field Semantics
 
 Every substantive positive claim and source-local negative configuration value, including each issue,
 scenario effect, impact, mitigation, constraint, and priority rationale, requires assertion-level
@@ -240,7 +241,7 @@ after complete coverage. Never use Unknown for terminal status, priority, issue 
 scenario, code location, citations, or required identifiers. Do not render a record that cannot satisfy
 a non-nullable field.
 
-## Deterministic completion and terminal status
+## Deterministic Completion And Terminal Status
 
 Discovery saturates only after the manifest is frozen, all six cached query families complete, every
 admitted hit is read or terminally limited, every candidate has one terminal disposition, every rendered
@@ -260,7 +261,7 @@ Permit at most one corrective render. Run one full validation pass; if it change
 post-correction pass. A remaining invalid citation, unsupported assertion, conflict, unresolved candidate,
 or incomplete source or query family requires a `bounded-partial` status unless a higher status applies.
 
-## Output and handoff
+## Research Artifact
 
 Write one sanitized artifact to
 `.copilot-tracking/research/<repository-name>-hve-resiliency-researcher-12-cosmosdb-research-output.md`,

@@ -1,5 +1,6 @@
 ---
 description: Research Entra ID resiliency for Application Platform regional failure
+agent: "Task Researcher"
 ---
 
 # Application HVE Researcher 17 Entra ID
@@ -185,7 +186,7 @@ For `ZERO_FINDINGS`, write exactly `No evidence-backed Entra ID resiliency findi
 under `Findings` and emit no finding rows. For all other non-finding terminal statuses,
 write exactly `No finding rows emitted for terminal status: <status>.` under `Findings`.
 
-## Final Validation and Handoff
+## Final Validation And Handoff
 
 Before completion, validate that:
 

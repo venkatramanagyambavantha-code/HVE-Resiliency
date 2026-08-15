@@ -1,6 +1,6 @@
 ---
 description: Run Prompt 14 Redis resiliency analysis for Application
-agent: Task Researcher
+agent: "Task Researcher"
 ---
 
 # Application HVE Researcher 14 Redis
@@ -140,7 +140,7 @@ Consolidation fails until all unresolved round-limit values use the exact requir
 serialization and every eligible dependency and assessment-area pair has one terminal
 outcome.
 
-## Authoritative Artifact
+## Research Artifact
 
 Write the research artifact to `.copilot-tracking/research/` using the repository name
 as the output filename prefix. The artifact contains exactly these section classes:

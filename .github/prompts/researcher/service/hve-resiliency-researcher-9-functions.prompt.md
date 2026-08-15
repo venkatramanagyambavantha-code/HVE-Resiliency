@@ -1,6 +1,6 @@
 ---
 description: Run Prompt 9 Azure Functions resiliency analysis for Application
-agent: Task Researcher
+agent: "Task Researcher"
 ---
 
 # Application HVE Researcher 9 Azure Functions
@@ -13,7 +13,7 @@ Define the required regional-failover expectations for
 {customerName} Azure Functions in West US 2 and West US. Assess only Azure
 Functions behavior and requirements that directly affect regional failover.
 
-## Functions Requirements
+## Assessment Areas
 
 * Deployment spans West US 2 and West US as a multi-region pair
 * The topology is active-active or active-standby; treat it as a claim to verify from repository evidence and do not assume both regions continuously serve production traffic
@@ -75,7 +75,7 @@ The evidence-only rules override inherited requests for remediation,
 code or configuration examples, alternatives, a selected approach, and
 implementation next steps. Do not provide any of them.
 
-## Output Format
+## Research Artifact
 
 Limit the authoritative final research artifact to a concise scope summary,
 terminal-outcome summary, and the canonical finding rows below. Keep search,
