@@ -90,6 +90,87 @@ header in the same feedback cell; where they conflict, the strategy governs.
   out or is partially unavailable.
 * Disposition: not duplicated in Prompt 14; coverage relies on Prompt 5.
 
+## Prompt 13 — Azure SQL
+
+Reviewer strategy: West US 2 is the primary read-write region and West US is the
+hot-standby secondary, kept continuously synchronized through asynchronous data
+replication so transactional workloads avoid cross-region latency.
+
+The feedback marked the whole assessment list with "All below points are not required
+for app code assessment for multi-region resiliency", then annotated individual
+entries. Applied literally that leaves Prompt 13 with no assessment areas at all, and
+the strategy states no required findings to replace them. The areas below are the
+application-code behavior that Azure SQL with Failover Groups and asynchronous
+replication still leaves to the application.
+
+### Retained against feedback
+
+**Connection-pool behavior during SQL role changes**
+
+* Reviewer annotation: "Not required multi-region code resliency".
+* Assessment: after a Failover Group role change the listener resolves to the new
+  primary and pooled connections to the old primary are dead. A pool with a long
+  maximum lifetime and no validation can keep handing out dead connections well past
+  the failover. That is application configuration, not Failover Group behavior.
+* Disposition: retained, merged into the failover-window client behavior area rather
+  than standing alone, alongside retry, timeout, and circuit breaker.
+
+### Added, not present in the prompt or the feedback
+
+**Tolerance of the non-zero recovery point**
+
+* Assessment: the strategy specifies asynchronous replication, which means a
+  transaction committed at the primary may not have reached the secondary when
+  failover occurs. Whether application code assumes a committed transaction survives
+  failover, and whether any reconciliation exists for transactions that do not, is
+  application code and is the most direct data-loss consequence of the stated design.
+  Neither the prompt nor the feedback covered it.
+* Disposition: added as an assessment area.
+
+**Read-after-write assumptions against the secondary**
+
+* Assessment: the hot-standby secondary lags the primary by the replication delay.
+  Application code that writes to the read-write listener and then reads through the
+  read-only listener or the secondary can read stale data. Same class of defect as
+  Redis area 4, and likewise application code.
+* Disposition: added as an assessment area.
+
+**Azure SQL availability in the application health endpoint**
+
+* Assessment: every other reviewed service prompt now carries this finding, and the
+  reviewer asked for it explicitly on Functions, Storage, and Redis. The SQL prompt
+  had only "health-probe alignment between the global load balancer and backend
+  services", which is the platform-side framing the reviewer rejected elsewhere.
+* Disposition: reframed to the application health endpoint, matching Prompts 9, 14,
+  and 15.
+
+### Removed, agreeing with feedback
+
+**Split-brain and data corruption during failover**
+
+* Reviewer annotation: "Addressed using SDK. Split brain will not occur as one source
+  of write."
+* Assessment: agreed. A Failover Group has a single write region, so the application
+  cannot create split-brain.
+
+**Write safety including write blocking, fencing, and maintenance mode**
+
+* Reviewer annotation: "Addressed using SDK. Not required multi-region code
+  resliency".
+* Assessment: agreed. Fencing and write blocking are Failover Group behavior.
+
+**State handling through stateless pods, externalized sessions, and queues**
+
+* Reviewer annotation: "Not required multi-region code resliency".
+* Assessment: agreed as a SQL concern. Session externalization is covered by the Redis
+  prompt and pod statelessness by the AKS prompt.
+
+**Zonal failure survival**
+
+* Reviewer annotation: "No zonal based assessment".
+* Assessment: agreed, and already removed. The zone content left this prompt in the
+  first zonal-removal pull request, before this review round.
+
 ## Prompt 15 — Azure Storage
 
 **Partial write failure when writing to both regions**
