@@ -360,7 +360,7 @@ Render each finding with exactly these seven fields, names, and order. Add no
 field to a finding row and do not repeat field semantics elsewhere.
 
 * `Issue Description:` Begin with `<finding-id> | <scenario> | <Storage service type> | <failure mode>`, followed by the evidence-bound observation. None of the four required identifiers can be `Unknown`.
-* `Risk Level (P0/P1/P2/P3):` Use one priority from the authoritative framework. `Unknown` is prohibited.
+* `Risk Level (P0/P1/P2/P3):` Use one priority from the priority definitions in the Application Platform Context. `Unknown` is prohibited.
 * `Code location (file + line number):` Provide one or more validated, sanitized repository-relative file-line citations. `Unknown` is prohibited.
 * `Why this is a risk to app region failover:` State the evidenced scenario-specific failure effect that supports the priority. `Unknown` is prohibited.
 * `Impact(s) if this is not changed:` State only evidenced impacts; use `Unknown` when repository evidence does not establish the impact beyond the supported failure effect.

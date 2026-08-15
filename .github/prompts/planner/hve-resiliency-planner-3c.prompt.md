@@ -54,8 +54,8 @@ All P0 and P1 findings are already in Section 2 (written by prompt 3b). This pro
 
 If any P2 or P3 findings pass the litmus test (Resiliency Related: Yes), append them under Section 2 as:
 
-* `## P2 — Improvement / Best Practice (N)` — count of resiliency-related P2 findings
-* `## P3 — Code Consistency (N)` — count of resiliency-related P3 findings
+* `## P2 — <label> (N)` — count of resiliency-related P2 findings
+* `## P3 — <label> (N)` — count of resiliency-related P3 findings
 
 End Section 2 with `[Back to Top](#top)`.
 
@@ -65,8 +65,8 @@ Begin with `# 3. Non-Resilient Focused Recommendations`.
 
 Organize Non-Resiliency findings (those that do NOT pass the litmus test) under:
 
-* `## P2 — Improvement / Best Practice (Non-Resiliency) (N)`
-* `## P3 — Code Consistency (Non-Resiliency) (N)`
+* `## P2 — <label> (Non-Resiliency) (N)`
+* `## P3 — <label> (Non-Resiliency) (N)`
 
 Within each H2, group findings under H3 shared-service groups: `### Observability`, `### Security / Configuration Hygiene`, `### Build / Packaging`, `### Data Management`, etc. Derive group names from the actual categories in the Master Report.
 
@@ -97,10 +97,7 @@ Every P2 and P3 finding uses this exact format (field order must be preserved):
 10. `**Notes:**` — context, rationale, or implementation guidance
 11. `<span style="font-size: 14px;">**MSFT Reference:** [Pattern Name](URL)</span>` — when a WAF pattern or Azure guidance page applies
 
-Priority labels:
-
-* P2: `Code Quality / Best Practice`
-* P3: `Code Consistency` or `Noted for Completeness`
+Priority labels: `<label>` is that priority's label taken verbatim from the Priority Legend in the Resiliency Task Planner Context.
 
 #### Finding Rules
 

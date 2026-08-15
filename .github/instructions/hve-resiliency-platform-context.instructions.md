@@ -13,7 +13,7 @@ Apply this context to all Application Platform resiliency research prompts.
 * HVE Task Researcher rules: evidence only, no remediation, no code examples
 * All findings must cite file and line-level evidence
 * Never paraphrase referenced code. If a finding quotes or describes code, copy it verbatim from the source file and confirm the cited path and line numbers match that file exactly
-* Classify every finding using the priority framework: P0 (Blocking/Critical), P1 (High Priority), P2 (Improvement/Best Practice), P3 (Non-Blocking Code Consistency)
+* Classify every finding using the priority framework defined in Priority Definitions below
 * Output research artifacts to `.copilot-tracking/research/` and use the repository name as the prefix for all output files (e.g., `<repo-name>-research-output.md`).
 
 ## Status and Failure Semantics
@@ -40,10 +40,10 @@ Every prompt ends in exactly one terminal state: `Complete`, `Incomplete`, or `B
 
 ## Priority Definitions
 
-* P0: Critical / Blocking. Causes outage, data loss, duplicate charges, or inability to fail over safely during regional failure.
-* P1: Required, Non-Blocking. Does not fully block failover but materially increases application risk, data risk, or customer impact during failure.
-* P2: Improvement / Best Practice. Does not materially impact correctness during failover but weakens resilience posture or operational clarity.
-* P3: Non-Blocking Code Consistency. Captures maintainability, readability, duplication, or inconsistent pattern issues that are non-blocking.
+* P0: Critical - Blocking. Causes outage, data loss, duplicate charges, or inability to fail over safely during regional failure.
+* P1: Required - Non-Blocking. Does not fully block failover but materially increases application risk, data risk, or customer impact during failure.
+* P2: Improvement - Best Practice. Does not materially impact correctness during failover but weakens resilience posture or operational clarity.
+* P3: Non-Blocking - Code Consistency. Captures maintainability, readability, duplication, or inconsistent pattern issues that are non-blocking.
 
 ## Service Exclusion Rule
 

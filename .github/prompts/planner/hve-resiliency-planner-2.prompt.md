@@ -13,11 +13,7 @@ Run `/hve-resiliency-planner-0` first to lock in evidence constraints.
 ```text
 Using the HVE research artifact, create or update <repo-name>-Developer-Guide.md.
 
-Include a dedicated "Priority Legend" section near the top using exactly:
-- P0 - Blocking/Critical Risk
-- P1 - High Priority
-- P2 - Improvement/Best Practice (Non-Blocking)
-- P3 - Non-Blocking Code Consistency (Best Practices / Maintainability)
+Include a dedicated "Priority Legend" section near the top listing P0 through P3 with each priority's label taken verbatim from the Priority Legend in the Resiliency Task Planner Context.
 
 For each finding (do not add new findings):
 - Reference the exact evidence

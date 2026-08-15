@@ -97,12 +97,12 @@ All recommendations remain in the report regardless of whether the customer is e
 
 Use this consistently in all outputs:
 
-* P0: Blocking/Critical Risk
-* P1: High Priority
-* P2: Improvement/Best Practice (Non-Blocking)
-* P3: Non-Blocking Code Consistency (Best Practices / Maintainability)
+* P0: Critical - Blocking
+* P1: Required - Non-Blocking
+* P2: Improvement - Best Practice
+* P3: Non-Blocking - Code Consistency
 
-### P0 — Critical Resiliency Risk
+### P0 — Critical - Blocking
 
 **Definition**: The finding **blocks failover from functioning** or **renders the multi-region deployment meaningless**. Without this fix, the investment in a second region provides no benefit.
 
@@ -115,7 +115,7 @@ Use this consistently in all outputs:
 * Application logic that assumes a specific region and breaks when executed in the other region.
 * Prerequisites for other P0 resiliency fixes: if fixing A is required before fixing B, and B is P0, then A is also P0.
 
-### P1 — Important Resiliency Risk
+### P1 — Required - Non-Blocking
 
 **Definition**: The finding is resiliency-related (passes the litmus test) but has a **procedural workaround**, **lower blast radius**, or **does not fully block failover**.
 
@@ -126,7 +126,7 @@ Use this consistently in all outputs:
 * Missing retry logic or error handling that causes degraded experience during failover but does not fully prevent operation.
 * Resiliency improvements that are best-practice but not strictly required for failover to function.
 
-### P2 — Code Quality / Non-Resiliency
+### P2 — Improvement - Best Practice
 
 **Definition**: The finding is a valid code issue but **behaves identically in single-region and multi-region**. The multi-region deployment does not introduce, amplify, or change this issue.
 
@@ -134,7 +134,7 @@ Use this consistently in all outputs:
 
 **Reclassification opportunity**: If the team can reframe the impact in resiliency terms (Rule 2) and the customer would agree it is resiliency-related, it may be moved to P1. If the reframing is a stretch, leave it at P2.
 
-### P3 — Noted for Completeness
+### P3 — Non-Blocking - Code Consistency
 
 **Definition**: The finding has **no functional resiliency impact** and does not affect failover mechanics. It is retained per Rule 4 so the customer has a complete record.
 
@@ -155,28 +155,28 @@ Q1: Does moving from single-region (with passive DR) to multi-region
   │
   ├── YES ──► Q2: Does this fix block failover from working at all?
   │             │
-  │             ├── YES ──► P0 — Critical Resiliency Risk
+  │             ├── YES ──► P0 — Critical - Blocking
   │             │
   │             └── NO ──► Q3: Does this issue only manifest during a failure event?
   │                          │
   │                          ├── YES ──► Q4: Is there a procedural workaround?
   │                          │             │
-  │                          │             ├── YES ──► P1 — Important Resiliency Risk
+  │                          │             ├── YES ──► P1 — Required - Non-Blocking
   │                          │             │
-  │                          │             └── NO ──► P0 — Critical Resiliency Risk
+  │                          │             └── NO ──► P0 — Critical - Blocking
   │                          │
-  │                          └── NO ──► P1 — Important Resiliency Risk
+  │                          └── NO ──► P1 — Required - Non-Blocking
   │
   └── NO ──► Q5: Can the impact be framed in resiliency terms (Rule 2)?
                │
-               ├── YES (credibly) ──► P1 — Important Resiliency Risk
+               ├── YES (credibly) ──► P1 — Required - Non-Blocking
                │                       (reword the impact statement)
                │
                └── NO ──► Q6: Does the finding have functional or operational impact?
                             │
-                            ├── YES ──► P2 — Code Quality / Non-Resiliency
+                            ├── YES ──► P2 — Improvement - Best Practice
                             │
-                            └── NO ──► P3 — Noted for Completeness
+                            └── NO ──► P3 — Non-Blocking - Code Consistency
 ```
 
 ### Special Case: Prerequisite Findings

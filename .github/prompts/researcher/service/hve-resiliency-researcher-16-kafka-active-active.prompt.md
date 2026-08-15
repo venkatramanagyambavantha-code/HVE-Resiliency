@@ -110,8 +110,8 @@ finding wherever the expected behavior is not evidenced.
    persists or hard-codes broker host and port values learned from
    `advertised.listeners`, which prevents reconnection after regional failover.
 
-For each evidence-backed issue, classify the failure risk as P0, P1, P2, or P3 under
-the Application Platform Context. Explain why the classification applies and cite the
+For each evidence-backed issue, classify the failure risk as P0, P1, P2, or P3 using
+the priority definitions in the Application Platform Context. Explain why the classification applies and cite the
 smallest supporting file and line range. Unknown status alone does not establish a
 finding.
 

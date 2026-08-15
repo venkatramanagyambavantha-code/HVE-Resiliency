@@ -223,12 +223,7 @@ an absence claim. Never fabricate a file or line citation for absence. Use `Not 
 manifest` rather than `not used` and include the coverage citation in the same finding field. Coverage
 citations do not replace file-and-line evidence for positive or source-local assertions.
 
-Classify each rendered finding with exactly one evidence-supported priority:
-
-* P0: Critical or blocking behavior that causes outage, data loss, duplicate charges, or inability to fail over safely during regional failure
-* P1: Required, non-blocking behavior that materially increases application risk, data risk, or customer impact during failure
-* P2: An improvement or best practice that does not materially impact correctness during failover but weakens resilience posture or operational clarity
-* P3: Non-blocking maintainability, readability, duplication, or consistency behavior
+Classify each rendered finding with exactly one evidence-supported priority from the priority definitions in the Application Platform Context.
 
 The risk field must connect cited behavior to one named authoritative scenario and failure effect. Never
 derive priority from an unverified no-data-loss premise or from an assumed conflict-resolution mode.

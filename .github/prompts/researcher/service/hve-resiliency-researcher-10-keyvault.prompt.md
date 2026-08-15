@@ -170,7 +170,7 @@ mitigations, constraints, or evidence differ. Merge only exact semantic identiti
 candidate ID, preserve the highest evidence-supported priority, and retain conflicting context as a
 constraint or conflict disposition.
 
-Use only P0, P1, P2, or P3 according to the inherited priority definitions. A renderable finding requires
+Use only P0, P1, P2, or P3 from the priority definitions in the Application Platform Context. A renderable finding requires
 one allowed scenario in the failover rationale field, a material failure mode, a valid priority, and at
 least one validated file-line citation. Retain invalid records in the candidate ledger but do not render
 them as findings. Use `Unknown: evidence unavailable` only in nullable prose fields for impacts, existing
