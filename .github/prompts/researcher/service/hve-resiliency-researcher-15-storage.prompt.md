@@ -25,19 +25,27 @@ to use the same bounds and return only sanitized evidence and ledger updates.
 
 ## Closed Assessment Scope
 
-Evaluate exactly these seven areas for each confirmed Azure Storage dependency
+Storage accounts are provisioned in both regions. The application writes to both
+regions and reads only from the storage account in its own region. Synchronization
+between the accounts is handled by an external module outside the application code
+and is Albertsons' responsibility. Account failover, replication mode, redundancy
+topology, and operational runbooks belong to that shared service design and are
+never application-code findings.
+
+Evaluate exactly these three areas for each confirmed Azure Storage dependency
 or service type. Do not introduce another service concern or assessment area.
 
-1. Writes across regions, including evidenced concurrent or single-region behavior
-2. Idempotency, retries, and conflict resolution through evidenced ETags, metadata, or versioning
-3. Read and write behavior during regional Storage or service failure, including evidenced fallback
-4. Evidenced synchronous and asynchronous replication paths and their implications
-5. Blob Storage and Azure Files dependencies and evidenced disaster-recovery assumptions
-6. Evidenced operational failover and failback steps and runbook gaps
-7. Alignment between GLB health probes and backend service health
+1. Whether the application writes to the storage accounts in both regions and reads
+   only from the storage account in the corresponding region. Record a finding where
+   this pattern is not implemented.
+2. Retry or circuit-breaker behavior on the Azure Storage SDK or connector. Record a
+   finding where none is present.
+3. Whether the storage account is associated with the application health endpoint.
+   Record a finding where it is not, including where the health endpoint exists but
+   does not reflect storage account availability.
 
 Azure Queue Storage or Table Storage can identify the confirmed Storage service
-type, but does not add an assessment area. Analyze it only through the seven
+type, but does not add an assessment area. Analyze it only through the three
 areas above.
 
 ## Prerequisite Scope Contract
@@ -179,11 +187,8 @@ family. Reuse the cache without another invocation, and never repeat a family
 because results were sparse.
 
 1. Service identity and binding: Blob, Files, Queue, Table, SDK/client/API, Azure resource type or ID, endpoint, connection binding, deployment resource
-2. Writes and consistency: write/create/update/upload, concurrent or single writer, retry, idempotency, ETag, metadata, version, conflict
-3. Failure behavior: timeout, exception, fallback, alternate endpoint, endpoint selection, failover, failback, degraded read or write
-4. Replication and topology: region, West US 2, West US, primary, secondary, redundancy, LRS, ZRS, GRS, GZRS, RA-GRS, RA-GZRS, synchronous, asynchronous
-5. Operations: runbook, manual step, account failover, DNS, routing, recovery, rollback, data-loss statement
-6. Health signaling: health, ready, live, probe, GLB, upstream routing, dependency readiness
+2. Regional write and read routing: write/create/update/upload, per-region account selection, concurrent or single writer, endpoint or account resolution
+3. Client resilience and health signaling: retry, circuit breaker, backoff, idempotency, ETag, health, ready, live, probe, dependency readiness
 
 Generic `storage`, filesystem paths, certificates, build artifacts, Maven terms,
 local persistence, comments, imports, package dependencies, or names do not prove
@@ -192,10 +197,9 @@ bound to use, an Azure Storage endpoint, an Azure resource declaration or ID, a
 deployment binding, or a connection setting whose non-secret structure identifies
 the service. A library or import requires a second binding signal.
 
-Treat regions, redundancy modes, replication, topology, fallback, failover,
-failback, and data-loss behavior as claims to verify. Unsupported values become
-field-safe `Unknown` or evidence gaps. Do not substitute Azure defaults, product
-documentation, common architecture, or operator knowledge for repository evidence.
+Unsupported values become field-safe `Unknown` or evidence gaps. Do not substitute
+Azure defaults, product documentation, common architecture, or operator knowledge
+for repository evidence.
 
 ## Hard Run Caps
 
@@ -284,12 +288,8 @@ failure effects, mitigations, constraints, or unknowns.
 
 ## Priority Framework
 
-Use these definitions once for all findings:
-
-* P0: Critical or blocking evidence shows outage, data loss, duplicate charges, or inability to fail over safely during the assessed scenario.
-* P1: Required but non-blocking evidence shows materially increased application risk, data risk, or customer impact during the assessed scenario.
-* P2: Evidence shows a non-blocking resilience or operational-clarity weakness that does not materially affect failover correctness.
-* P3: Evidence shows non-blocking maintainability, readability, duplication, or pattern inconsistency.
+Use the priority framework from the Application Platform Context without restating
+its definitions.
 
 Every priority requires an evidence-bound failure effect and scenario rationale.
 `Unknown` cannot receive a priority. Keep an unsupported or incomplete candidate
@@ -298,9 +298,9 @@ as an evidence gap rather than a finding.
 ## Deterministic Completion
 
 Saturation occurs when all prerequisite-confirmed Storage dependencies have all
-six query families dispositioned, every retained candidate has one terminal
+three query families dispositioned, every retained candidate has one terminal
 disposition, every accepted finding has validated assertion-level citations,
-all seven focus areas have a coverage disposition, and the
+all three focus areas have a coverage disposition, and the
 single corrective review creates no new candidate. After saturation, prohibit
 new searches and reads. A validated evidence-gap disposition completes its
 coverage cell and permits `Completed with zero findings` when every other
