@@ -131,6 +131,29 @@ need these for resiliency asessment ?", and the honest answer for those four is 
 are platform or deployment concerns rather than application code. The remaining eleven are
 all application code.
 
+### Added, not present in the prompt or the feedback
+
+**Client re-bootstrap configuration** (folded into areas 2 and 3)
+
+* Assessment: this strategy fails over by re-pointing DNS, but a Kafka client reads
+  `bootstrap.servers` only at startup and thereafter connects to the broker addresses it
+  learned from metadata. It re-resolves the bootstrap DNS name only when it repeats the
+  bootstrap process. KIP-899 added `metadata.recovery.strategy` to allow that, and the
+  value governs whether a live client ever discovers the surviving region. With the
+  strategy at `none`, losing the primary region leaves every known broker unreachable and
+  the client retries departed addresses indefinitely, so the DNS redirection the strategy
+  depends on has no effect on already-running clients.
+* The reviewer required Apache Kafka client 3.8 or later. That is the release KIP-899
+  shipped in, so the requirement is necessary but not sufficient: on 3.8 and 3.9 the
+  default is `none`, and the capability is present but switched off unless application
+  configuration sets it. KIP-1102 flips the default to `rebootstrap` from 4.0 and adds
+  `metadata.recovery.rebootstrap.trigger.ms`, whose 300000 ms default is slower than a
+  tighter failover target.
+* This is application configuration carried in the repository, so it is evidenced the same
+  way as any other client property and does not depend on external control-plane material.
+* Disposition: folded into area 2 and area 3 rather than added as a tenth area, since the
+  prompt fixes the area count and this is the mechanism the two areas already assert.
+
 ## Prompt 16 — Kafka Active-Active
 
 Reviewer strategy: the producer always writes to the current region's topic. The consumer
