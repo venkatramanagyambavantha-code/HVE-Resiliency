@@ -1,7 +1,7 @@
 ---
 description: "Run Prompt 16 Kafka Active-Active resiliency analysis"
 agent: "Task Researcher"
-argument-hint: "kafkaStrategy=Active-Active"
+argument-hint: "kafkaStrategy=Active-Active|Active-Standby (this prompt requires Active-Active)"
 ---
 
 # HVE Resiliency Researcher 16 Kafka Active-Active

@@ -1,6 +1,6 @@
 ---
 description: Run bounded Prompt 16 Kafka Active-Standby-Confluent resiliency research
-argument-hint: "kafkaStrategy=Active-Standby"
+argument-hint: "kafkaStrategy=Active-Active|Active-Standby (this prompt requires Active-Standby)"
 ---
 
 # HVE Resiliency Researcher 16 Kafka Active-Standby-Confluent
