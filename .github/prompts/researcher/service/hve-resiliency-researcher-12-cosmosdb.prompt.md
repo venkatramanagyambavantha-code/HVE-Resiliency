@@ -29,21 +29,25 @@ Assess only the current repository for this authoritative scenario:
 
 * Full regional failover between West US 2 and West US
 
-Treat East US, active-active or multi-region writes, Last Write Wins, the RU model, Mongo API behavior,
-and no-data-loss expectations as claims to verify or as constraints or evidence gaps. Do not assume they
-describe the production architecture. Repository evidence cannot prove unavailable runtime replication,
-acknowledgement, conflict, recovery, or global load balancer behavior.
+Cosmos DB runs a multi-region write configuration for active-active workloads. West US 2 and West US
+both accept writes, so no single write region is a point of failure. Concurrent writes to the same
+document from two regions are therefore a normal operating condition rather than an exception, and how
+the application handles them is application code.
 
-Keep the Cosmos DB scope closed to these eight assessment areas:
+Replication, acknowledgement, recovery, region failover, and global load balancer behavior belong to the
+platform and are never application-code findings. Treat the RU model, Mongo API behavior, and any
+no-data-loss expectation as claims to verify or as evidence gaps; repository evidence cannot prove
+runtime behavior.
+
+Keep the Cosmos DB scope closed to these six assessment areas:
 
 1. Preferred-region selection and avoidance of hard-coded endpoints
-2. MongoDB driver retries, timeouts, and failover configuration
+2. MongoDB driver retries and timeouts
 3. Transient write failures, 429 throttling, and region-outage handling without restart
-4. Session-token preservation and read-your-writes behavior across regions
-5. Write idempotency and conflict behavior, including Last Write Wins only when evidenced
-6. Mid-request behavior when a write region becomes unavailable
-7. Backend health-probe and global load balancer health alignment
-8. Evidence-bound data-loss exposure and any stated no-data-loss acceptance boundary
+4. Write idempotency and conflict behavior under multi-region writes
+5. `_etag` optimistic concurrency on document updates, and whether an update path reads, modifies, and
+   writes a document without a precondition
+6. Whether Cosmos DB availability is reflected in the application health endpoint
 
 Do not add assessment areas, ownership fields, recommendations, alternatives, examples, or code changes.
 
@@ -159,13 +163,11 @@ manifest. Bundle all listed terms for that family into its single invocation, ca
 result set, and never repeat a family or use a result to begin broad rediscovery.
 
 1. Cosmos binding: `cosmos`, `mongodb`, `mongo`, `ru`, client construction, connection keys, and endpoints
-2. Region and endpoint selection: preferred regions, West US 2, West US, East US, hosts, URIs, DNS, and fallback selection
+2. Region and endpoint selection: preferred regions, West US 2, West US
 3. Retry and throttling: retry, timeout, backoff, transient errors, 429, throttling, and exception handling
-4. Session behavior: session tokens, consistency, causal consistency, read concern, write concern, and read-your-writes
-5. Write safety and conflicts: idempotency, duplicate suppression, conflict resolution, Last Write Wins, versioning, and acknowledgements
-6. Mid-request failure: region unavailability, failover, reconnect, partial write, restart, fallback, and degraded behavior
-7. Health alignment: health, readiness, liveness, probes, global load balancer, routing, dependencies, and status propagation
-8. Data-loss boundary: RPO, durability, replication, recovery, data loss, no data loss, and operational constraints
+4. Write safety and conflicts: idempotency, duplicate suppression, conflict resolution, versioning, and acknowledgements
+5. Optimistic concurrency: `_etag`, etag, `If-Match`, precondition, replace, patch, upsert, read-modify-write, `findOneAndUpdate`, `replaceOne`, `updateOne`, and update filter
+6. Health alignment: health, readiness, liveness, probes, dependencies, and status propagation
 
 Read only cached hits and the minimum owning context required to classify them. Follow at most two
 evidence-backed source or configuration indirections per candidate, with depth at most 2, and only when
@@ -174,7 +176,7 @@ the destination is already in the frozen manifest. Cache each baseline file read
 Apply these hard caps:
 
 * 240 manifest files
-* 8 search invocations and 8 completed query families
+* 6 search invocations and 6 completed query families
 * 120 unique baseline file reads
 * 20 corrective rereads total, at most one per file
 * 2 indirections per candidate at depth 2
@@ -229,7 +231,7 @@ Classify each rendered finding with exactly one evidence-supported priority:
 * P3: Non-blocking maintainability, readability, duplication, or consistency behavior
 
 The risk field must connect cited behavior to one named authoritative scenario and failure effect. Never
-derive priority from an unverified no-data-loss, active-active, East US, or Last Write Wins premise.
+derive priority from an unverified no-data-loss premise or from an assumed conflict-resolution mode.
 
 Use the exact field-safe value `Unknown: evidence unavailable (<evidence-gap-id>)` only in the impact,
 existing-mitigation, or constraint prose field when that field cannot be supported from repository
@@ -240,7 +242,7 @@ a non-nullable field.
 
 ## Deterministic completion and terminal status
 
-Discovery saturates only after the manifest is frozen, all eight cached query families complete, every
+Discovery saturates only after the manifest is frozen, all six cached query families complete, every
 admitted hit is read or terminally limited, every candidate has one terminal disposition, every rendered
 assertion and citation validates, and one no-change saturation review adds no candidate, mapping,
 disposition, or finding. Do not reopen discovery after saturation.
