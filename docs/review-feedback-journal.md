@@ -522,42 +522,6 @@ replication still leaves to the application.
   failover does not materially change latency or availability.
 * Disposition: removal accepted.
 
-## Cross-prompt — priority vocabulary
-
-Not review feedback. Recorded because the change alters generated report headings.
-
-**One priority vocabulary, defined in one place**
-
-* Before: P1 alone carried four names. The Application Platform Context called it
-  "Required, Non-Blocking" in its definitions and "High Priority" in its summary line, so
-  the authoritative file contradicted itself. The Planner Context called it "High Priority"
-  in its legend and "Important Resiliency Risk" in its taxonomy heading and decision tree,
-  so it contradicted itself as well. Reports emitted a fifth form, "High Priority
-  Resiliency". P0, P2, and P3 varied the same way.
-* Cause: the labels were spelled out in seven files across roughly fifteen edit points, so
-  nothing kept them in step. Two service prompts, Prompt 12 and the Kafka active-standby
-  prompt, restated all four definitions in their own wording, and the eight prompts that
-  referenced them used five different phrasings.
-* Labels are now uniform two-part pairs: P0 Critical - Blocking, P1 Required -
-  Non-Blocking, P2 Improvement - Best Practice, P3 Non-Blocking - Code Consistency. The
-  earlier shapes mixed a slash for alternatives, a comma for a conjunction, and a bare
-  compound noun, which is why they resisted being read as one set.
-* The labels are now written out in two files only: the Application Platform Context for
-  the researcher pipeline and the Planner Context for the planner pipeline. Two copies
-  rather than one because the `applyTo` globs do not overlap, so no single instructions
-  file reaches both pipelines. Every other file references instead of restating:
-  the four planner prompts, the skill, and the service prompts.
-* Report heading contracts now read `## P0 — <label> (N)` and name the Priority Legend as
-  the source, so the emitted headings follow the legend without hardcoding it.
-* Consequence: emitted report headings change. `## P0 — Critical Resiliency Risks (N)`
-  becomes `## P0 — Critical - Blocking (N)`, and `## P1 — High Priority Resiliency (N)`
-  becomes `## P1 — Required - Non-Blocking (N)`. Reports generated before this change carry
-  the old headings.
-* The example assessments under `Microsoft-Assessment/` are historical output and are
-  deliberately left on the old labels rather than rewritten.
-* The richer planner rubric is untouched. Only the labels moved; the criteria lists, the
-  litmus test, and the reclassification rules stay as they were.
-
 ## Open questions
 
 * The Redis strategy names West US, West US 2, and East US as one replication group,
