@@ -90,6 +90,65 @@ header in the same feedback cell; where they conflict, the strategy governs.
   out or is partially unavailable.
 * Disposition: not duplicated in Prompt 14; coverage relies on Prompt 5.
 
+## Prompt 11 — AKS and Istio
+
+Reviewer strategy: two independent clusters, each running Istio as its ingress gateway.
+All microservices deployed simultaneously on both clusters from the same images,
+versions, and configuration. West US 2 node pools spread across three availability
+zones; West US has none and compensates with larger node counts. A single Azure
+Container Registry geo-replicated to both regions, so each cluster pulls from its local
+replica.
+
+### Added, not present in the prompt or the feedback
+
+**Pod statelessness**
+
+* Assessment: state held in the pod rather than externalized is lost when a pod or a
+  cluster is lost at failover. The Prompt 13 review removed "state handling through
+  stateless pods, externalized sessions, and queues" on the grounds that pod
+  statelessness belongs to the AKS prompt; it was not in fact covered there, so that
+  removal left a gap.
+* Disposition: added as area 11, which makes the Prompt 13 disposition correct.
+
+**Deployment parity, considered and rejected**
+
+* A deployment-parity area was drafted, covering region-pinned image references,
+  versions, and configuration, including a container image naming a region-specific
+  registry rather than the geo-replicated one.
+* Disposition: dropped. Image references, registry selection, and manifest values are
+  deployment concerns that application code cannot change. The scope paragraph already
+  names registry geo-replication as infrastructure that is never an application-code
+  finding, so the boundary is stated without opening an assessment area behind it.
+
+### Changed
+
+**Health-probe alignment**
+
+* The prompt asked "Are health probes aligned between GLB and backend services?", the
+  platform-side framing the reviewer rejected on Functions, Storage, Redis, SQL, and
+  Cosmos DB.
+* Disposition: reframed to whether the application health endpoint reflects the health
+  of the dependencies that decide whether the region can serve traffic.
+
+**Question format**
+
+* Reviewer annotation: "Format of file is different from other services."
+* Disposition: the ten questions are now declarative assessment areas with an explicit
+  instruction to record a finding, matching Prompts 12 through 15, and the
+  bounded-evidence protocol now says assessment area rather than question. The wider
+  structural difference, that this file has three headings where Storage has thirteen,
+  is left for the prompt-structure work.
+
+### Removed, agreeing with feedback
+
+**Zonal failure scope**
+
+* Reviewer annotation: "Zonal failure assessment not required. Focus should be on
+  regional one."
+* Assessment: agreed, and already removed by the first zonal-removal pull request. The
+  strategy's description of availability zones in West US 2 is retained only as
+  infrastructure context in the scope paragraph, not as an assessment area.
+
 ## Prompt 12 — Cosmos DB
 
 Reviewer strategy: multi-region writes for active-active workloads. Both West US 2 and
