@@ -36,11 +36,6 @@ Assess these existing areas without adding assessment areas:
   timeout, circuit-breaker, and connection-pool invalidation once the listener
   resolves to the new primary
 * Transaction idempotency and duplicate-write prevention
-* Tolerance of the non-zero recovery point that asynchronous replication creates,
-  including whether application code assumes a committed transaction survives
-  failover and whether reconciliation exists for transactions that do not
-* Read-after-write assumptions when reading through the read-only listener or the
-  secondary replica, which lags the primary
 * Whether Azure SQL availability is reflected in the application health endpoint
 
 ## Bounded Evidence Protocol

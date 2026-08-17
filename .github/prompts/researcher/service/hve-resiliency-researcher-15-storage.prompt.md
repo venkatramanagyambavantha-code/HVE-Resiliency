@@ -44,8 +44,7 @@ or service type. Do not introduce another service concern or assessment area.
    Record a finding where it is not, including where the health endpoint exists but
    does not reflect storage account availability.
 
-Azure Queue Storage or Table Storage can identify the confirmed Storage service
-type, but does not add an assessment area. Analyze it only through the three
+Perform assessment for Azure Blob Storage and Azure File Storage service type only. Analyze it only through the three
 areas above.
 
 ## Prerequisite Scope Contract

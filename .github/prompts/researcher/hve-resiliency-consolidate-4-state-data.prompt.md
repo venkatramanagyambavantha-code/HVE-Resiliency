@@ -1,5 +1,5 @@
 ---
-description: Fill Section 4 (State and Data Characteristics) of the consolidated resiliency research document from Prompt 3 evidence
+description: Fill Section 4 (State and Data Characteristics) of the consolidated resiliency research document from Prompt 4 evidence
 agent: "Task Researcher"
 argument-hint: "[manifestPath=...] [consolidatedDocPath=...]"
 ---
@@ -15,7 +15,7 @@ Follow the [Consolidation Shared Contract](../../instructions/hve-resiliency-con
 
 ## Scope
 
-Read the frozen manifest, then read only the artifacts whose primary section is Section 4: the accepted Prompt 3 artifact. Do not read artifacts outside this scope and do not re-run discovery.
+Read the frozen manifest, then read only the artifacts whose primary section is Section 4: the accepted Prompt 4 artifact. Do not read artifacts outside this scope and do not re-run discovery.
 
 Render evidence-backed statefulness, data access, replication, consistency, idempotency, and replay findings.
 

@@ -65,19 +65,19 @@ When a prompt's manifest path input is omitted, auto-locate the frozen outer con
 
 ## Section-to-Source Mapping
 
-| Output section | Primary source artifacts |
-| --- | --- |
-| 1 Repository Context | Prompt 0, 1a Section 1, 1b Section 1 |
-| 2 Dependency Inventory | Prompt 1a, 1b (Sections 1-3) |
-| 3 Region Assumptions | Prompt 2 |
-| 4 State and Data Characteristics | Prompt 3 |
-| 5 Failure and Degraded-Mode Behavior | Prompt 4, 5 |
-| 6 Shared and Cross-Repository Dependencies | Prompt 6 |
-| 7 Hard-Coded Values or Secrets | The secret sweep scope over any artifact |
-| 8 Other Findings | Residual scope over any artifact |
-| 9 Research Findings Index | Aggregated finding IDs from Sections 2.1 and 3-8 |
+| Output section                              | Primary source artifacts                                                                                   |
+|---------------------------------------------|------------------------------------------------------------------------------------------------------------|
+| 1 Repository Context                        | Prompt 0; Prompt 1a Section 1; Prompt 1b Section 1                                                        |
+| 2 Dependency Inventory                      | Prompts 1a and 1b, Sections 1-3; applicable service prompts 9-17 contribute findings to Section 2.1       |
+| 3 Region Assumptions                        | Prompt 2                                                                                                   |
+| 4 State and Data Characteristics            | Prompt 4                                                                                                   |
+| 5 Failure and Degraded-Mode Behavior        | Prompt 3 and the finalized Prompt 5 artifact                                                               |
+| 6 Shared and Cross-Repository Dependencies  | Prompt 6                                                                                                   |
+| 7 Hard-Coded Values or Secrets              | Secret sweep across Prompts 0, 1a, 1b, 2-6, and applicable service prompts 9-17                           |
+| 8 Other Findings                            | Residual evidence from Prompts 0, 1a, 1b, 2-6, and applicable service prompts 9-17 that maps nowhere else |
+| 9 Research Findings Index                   | Finalize-generated index of finding IDs rendered in Sections 2.1 and 3-8                                  |
 
-Service findings (prompt IDs 9-17) render into Sections 2.1 and 3-8 by category, per the read scopes above.
+The applicable service prompts are Prompt 9 (Azure Functions), Prompt 10 (Key Vault), Prompt 11 (AKS and Istio), Prompt 12 (Cosmos DB), Prompt 13 (SQL Server), Prompt 14 (Redis), Prompt 15 (Azure Storage), Prompt 16 (Kafka Active-Active or Kafka Active-Standby on Confluent Cloud), and Prompt 17 (Microsoft Entra ID). Their findings render into Section 2.1 or Sections 3-8 by category and section precedence.
 
 ## Required and Optional Prompt IDs
 

@@ -33,7 +33,6 @@ Apply these controls directly:
 * Use Apache Kafka client 3.8 or later as the application client threshold only when a prerequisite-confirmed Confluent product or feature supplies an authoritative citation for that claim.
 * Produce evidence-only findings with repository-relative file and line citations. Never convert absent external control-plane material into an application finding.
 * Keep all tools and repository operations read-only except progressive and final writes to the Prompt 16 output artifact.
-* Preserve secrets and personal data through the trusted transient processing rules below.
 
 ## Prerequisite Contract
 
@@ -133,17 +132,11 @@ Follow at most one level of indirection from an included production source. Read
 
 Cluster provisioning, Cluster Linking or Replicator configuration, mirror-topic state, promotion, cross-cluster offset synchronization, platform failover detection, DNS reset, and failback are handled by the Kafka shared services setup and are never application-code findings.
 
-Evaluate exactly these nine areas for every eligible Kafka dependency. Do not add, split, rename, or expand assessment areas. Record a finding wherever the expected behavior is not evidenced.
+Evaluate exactly these three areas for every eligible Kafka dependency. Do not add, split, rename, or expand assessment areas. Record a finding wherever the expected behavior is not evidenced.
 
 1. DNS-based connection. The application connects through DNS rather than region-specific endpoints. Record a finding where a hard-coded broker, a cached IP address, a region-specific bootstrap setting, or a pinned regional endpoint is evidenced.
 2. Bootstrap re-resolution. Bootstrap DNS stays authoritative. Record a finding where `advertised.listeners` metadata or learned broker addresses are cached or persisted in a way that bypasses re-resolution, since DNS redirection is how this strategy fails over. A running client re-resolves the bootstrap DNS name only when it repeats the bootstrap process, so also record a finding where `metadata.recovery.strategy` is absent or bound to `none` on a client whose resolved version does not default it to `rebootstrap`, and where `metadata.recovery.rebootstrap.trigger.ms` is left at its `300000` default against a shorter stated failover target. Treat an unavailable deployment or control-plane value as an evidence gap rather than a finding.
 3. Direct and transitive Apache Kafka client version 3.8 or later. The threshold is what makes re-bootstrap available rather than what enables it: `metadata.recovery.strategy` does not exist below 3.8, and clients resolving below 4.0 default it to `none`. Record the resolved version and the effective `metadata.recovery.strategy` value together, and do not treat the version alone as satisfying area 2.
-4. Client recovery across a cluster flip. Producers, consumers, stream processors, admin clients, schema clients, and health checks reconnect with bounded retry backoff, request and delivery timeouts, and metadata refresh.
-5. Runtime cutover. Record a finding where routing or connection state is resolved once at startup or cached for the process lifetime, so a DNS change has no effect without a restart.
-6. Duplicate, delayed, and out-of-order processing. Producer idempotence, acknowledgements, delivery callbacks, consumer commit timing, stable group identity, reset policy, replay tolerance, non-idempotent business side effects, outbox or inbox patterns, and commit boundaries. Record a finding where a flip can produce duplicate business outcomes or where strict ordering is assumed.
-7. Standby freshness. Record a finding where a workflow assumes the standby holds every latest record immediately after the flip, since replication is asynchronous.
-8. Backpressure and catch-up after the flip. Bounded queues, poll starvation, max-poll intervals, and memory growth while the application drains a backlog.
-9. Whether Kafka availability is reflected in the application health endpoint.
 
 ## Bounded Discovery And Read Protocol
 
@@ -185,14 +178,7 @@ Negative repository claims must name the manifest subset, cached query family, a
 
 ## Priority Classification
 
-Assign priority only from a cited causal chain connecting observed application behavior to an authoritative scenario impact:
-
-* `P0`: Causes outage, data loss, duplicate charges, or inability to fail over safely during regional failure
-* `P1`: Materially increases application, data, or customer risk during failure without fully blocking failover
-* `P2`: Weakens resilience posture or operational clarity without materially affecting failover correctness
-* `P3`: Non-blocking maintainability, readability, duplication, or consistency concern
-
-Do not assign or escalate priority solely from an unknown, rejected inference, external assumption, or missing external-platform evidence. Findings contain no remediation wording.
+Assign priority based on priority definitions defined in the [Application Platform Context](../../../instructions/hve-resiliency-platform-context.instructions.md)
 
 ## Terminal Status
 
