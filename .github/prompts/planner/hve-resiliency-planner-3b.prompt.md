@@ -49,7 +49,7 @@ This prompt generates **only P0 and P1** findings under Section 2. P2 and P3 res
 
 #### Hierarchy
 
-* **H2** — priority block with finding count: `## P0 — Critical Resiliency Risks (N)` and `## P1 — High Priority Resiliency (N)`.
+* **H2** — priority block with finding count: `## P0 — <label> (N)` and `## P1 — <label> (N)`, where `<label>` is that priority's label from the Priority Legend in the Resiliency Task Planner Context.
 * **H3** — shared-service group derived from findings: `### Azure SQL / Data Integrity`, `### Azure Key Vault / Secrets Sync`, `### Deployment Infrastructure / CI-CD`, `### Health Probes / GLB Readiness`, `### Resilience Patterns / Connection Management`, `### Shared Dependencies / Cross-Team Coordination`, `### AKS / Pod Lifecycle`, etc. Use generic names; do not hardcode vendor names like "Braintree" or "Fiserv" in H3 headings. Derive group names from the actual dependency categories found in the Master Report.
 * **H4** — individual finding: `#### P0-001: Short Title`
 
@@ -78,12 +78,7 @@ Every P0 and P1 finding uses this exact format (field order must be preserved):
 10. `**Notes:**` — context, rationale, or implementation guidance
 11. `<span style="font-size: 14px;">**MSFT Reference:** [Pattern Name](URL)</span>` — when a WAF pattern or Azure guidance page applies
 
-Priority labels:
-
-* P0: Blocking/Critical Risk
-* P1: High Priority
-* P2: Improvement/Best Practice (Non-Blocking)
-* P3: Non-Blocking Code Consistency (Best Practices / Maintainability)
+Priority labels: use each priority's label verbatim from the Priority Legend in the Resiliency Task Planner Context.
 
 #### Finding Rules
 

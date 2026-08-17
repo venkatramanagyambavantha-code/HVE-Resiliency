@@ -185,12 +185,7 @@ Negative repository claims must name the manifest subset, cached query family, a
 
 ## Priority Classification
 
-Assign priority only from a cited causal chain connecting observed application behavior to an authoritative scenario impact:
-
-* `P0`: Causes outage, data loss, duplicate charges, or inability to fail over safely during regional failure
-* `P1`: Materially increases application, data, or customer risk during failure without fully blocking failover
-* `P2`: Weakens resilience posture or operational clarity without materially affecting failover correctness
-* `P3`: Non-blocking maintainability, readability, duplication, or consistency concern
+Assign priority from the priority definitions in the Application Platform Context, and only from a cited causal chain connecting observed application behavior to an authoritative scenario impact.
 
 Do not assign or escalate priority solely from an unknown, rejected inference, external assumption, or missing external-platform evidence. Findings contain no remediation wording.
 

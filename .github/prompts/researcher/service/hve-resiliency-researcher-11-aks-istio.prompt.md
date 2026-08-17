@@ -105,8 +105,8 @@ not merge modes that share a dependency, location, or priority.
 Use every field from the inherited canonical service-specific finding schema,
 including mitigations, constraints, and `Remediation guidance: None (HVE Task
 Researcher role is evidence-only)`. Do not restate, rename, remove, or add any
-other schema field. Apply the inherited P0-P3 definitions and file-and-line
-evidence requirements.
+other schema field. Apply the priority definitions in the Application Platform Context and the
+file-and-line evidence requirements.
 
 These evidence-only instructions override inherited requests for remediation,
 examples, alternatives, a selected approach, implementation details,

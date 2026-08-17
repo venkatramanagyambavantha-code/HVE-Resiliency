@@ -112,7 +112,7 @@ dependency and failure mode, and reuse it for the same mode across repeated
 runs. Do not merge failure modes because they share a dependency, file,
 location, priority, or risk level.
 
-Apply the inherited P0-P3 definitions and evidence requirements. The
+Apply the priority definitions in the Application Platform Context and the evidence requirements. The
 evidence-only rules override requests for remediation, examples, alternatives,
 a selected approach, implementation guidance, implementation details,
 implementation next steps, general next-step suggestions, or discovery

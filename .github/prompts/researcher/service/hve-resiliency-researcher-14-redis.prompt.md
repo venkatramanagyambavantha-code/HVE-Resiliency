@@ -70,7 +70,7 @@ code, not Managed Redis configuration.
    application code.
 
 For each evidence-backed issue, assess the impact if it remains unchanged. Classify the
-issue as P0, P1, P2, or P3 under the Application Platform Context, explain why the
+issue as P0, P1, P2, or P3 using the priority definitions in the Application Platform Context, explain why the
 classification applies, and cite the smallest supporting file and line range.
 
 ## Cumulative Discovery Limits

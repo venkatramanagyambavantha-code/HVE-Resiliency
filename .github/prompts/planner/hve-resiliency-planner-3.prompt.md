@@ -147,7 +147,7 @@ Organize all findings under exactly two top-level H1 sections:
 
 Four-level hierarchy within each H1:
 
-* **H2** — priority block with finding count: `## P0 — Critical Resiliency Risks (N)` / `## P1 — High Priority Resiliency (N)` / `## P2 — Improvement / Best Practice (N)` / `## P3 — Code Consistency (N)`. For the Non-Resilient section, adjust labels (e.g., `## P2 — Improvement / Best Practice (Non-Resiliency) (N)`).
+* **H2** — priority block with finding count: `## P0 — <label> (N)` through `## P3 — <label> (N)`, where `<label>` is that priority's label from the Priority Legend in the Resiliency Task Planner Context. For the Non-Resilient section, append ` (Non-Resiliency)` to the label (e.g., `## P2 — <label> (Non-Resiliency) (N)`).
 * **H3** — shared-service group derived from findings: `### Azure SQL / Data Integrity`, `### Payment Gateway / Transaction Processing`, `### Health Probes / GLB Readiness`, `### AKS / Pod Lifecycle`, `### Azure Key Vault / Secrets Sync`, `### Resilience Patterns`, `### Observability`, etc. Use generic names; do not hardcode vendor names like "Braintree" or "Fiserv" in H3 headings. Derive group names from the actual dependency categories found in the research.
 * **H4** — individual finding: `#### P0-001: Short Title`
 
@@ -177,12 +177,7 @@ Every P0, P1, P2, and P3 finding uses this exact format (field order must be pre
 * **Resiliency Impact**: Frame in terms of regional failover impact. Required for all `Resiliency Related: Yes` findings.
 * **Recommended Fix**: Must be specific enough for the customer's developers to implement independently without the team's involvement.
 
-Priority labels by level:
-
-* P0: Blocking/Critical Risk
-* P1: High Priority
-* P2: Improvement/Best Practice (Non-Blocking)
-* P3: Non-Blocking Code Consistency (Best Practices / Maintainability) 
+Priority labels by level: use each priority's label verbatim from the Priority Legend in the Resiliency Task Planner Context.
 
 Finding rules:
 
@@ -264,7 +259,7 @@ Before finalizing, confirm:
 * All `Resiliency Related: Yes` findings appear under Resilient Focused Recommendations; `No` findings under Non-Resilient Focused Recommendations.
 * All six H1 sections appear in the Table of Contents.
 * Full Finding Matrix includes every finding from every section, with linked IDs.
-* P3 findings use the full finding template format (same as P0–P2), nested under `## P3 — Code Consistency` blocks in each H1 section.
+* P3 findings use the full finding template format (same as P0–P2), nested under the P3 priority block in each H1 section.
 * All Back to Top links use `#top`.
 * Every P0/P1/P2 finding draws from both the Master Report and the Developer Guide.
 * No hardcoded service names (e.g., "Braintree", "Fiserv") appear in H2, H3, or Repo(s) columns; use the generic shared-service group names and `{serviceName}`.

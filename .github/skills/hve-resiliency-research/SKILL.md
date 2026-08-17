@@ -132,10 +132,7 @@ Phase 6 verifies that every source citation, verbatim code block, and fix block 
 
 ## Priority Definitions
 
-* P0: Critical / Blocking. Causes outage, data loss, duplicate charges, or inability to fail over safely.
-* P1: Required, Non-Blocking. Materially increases application risk, data risk, or customer impact during failure.
-* P2: Improvement / Best Practice. Does not materially impact correctness but weakens resilience posture.
-* P3: Non-Blocking Code Consistency. Maintainability, readability, duplication, or inconsistent patterns that are non-blocking.
+Defined once in [Resiliency Research Platform Context](../../instructions/hve-resiliency-platform-context.instructions.md). Do not restate them here or in any prompt.
 
 ## Service Exclusion Rule
 
