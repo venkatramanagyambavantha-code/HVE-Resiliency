@@ -79,7 +79,7 @@ consumers use the feature flag to select the failed region's mirror topic in the
 surviving region. Redirected producers continue writing to the surviving region's
 region-local writable topic, not to the mirror or promoted topic.
 
-## Assessment Concerns
+## Assessment Areas
 
 Cluster provisioning, Cluster Linking configuration, mirror creation and promotion,
 offset synchronization between clusters, global load balancer routing, and failback of
@@ -189,7 +189,7 @@ change any counter. Reject or correct invalid delegated content without more dis
 Consolidation fails until every eligible dependency and concern pair has exactly one
 terminal outcome and every unresolved round-limit value uses the exact required text.
 
-## Authoritative Artifact
+## Research Artifact
 
 Write the research artifact to `.copilot-tracking/research/` using the repository name
 as the output filename prefix. The artifact contains exactly these three section

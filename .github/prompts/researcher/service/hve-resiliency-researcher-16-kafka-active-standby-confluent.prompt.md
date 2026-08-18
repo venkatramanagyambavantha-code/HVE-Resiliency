@@ -1,6 +1,7 @@
 ---
 description: Run bounded Prompt 16 Kafka Active-Standby-Confluent resiliency research
 argument-hint: "kafkaStrategy=Active-Active|Active-Standby (this prompt requires Active-Standby)"
+agent: "Task Researcher"
 ---
 
 # HVE Resiliency Researcher 16 Kafka Active-Standby-Confluent
@@ -34,7 +35,7 @@ Apply these controls directly:
 * Produce evidence-only findings with repository-relative file and line citations. Never convert absent external control-plane material into an application finding.
 * Keep all tools and repository operations read-only except progressive and final writes to the Prompt 16 output artifact.
 
-## Prerequisite Contract
+## Prerequisite Gate
 
 Derive `<repo-name>` from the workspace root as the case-preserving
 root-directory basename. Derive `<YYYY-MM-DD>` as the current UTC assessment
@@ -113,7 +114,7 @@ Apply these evidence-state transitions without additional discovery:
 
 Keep evidence classes mechanically distinct in the artifact and every assertion mapping. Use `Repository evidence: REPO-### | <repository-relative-path>:<exact-line-or-range> | <symbol-or-property> | <minimal sanitized excerpt>` for repository facts. Use `Prerequisite evidence: PRE-### | <producer-artifact>:<exact-line-or-range> | source <repository-relative-path>:<line> | <normalized verdict>` for prerequisite facts. Use the `External platform evidence: EXT-###` format above only in a separate external-source ledger within Assumptions And Evidence States. A finding may reference an `EXT-###` identifier only for its platform-semantics causal link; `Code location (file + line number)` and all application-behavior proof must reference `REPO-###`. Never substitute `PRE-###` or `EXT-###` for repository finding evidence.
 
-## Immutable Production Source Manifest
+## Production Source Manifest
 
 Construct one immutable text-only manifest before area searches. Include at most 80 unique files, sorted by repository-relative path, from these roots only:
 
@@ -176,7 +177,7 @@ Map every substantive assertion to a sanitized citation containing repository-re
 
 Negative repository claims must name the manifest subset, cached query family, and reads that bound the claim. Coverage citations may support an absence statement in Production Coverage or Unknowns and Evidence Gaps. They cannot serve as finding evidence or justify a priority.
 
-## Priority Classification
+## Priority Framework
 
 Assign priority based on priority definitions defined in the [Application Platform Context](../../../instructions/hve-resiliency-platform-context.instructions.md)
 
@@ -185,7 +186,7 @@ Assign priority based on priority definitions defined in the [Application Platfo
 Select exactly one status using this precedence:
 
 1. `blocked prerequisite/tool`: A prerequisite is invalid or a required tool failure prevents prerequisite, manifest, or citation validation.
-2. `not applicable`: Valid prerequisites exclude Kafka (Prompt 1b Kafka verdict `not-used`), select a database topology that does not pair with this active-standby prompt (`multi-master`), or classify the Kafka topology directly as Active-Active per Prerequisite Contract Rule 7. In each case, direct the user to `hve-resiliency-researcher-16-kafka-active-active` when the mismatch is a topology mismatch, or to the next applicable service-specific prompt when Kafka itself is not used.
+2. `not applicable`: Valid prerequisites exclude Kafka (Prompt 1b Kafka verdict `not-used`), select a database topology that does not pair with this active-standby prompt (`multi-master`), or classify the Kafka topology directly as Active-Active per Prerequisite Gate Rule 7. In each case, direct the user to `hve-resiliency-researcher-16-kafka-active-active` when the mismatch is a topology mismatch, or to the next applicable service-specific prompt when Kafka itself is not used.
 3. `completed bounded partial`: A hard cap or nonessential tool failure leaves declared manifest or candidate coverage incomplete.
 4. `completed with unknowns/evidence gaps`: Eligible bounded research completes, but one or more material application assertions remain unknown.
 5. `completed with findings`: Eligible bounded research completes with one or more validated findings and no material unknowns.
@@ -193,7 +194,7 @@ Select exactly one status using this precedence:
 
 Artifact write or validation failure changes any otherwise completed status to `blocked prerequisite/tool`. Status selection is deterministic and final.
 
-## Canonical Output Artifact
+## Research Artifact
 
 Write progressively to `.copilot-tracking/research/<repo-name>-hve-resiliency-researcher-16-kafka-active-standby-confluent-research.md`. Write to a temporary sibling file, validate it, then atomically replace the final artifact. On interruption, preserve the latest valid temporary artifact and report its path without presenting it as final.
 

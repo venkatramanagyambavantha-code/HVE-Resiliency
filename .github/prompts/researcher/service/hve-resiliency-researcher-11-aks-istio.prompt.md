@@ -1,6 +1,6 @@
 ---
 description: Run Prompt 11 AKS and Istio resiliency analysis for Application
-agent: Task Researcher
+agent: "Task Researcher"
 ---
 
 # Application HVE Researcher 11 AKS and Istio
@@ -83,7 +83,7 @@ Track counters cumulatively in execution state, but omit tool calls, counters,
 search narration, file-analysis narration, and repeated evidence from the
 authoritative research artifact. Read only the smallest relevant line ranges.
 
-## Evidence and Output Contract
+## Evidence And Output Contract
 
 Use `Unknown` only in an existing schema field and append either the exhausted
 repository source class or the named external evidence gap. Never invent a

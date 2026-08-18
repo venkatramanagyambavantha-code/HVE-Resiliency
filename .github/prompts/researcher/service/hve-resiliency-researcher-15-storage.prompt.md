@@ -23,7 +23,7 @@ examples, configuration examples, or generic Task Researcher recommendations.
 Do not delegate unless the active agent requires one non-delegating researcher
 to use the same bounds and return only sanitized evidence and ledger updates.
 
-## Closed Assessment Scope
+## Assessment Areas
 
 Storage accounts are provisioned in both regions. The application writes to both
 regions and reads only from the storage account in its own region. Synchronization
@@ -47,7 +47,7 @@ or service type. Do not introduce another service concern or assessment area.
 Perform assessment for Azure Blob Storage and Azure File Storage service type only. Analyze it only through the three
 areas above.
 
-## Prerequisite Scope Contract
+## Prerequisite Gate
 
 Derive `<repository-name>` once from the case-preserving root-directory basename.
 Derive `<YYYY-MM-DD>` once as the current UTC assessment date. Read exactly these
@@ -145,7 +145,7 @@ completed-with-findings, completed-with-zero-findings, unsafe-evidence, and
 generic-Storage outcomes. Keep these as prerequisite coverage citations only.
 Never copy them into a finding or use them to satisfy finding evidence.
 
-## Immutable Production Source Manifest
+## Production Source Manifest
 * Why this is a risk to app or region failover:
 After the prerequisite gate passes, create one sorted, deduplicated, text-only
 manifest and never enumerate files again. Include existing files only from
@@ -259,7 +259,7 @@ and are never byte-cap input. Never persist raw search output, raw read output,
 or a secret value in the research artifact, ledger, ID input, quotation, or
 response.
 
-## Candidate And Evidence Control
+## Candidate And Evidence Controls
 
 Create candidates in canonical manifest order. Assign stable IDs `STO-C001`,
 `STO-C002`, and so on after sorting by this deduplication key:
