@@ -47,10 +47,6 @@ evidenced.
    present.
 3. Whether Key Vault availability is reflected in the application health endpoint. Record a finding
    where it is not.
-4. Secret retrieval pattern: whether secrets are read once and cached, or fetched on the request path.
-   Record a finding where a request-path fetch puts Key Vault on the hot path, or where every instance
-   refetches on start, because the surviving region starts or scales its instances together at failover
-   and Key Vault throttles.
 
 Do not add assessment areas or ownership fields. Verify architectural statements from repository
 evidence. Record unsupported model or responsibility statements as evidence gaps or constraints,

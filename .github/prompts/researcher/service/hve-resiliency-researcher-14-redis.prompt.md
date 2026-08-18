@@ -49,26 +49,12 @@ complexity the same strategy states the application must handle; each is applica
 code, not Managed Redis configuration.
 
 1. Whether the application connects to the Redis endpoint of its own region. Record a
-   finding where a cross-region, shared, or hardcoded endpoint is evidenced.
+   finding where a hardcoded endpoint is evidenced.
 2. Retry or circuit-breaker behavior on the Redis client or connector. Record a finding
    where none is present.
 3. Whether regional Redis health is included in the application health endpoint. Record
    a finding where it is not.
-4. Whether application code assumes immediate cross-region read-after-write
-   consistency. Record a finding where code depends on a value written in one region
-   being readable in another without delay, such as session state, distributed locks,
-   idempotency keys, or counters. Active Geo-Replication is eventually consistent, so
-   the assumption is an application defect rather than a replication setting.
-5. Whether the application treats Redis strictly as a cache. Record a finding where
-   state whose only durable copy lives in Redis would be lost or served stale after a
-   regional failover.
-6. Cache-miss and stale-read handling. Record a finding where a miss or a stale value
-   is treated as an error instead of falling back to the system of record. The
-   surviving region's cache can be cold immediately after failover.
-7. Concurrent writes to the same key from more than one region. Record a finding where
-   two regions can write the same key with no ownership rule or conflict resolution in
-   application code.
-
+   
 For each evidence-backed issue, assess the impact if it remains unchanged. Classify the
 issue as P0, P1, P2, or P3 under the Application Platform Context, explain why the
 classification applies, and cite the smallest supporting file and line range.

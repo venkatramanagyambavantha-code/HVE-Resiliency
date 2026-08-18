@@ -104,79 +104,110 @@ Use this consistently in all outputs:
 
 ### P0 — Critical Resiliency Risk
 
-**Definition**: The finding **blocks failover from functioning** or **renders the multi-region deployment meaningless**. Without this fix, the investment in a second region provides no benefit.
+**Definition**: Code or configuration changes required for the application to start and operate without crashing in both regions or for the global load balancer to determine regional health accurately.
 
 **Criteria** (any of the following):
 
-* Hard-coded region-specific values (connection strings, endpoints, IPs) where the application must switch from a single-region FQDN or IP to an abstracted listener/endpoint that covers both regions. The fix is to use the single abstracted endpoint (e.g., failover group listener) that routes to whichever region is active, not to add both region values.
-* GLB health probes not yet implemented: health probe endpoints are net-new work required for the GLB to make informed failover decisions.
-* Dependencies deployed in only one region with no plan for the second region: failing over gains nothing if the dependency does not exist in the target region.
-* Connection strings pointing to single-region SQL Server FQDNs instead of failover group listener names.
-* Application logic that assumes a specific region and breaks when executed in the other region.
+* Application code or configuration prevents successful startup or causes crashes in either region.
+* Region-specific configuration values must be added, changed, or externalized.
+* A health endpoint must be created because none exists.
+* An existing health probe does not include all critical application dependencies.
 * Prerequisites for other P0 resiliency fixes: if fixing A is required before fixing B, and B is P0, then A is also P0.
 
 ### P1 — Important Resiliency Risk
 
-**Definition**: The finding is resiliency-related (passes the litmus test) but has a **procedural workaround**, **lower blast radius**, or **does not fully block failover**.
+**Definition**: Generic, region-agnostic resiliency changes required to preserve current production behavior after multi-region deployment.
 
 **Criteria** (any of the following):
 
-* Issue only manifests during a failure event but can be manually remediated after the fact.
-* Data integrity issues triggered by failover (e.g., duplicate transactions) that are detectable and reversible.
-* Missing retry logic or error handling that causes degraded experience during failover but does not fully prevent operation.
-* Resiliency improvements that are best-practice but not strictly required for failover to function.
+* Retry logic or circuit breakers are required.
+* Timeout tuning is required.
+* Local caching must be replaced with distributed caching.
+* Idempotency controls are required.
+* Without the change, requests may still succeed, but latency, processing, logging, or exception handling could differ from current production behavior.
 
 ### P2 — Code Quality / Non-Resiliency
 
-**Definition**: The finding is a valid code issue but **behaves identically in single-region and multi-region**. The multi-region deployment does not introduce, amplify, or change this issue.
-
-**Important**: These findings should still be reported. But they do **not** belong in the resiliency bucket and should not be prioritized above P0/P1 resiliency items. Frame them as code-quality recommendations, not resiliency risks.
-
-**Reclassification opportunity**: If the team can reframe the impact in resiliency terms (Rule 2) and the customer would agree it is resiliency-related, it may be moved to P1. If the reframing is a stretch, leave it at P2.
-
-### P3 — Noted for Completeness
-
-**Definition**: The finding has **no functional resiliency impact** and does not affect failover mechanics. It is retained per Rule 4 so the customer has a complete record.
+**Definition**: A new architectural pattern, component, or redesign that improves resiliency but is not required to preserve current production behavior or enable multi-region deployment.
 
 **Criteria** (any of the following):
 
-* Configuration hygiene items (naming inconsistencies, label mismatches) with no operational impact on failover.
-* Non-resiliency observations from other domains (security, compliance) that fail the litmus test but are worth flagging.
-* Referential or explanatory entries that describe how multiple findings interact but do not represent a discrete actionable fix.
+* Dead-letter queue implementation.
+* Saga or outbox pattern adoption.
+* Event-sourcing introduction.
+* Replication redesign.
+* Any comparable architecture-level change.
+
+**Important**: These findings should still be reported. But they do **not** belong in the resiliency bucket and should not be prioritized above P0/P1 resiliency items. Frame them as code-quality recommendations, not resiliency risks.
+
+### P3 — Noted for Completeness
+
+**Definition**: A best-practice, hardening, maintainability, readability, duplication, or consistency improvement that is not required to preserve current production behavior or enable multi-region deployment.
+
+**Criteria** (any of the following):
+
+* Maintainability or readability improvements.
+* Duplicate-code removal.
+* Naming, formatting, or pattern consistency.
+* Non-blocking hardening improvements.
+* Findings that do not match P0, P1, or P2.
 
 ## Categorization Decision Tree
 
 ```text
-START: New finding identified
-  │
-  ▼
-Q1: Does moving from single-region (with passive DR) to multi-region
-    introduce or change this issue?
-  │
-  ├── YES ──► Q2: Does this fix block failover from working at all?
-  │             │
-  │             ├── YES ──► P0 — Critical Resiliency Risk
-  │             │
-  │             └── NO ──► Q3: Does this issue only manifest during a failure event?
-  │                          │
-  │                          ├── YES ──► Q4: Is there a procedural workaround?
-  │                          │             │
-  │                          │             ├── YES ──► P1 — Important Resiliency Risk
-  │                          │             │
-  │                          │             └── NO ──► P0 — Critical Resiliency Risk
-  │                          │
-  │                          └── NO ──► P1 — Important Resiliency Risk
-  │
-  └── NO ──► Q5: Can the impact be framed in resiliency terms (Rule 2)?
-               │
-               ├── YES (credibly) ──► P1 — Important Resiliency Risk
-               │                       (reword the impact statement)
-               │
-               └── NO ──► Q6: Does the finding have functional or operational impact?
-                            │
-                            ├── YES ──► P2 — Code Quality / Non-Resiliency
-                            │
-                            └── NO ──► P3 — Noted for Completeness
+START: A finding or gap is identified
+  |
+  v
+Q1: Without this fix, does the application fail to start or crash in either region, existing or new?
+  |
+  +-- YES --> P0 - Blocking / Critical
+  |
+  +-- NO --> Q2: Is this a hardcoded region-specific value (URL, path, credential, region ID, ACR path, DNS, certificate, etc.)
+                 that must differ by region?
+                 |
+                 +-- YES --> P0 - Blocking / Critical
+                 |
+                 +-- NO --> Q3: Is this required for the global load
+                                balancer or Traffic Manager to detect
+                                regional health or route traffic correctly?
+                                |
+                                +-- YES --> P0 - Blocking / Critical
+                                |
+                                +-- NO --> Q4: Could introducing multi-region
+                                               deployment break current
+                                               production behavior related to
+                                               latency, data processing,
+                                               logging, or exception handling?
+                                               |
+                                               +-- YES --> Q5: Is the fix a
+                                               |           generic,
+                                               |           region-agnostic
+                                               |           resiliency pattern
+                                               |           with no new
+                                               |           architectural
+                                               |           component?
+                                               |           |
+                                               |           +-- YES --> P1 -
+                                               |           |           High Priority
+                                               |           |
+                                               |           +-- NO --> P2 -
+                                               |                       Improvement /
+                                               |                       Best Practice
+                                               |
+                                               +-- NO --> Q6: Does this introduce
+                                                           a new architectural
+                                                           pattern or component,
+                                                           such as a DLQ, saga,
+                                                           outbox, event sourcing,
+                                                           or replication redesign?
+                                                           |
+                                                           +-- YES --> P2 -
+                                                           |           Improvement /
+                                                           |           Best Practice
+                                                           |
+                                                           +-- NO --> P3 - Non-Blocking / Code Consistency
+                                                              
+                                                                       
 ```
 
 ### Special Case: Prerequisite Findings
@@ -202,15 +233,6 @@ When writing findings and recommendations, keep the following system topology in
    * The app must report health of its **own** region AND awareness of whether the **failover-target region** is healthy, so the GLB can make informed decisions.
 3. **Dependencies must exist in both regions**: If a dependency is only deployed in the primary region, failover to the secondary region gains nothing for that dependency path. Flag any single-region dependency as P0.
 4. **Use abstracted endpoints**: Recommendations should direct toward region-agnostic connection patterns. SQL Server uses failover group listener name, not individual server FQDNs. Do **not** recommend putting both region-specific values in config; recommend the single abstracted value that routes to whichever region is active.
-5. **Customer owns all code changes**: Recommendations must be specific and self-contained enough for the customer's developers to implement without the team's involvement.
-6. **Pattern-only services**: Postgres SQL, Event Hub, and potentially others are pattern-only scope (recommendations only, no full execution or testing). Flag these clearly.
-
-## Report Delivery Strategy
-
-* **Phased delivery**: Reports are delivered in batches. This prevents the customer from being overwhelmed and allows them to start implementing while subsequent reports are prepared.
-* **Testing alignment**: Findings should map to test scenarios (Azure Chaos Studio, manual fault injection, Jira backlog items) when possible.
-* **CSAM handoff**: All reports go to the CSAM and CSAs for long-term tracking. The reports are the permanent record.
-* **Expect pushback**: The customer will attempt to pare down the finding list. The report should make it easy to distinguish "must fix for failover to work" (P0) from "should fix but has workaround" (P1) from "good practice but not resiliency" (P2).
 
 ## Output File Naming Rule
 

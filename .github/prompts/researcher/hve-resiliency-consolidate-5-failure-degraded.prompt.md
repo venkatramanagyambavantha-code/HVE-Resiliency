@@ -1,5 +1,5 @@
 ---
-description: Fill Section 5 (Failure and Degraded-Mode Behavior) of the consolidated resiliency research document from Prompt 4 and 5 evidence
+description: Fill Section 5 (Failure and Degraded-Mode Behavior) of the consolidated resiliency research document from Prompt 3 and finalized Prompt 5 evidence
 agent: "Task Researcher"
 argument-hint: "[manifestPath=...] [consolidatedDocPath=...]"
 ---
@@ -15,7 +15,7 @@ Follow the [Consolidation Shared Contract](../../instructions/hve-resiliency-con
 
 ## Scope
 
-Read the frozen manifest, then read only the artifacts whose primary section is Section 5: the accepted Prompt 4 and Prompt 5 artifacts. Do not read artifacts outside this scope and do not re-run discovery.
+Read the frozen manifest, then read only the artifacts whose primary section is Section 5: the accepted Prompt 3 artifact and finalized Prompt 5 artifact. Do not read artifacts outside this scope and do not re-run discovery.
 
 Render evidence-backed startup failure, runtime degradation, partial processing, and retry behavior findings.
 

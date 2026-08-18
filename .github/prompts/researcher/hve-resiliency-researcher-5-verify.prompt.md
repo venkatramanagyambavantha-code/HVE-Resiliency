@@ -16,7 +16,7 @@ Use [Application Platform Context](../../instructions/hve-resiliency-platform-co
 
 * Run only the verify stage. Do not run any outcome fill or the finalize behavior.
 * Require the manifest produced by the scaffold step to exist, be readable, and be well-formed per the Frozen Manifest Sidecar Contract. If it is missing, unreadable, or structurally invalid, a prior step failed or ran out of order: stop `Blocked` per Status and Failure Semantics and do not write an audit report. If the manifest is well-formed but lists zero eligible dependencies, do not block: write a bounded audit report with no findings and a terminal `Complete` verify status.
-* Require all three fragment files (`startup-failure.md`, `data-loss-partial-processing.md`, `blocking-transactions.md`) to exist under the manifest's `fragmentDir`. Missing fragments are reported as `fragment-missing`; verification continues on the present fragments.
+<!-- * Require all three fragment files (`startup-failure.md`, `data-loss-partial-processing.md`, `blocking-transactions.md`) to exist under the manifest's `fragmentDir`. Missing fragments are reported as `fragment-missing`; verification continues on the present fragments. -->
 
 ## Read Scope
 

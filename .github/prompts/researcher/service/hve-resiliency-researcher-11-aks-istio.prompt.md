@@ -24,23 +24,16 @@ geo-replication, and Istio installation are infrastructure and are never
 application-code findings.
 
 Assess only application code and configuration, not infrastructure, for regional
-failover between West US 2 and West US. Evaluate exactly these eleven areas without
+failover between West US 2 and West US via GLB. Evaluate exactly these five areas without
 adding assessment areas. Record a finding wherever the expected behavior is not
 evidenced.
 
-1. Timeouts defined for all outbound calls
-2. Bounded retries using backoff and jitter
+1. Whether the application health endpoint reflects the health of the dependencies
+    that decide whether this region can serve traffic
+2. Timeouts defined for all outbound calls
 3. Retry idempotency and safety
 4. Assumptions that a dependency is always available
-5. Unbounded retries or retry storms
-6. Blocking or synchronous fan-out calls
-7. Thread, connection, or resource exhaustion during partial failures
-8. Readiness probes reflecting real dependency health rather than process liveness
-9. Unhealthy pods continuing to receive traffic
-10. Whether the application health endpoint reflects the health of the dependencies
-    that decide whether this region can serve traffic
-11. Pod statelessness: request-scoped or session state held in the pod rather than
-    externalized, so that a pod or cluster lost during failover loses it
+5. Readiness probes reflecting real dependency health rather than process liveness
 
 ## Bounded Evidence Protocol
 

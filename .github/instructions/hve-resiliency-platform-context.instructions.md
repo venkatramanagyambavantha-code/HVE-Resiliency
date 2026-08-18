@@ -7,13 +7,13 @@ applyTo: '.github/prompts/researcher/hve-resiliency-researcher-*.prompt.md, .git
 
 Apply this context to all Application Platform resiliency research prompts.
 
-* Albertsons operates applications in Azure
-* Validating readiness for full application regional failover between West US 2 and West US
-* Scope is the current repository within the Application Platform
+* Albertsons currently operates its Azure applications in a single region, West US
+* Validating the target-state readiness for multi-region deployment across West US 2 and West US, with complete regional failover managed by a global load balancer such as Akamai
+* The scope is the current repository, representing a microservice or library currently deployed in West US
 * HVE Task Researcher rules: evidence only, no remediation, no code examples
 * All findings must cite file and line-level evidence
 * Never paraphrase referenced code. If a finding quotes or describes code, copy it verbatim from the source file and confirm the cited path and line numbers match that file exactly
-* Classify every finding using the priority framework: P0 (Blocking/Critical), P1 (High Priority), P2 (Improvement/Best Practice), P3 (Non-Blocking Code Consistency)
+* Classify every finding using the priority framework: P0 (Blocking/Critical: startup failure, region-specific configuration, or health-routing failure), P1 (High Priority: retry, circuit breaker, timeout tuning, distributed caching, or idempotency), P2 (Improvement/Best Practice: DLQ, saga, outbox, event sourcing, or replication redesign), P3 (Non-Blocking Code Consistency: maintainability, readability, duplication, or inconsistent patterns)
 * Output research artifacts to `.copilot-tracking/research/` and use the repository name as the prefix for all output files (e.g., `<repo-name>-research-output.md`).
 
 ## Status and Failure Semantics
@@ -32,18 +32,127 @@ Every prompt ends in exactly one terminal state: `Complete`, `Incomplete`, or `B
 ## Platform-Managed Regional Failover
 
 * Albertsons uses platform-managed regional failover
-* For external traffic, Akamai performs global load balancing and redirects traffic to healthy regions during regional outages
-* Imperva provides WAF, DDoS protection, and security inspection but is not responsible for regional failover decisions
-* For Layer 4 traffic, F5 BIG-IP DNS provides DNS-based regional failover by directing clients to healthy regional endpoints
+* For external traffic, Akamai performs global load balancing and redirects traffic to healthy regions during regional outages based on health probes and routing policies. The application does not manage failover itself
 * Do not generate findings for missing application-level load balancing or traffic routing logic; assume the platform redirects traffic to a healthy region
-* Focus resiliency assessments on whether the application can operate successfully in the secondary region after failover, including deployment parity, configuration synchronization, dependency availability, data replication, state management, and regional capacity
+* Focus resiliency assessments on whether the application code and configuration enable instances deployed in both regions to process requests and operate successfully in a multi-region setup
 
-## Priority Definitions
 
-* P0: Critical / Blocking. Causes outage, data loss, duplicate charges, or inability to fail over safely during regional failure.
-* P1: Required, Non-Blocking. Does not fully block failover but materially increases application risk, data risk, or customer impact during failure.
-* P2: Improvement / Best Practice. Does not materially impact correctness during failover but weakens resilience posture or operational clarity.
-* P3: Non-Blocking Code Consistency. Captures maintainability, readability, duplication, or inconsistent pattern issues that are non-blocking.
+## Priority Legend
+
+Use this consistently in all outputs:
+
+* P0: Blocking/Critical Risk
+* P1: High Priority
+* P2: Improvement/Best Practice (Non-Blocking)
+* P3: Non-Blocking Code Consistency (Best Practices / Maintainability)
+
+### P0 — Critical Resiliency Risk
+
+**Definition**: Code or configuration changes required for the application to start and operate without crashing in both regions or for the global load balancer to determine regional health accurately.
+
+**Criteria** (any of the following):
+
+* Application code or configuration prevents successful startup or causes crashes in either region.
+* Region-specific configuration values must be added, changed, or externalized.
+* A health endpoint must be created because none exists.
+* An existing health probe does not include all critical application dependencies.
+* Prerequisites for other P0 resiliency fixes: if fixing A is required before fixing B, and B is P0, then A is also P0.
+
+### P1 — Important Resiliency Risk
+
+**Definition**: Generic, region-agnostic resiliency changes required to preserve current production behavior after multi-region deployment.
+
+**Criteria** (any of the following):
+
+* Retry logic or circuit breakers are required.
+* Timeout tuning is required.
+* Local caching must be replaced with distributed caching.
+* Idempotency controls are required.
+* Without the change, requests may still succeed, but latency, processing, logging, or exception handling could differ from current production behavior.
+
+### P2 — Code Quality / Non-Resiliency
+
+**Definition**: A new architectural pattern, component, or redesign that improves resiliency but is not required to preserve current production behavior or enable multi-region deployment.
+
+**Criteria** (any of the following):
+
+* Dead-letter queue implementation.
+* Saga or outbox pattern adoption.
+* Event-sourcing introduction.
+* Replication redesign.
+* Any comparable architecture-level change.
+
+**Important**: These findings should still be reported. But they do **not** belong in the resiliency bucket and should not be prioritized above P0/P1 resiliency items. Frame them as code-quality recommendations, not resiliency risks.
+
+### P3 — Noted for Completeness
+
+**Definition**: A best-practice, hardening, maintainability, readability, duplication, or consistency improvement that is not required to preserve current production behavior or enable multi-region deployment.
+
+**Criteria** (any of the following):
+
+* Maintainability or readability improvements.
+* Duplicate-code removal.
+* Naming, formatting, or pattern consistency.
+* Non-blocking hardening improvements.
+* Findings that do not match P0, P1, or P2.
+
+## Categorization Decision Tree
+
+```text
+START: A finding or gap is identified
+  |
+  v
+Q1: Without this fix, does the application fail to start or crash in either region, existing or new?
+  |
+  +-- YES --> P0 - Blocking / Critical
+  |
+  +-- NO --> Q2: Is this a hardcoded region-specific value (URL, path, credential, region ID, ACR path, DNS, certificate, etc.)
+                 that must differ by region?
+                 |
+                 +-- YES --> P0 - Blocking / Critical
+                 |
+                 +-- NO --> Q3: Is this required for the global load
+                                balancer or Traffic Manager to detect
+                                regional health or route traffic correctly?
+                                |
+                                +-- YES --> P0 - Blocking / Critical
+                                |
+                                +-- NO --> Q4: Could introducing multi-region
+                                               deployment break current
+                                               production behavior related to
+                                               latency, data processing,
+                                               logging, or exception handling?
+                                               |
+                                               +-- YES --> Q5: Is the fix a
+                                               |           generic,
+                                               |           region-agnostic
+                                               |           resiliency pattern
+                                               |           with no new
+                                               |           architectural
+                                               |           component?
+                                               |           |
+                                               |           +-- YES --> P1 -
+                                               |           |           High Priority
+                                               |           |
+                                               |           +-- NO --> P2 -
+                                               |                       Improvement /
+                                               |                       Best Practice
+                                               |
+                                               +-- NO --> Q6: Does this introduce
+                                                           a new architectural
+                                                           pattern or component,
+                                                           such as a DLQ, saga,
+                                                           outbox, event sourcing,
+                                                           or replication redesign?
+                                                           |
+                                                           +-- YES --> P2 -
+                                                           |           Improvement /
+                                                           |           Best Practice
+                                                           |
+                                                           +-- NO --> P3 - Non-Blocking / Code Consistency
+                                                              
+                                                                       
+```
 
 ## Service Exclusion Rule
 
